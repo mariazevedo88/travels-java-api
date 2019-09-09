@@ -1,4 +1,4 @@
-# finance-api-final
+# finance-java-api
 
 A financial API for managing transactions
 
