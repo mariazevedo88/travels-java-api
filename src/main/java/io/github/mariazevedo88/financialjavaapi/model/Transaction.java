@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Transaction {
 
-	private long id;
+	private Long id;
 	private String nsu;
 	private String autorizationNumber;
 	private LocalDateTime transactionDate;

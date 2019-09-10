@@ -52,7 +52,7 @@ Returns an empty body with one of the following:
 400 – if the JSON is invalid
 422 – if any of the fields are not parsable or the transaction date is in the future
 
-`PUT/transaction`
+`PUT/transaction/{id}`
 
 This endpoint is called to update a transaction.
 
@@ -60,8 +60,7 @@ This endpoint is called to update a transaction.
 
 <code>
 {
-  "id": 1,
-  "amount": "30.09"
+  "amount": "30.06"
 }
 </code>
 
@@ -73,7 +72,7 @@ Must be submitted or transaction id and the fields that will be modified. Must r
    "nsu": "220788",
    "autorizationNumber": "010203",
    "amount": "30.06",
-   "transactionDate": "2019–09–11T09:59:51.312Z"
+   "transactionDate": "2019-09-11T09:59:51.312Z"
 }
 </code>
 
@@ -114,3 +113,19 @@ This endpoint returns the statistics based on the transactions created.
 `count` – a long specifying the total number of transactions.
 
 All BigDecimal values always contain exactly two decimal places, eg: 15.385 is returned as 15.39.
+
+### Test
+
+* For both test phases, you can run:
+
+```
+mvn test
+```
+
+### Run
+
+```
+mvn spring-boot:run -Dspring.profiles.active=prod
+```
+
+By default, the API will be available at [http://localhost:8080/](http://localhost:8080/)
