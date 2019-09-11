@@ -1,5 +1,7 @@
 # finance-java-api
 
+[![Build Status](https://travis-ci.org/mariazevedo88/financial-java-api.svg?branch=master)](https://travis-ci.org/mariazevedo88/financial-java-api)
+
 A financial API for managing transactions
 
 ## How API works?
