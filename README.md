@@ -1,4 +1,4 @@
-# finance-java-api
+# financial-java-api
 
 [![Build Status](https://travis-ci.org/mariazevedo88/financial-java-api.svg?branch=master)](https://travis-ci.org/mariazevedo88/financial-java-api)
 
@@ -127,7 +127,7 @@ All BigDecimal values always contain exactly two decimal places, eg: 15.385 is r
 
 ### Test
 
-* For both test phases, you can run:
+* For unit test phase, you can run:
 
 ```
 mvn test
