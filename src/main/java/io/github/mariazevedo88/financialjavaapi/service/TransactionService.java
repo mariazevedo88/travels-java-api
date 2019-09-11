@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.mariazevedo88.financialjavaapi.factory.TransactionFactory;
 import io.github.mariazevedo88.financialjavaapi.factory.impl.TransactionFactoryImpl;
 import io.github.mariazevedo88.financialjavaapi.model.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.Transaction.TransactionTypeEnum;
 
 /**
  * Service that implements methods related to a transaction.
@@ -35,8 +36,10 @@ public class TransactionService {
 	 * @author Mariana Azevedo
 	 * @since 09/09/2019
 	 */
-	public void createTransactionFactory() {
-		if(factory == null) factory = new TransactionFactoryImpl();
+	public void createFactory() {
+		if(factory == null) {
+			factory = new TransactionFactoryImpl();
+		}
 	}
 	
 	/**
@@ -46,7 +49,9 @@ public class TransactionService {
 	 * @since 09/09/2019
 	 */
 	public void createTransactionList() {
-		if(transactions == null) transactions = new ArrayList<>();
+		if(transactions == null) {
+			transactions = new ArrayList<>();
+		}
 	}
 	
 	/**
@@ -60,9 +65,7 @@ public class TransactionService {
 	 */
 	public boolean isJSONValid(String jsonInString) {
 	    try {
-	       final var mapper = new ObjectMapper();
-	       mapper.readTree(jsonInString);
-	       return true;
+	       return new ObjectMapper().readTree(jsonInString) != null;
 	    } catch (IOException e) {
 	       return false;
 	    }
@@ -135,12 +138,10 @@ public class TransactionService {
 		String autorizationNumber = (String) jsonTransaction.get("autorizationNumber");
 		String nsu = (String) jsonTransaction.get("nsu");
 		
-		transaction.setId(jsonTransaction.get("id") != null ? parseId(jsonTransaction) : transaction.getId());
-		transaction.setAmount(jsonTransaction.get("amount") != null ? parseAmount(jsonTransaction) 
-				: transaction.getAmount());
+		transaction.setAmount(jsonTransaction.get("amount") != null ? parseAmount(jsonTransaction) : transaction.getAmount());
 		transaction.setTransactionDate(jsonTransaction.get("transactionDate") != null ? 
 				parseTransactionDate(jsonTransaction) : transaction.getTransactionDate());
-		transaction.setAutorizationNumber(autorizationNumber != null ? autorizationNumber : transaction.getAutorizationNumber());
+		transaction.setAutorizationNumber(TransactionTypeEnum.CARD == transaction.getType() ? autorizationNumber : null);
 		transaction.setNsu(nsu != null ? nsu : transaction.getNsu());
 	}
 	
@@ -153,11 +154,12 @@ public class TransactionService {
 	 * @param jsonTransaction
 	 * @return Transaction
 	 */
-	public Transaction createTransaction(JSONObject jsonTransaction) {
+	public Transaction create(JSONObject jsonTransaction) {
 		
-		createTransactionFactory();
+		createFactory();
 		
-		Transaction transaction = factory.createTransaction();
+		Transaction transaction = factory.createTransaction((String) jsonTransaction.get("type"));
+		transaction.setId(parseId(jsonTransaction));
 		setTransactionValues(jsonTransaction, transaction);
 		
 		return transaction;
@@ -174,7 +176,7 @@ public class TransactionService {
 	 * 
 	 * @return Transaction
 	 */
-	public Transaction updateTransaction(Transaction transaction, JSONObject jsonTransaction) {
+	public Transaction update(Transaction transaction, JSONObject jsonTransaction) {
 		
 		setTransactionValues(jsonTransaction, transaction);
 		return transaction;
@@ -188,7 +190,7 @@ public class TransactionService {
 	 * 
 	 * @param transaction
 	 */
-	public void addTransaction(Transaction transaction) {
+	public void add(Transaction transaction) {
 		createTransactionList();
 		transactions.add(transaction);
 	}
@@ -203,6 +205,7 @@ public class TransactionService {
 	 * @return List
 	 */
 	public List<Transaction> find() {
+		createTransactionList();
 		return transactions;
 	}
 	
@@ -224,12 +227,20 @@ public class TransactionService {
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 08/09/2019
-	 * 
-	 * @return boolean
 	 */
-	public boolean delete() {
+	public void delete() {
 		transactions.clear();
-		return transactions.isEmpty();
+	}
+	
+	/**
+	 * Method to clean objects
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 09/09/2019
+	 */
+	public void clearObjects() {
+		transactions = null;
+		factory = null;
 	}
 
 }

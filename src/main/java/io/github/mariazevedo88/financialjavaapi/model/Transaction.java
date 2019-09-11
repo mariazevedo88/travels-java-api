@@ -18,11 +18,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Transaction {
+	
+	public enum TransactionTypeEnum { CARD, MONEY } 
 
 	private Long id;
 	private String nsu;
 	private String autorizationNumber;
 	private LocalDateTime transactionDate;
 	private BigDecimal amount;
+	private TransactionTypeEnum type;
+	
+	public Transaction(TransactionTypeEnum type){
+		this.type = type;
+	}
 	
 }

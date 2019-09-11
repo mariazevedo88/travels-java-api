@@ -2,7 +2,6 @@ package io.github.mariazevedo88.financialjavaapi.controller;
 
 import java.util.List;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +36,11 @@ public class StatisticController {
 	 * 
 	 * @return ResponseEntity - 200
 	 */
-	@GetMapping(path = "/statistics")
-	public ResponseEntity<JSONObject> getStatistics() {
+	@GetMapping(path = "/statistics", produces = { "application/json" })
+	public ResponseEntity<Statistic> getStatistics() {
 		List<Transaction> transactions = transactionService.find();
-		Statistic statistics = statisticsService.createStatistics(transactions);
-		JSONObject jsonStatistic = statisticsService.createJSONWithStatistics(statistics);
-		return ResponseEntity.ok(jsonStatistic);
+		Statistic statistics = statisticsService.create(transactions);
+		return ResponseEntity.ok(statistics);
 	}
 
 }

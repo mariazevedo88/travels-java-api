@@ -30,7 +30,8 @@ This endpoint is called to create a new transaction.
   "nsu": "220788",
   "autorizationNumber": "010203",
   "amount": "22.88",
-  "transactionDate": "2019-09-11T09:59:51.312Z"
+  "transactionDate": "2019-09-11T09:59:51.312Z",
+  "type": "CARD"
 }
 </code>
 
@@ -46,6 +47,8 @@ This endpoint is called to create a new transaction.
 
 `transactionDate` – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone.
 
+`type` - transaction type: CARD (credit-card) or MONEY (paid in cash).
+
 Returns an empty body with one of the following:
 
 201 – in case of success
@@ -60,11 +63,16 @@ This endpoint is called to update a transaction.
 
 <code>
 {
-  "amount": "30.06"
+   "id": 1,
+   "nsu": "220788",
+   "autorizationNumber": "010203",
+   "amount": "30.06",
+   "transactionDate": "2019–09–11T09:59:51.312Z",
+   "type": "CARD"
 }
 </code>
 
-Must be submitted or transaction id and the fields that will be modified. Must return a transaction specified by ID and all fields recorded above, including the one that was updated.
+Must be submitted the object that will be modified. Must return a transaction specified by ID and all fields recorded above, including the one that was updated.
 
 <code>
 {   
@@ -72,7 +80,8 @@ Must be submitted or transaction id and the fields that will be modified. Must r
    "nsu": "220788",
    "autorizationNumber": "010203",
    "amount": "30.06",
-   "transactionDate": "2019-09-11T09:59:51.312Z"
+   "transactionDate": "2019-09-11T09:59:51.312Z",
+   "type": "CARD"
 }
 </code>
 
@@ -122,7 +131,21 @@ All BigDecimal values always contain exactly two decimal places, eg: 15.385 is r
 mvn test
 ```
 
+* To run all tests (including Integration Tests):
+
+```
+mvn integration-test
+```
+
 ### Run
+
+In order to run the API, run the jar simply as following:
+
+```
+java -jar financial-java-api-1.1.0.jar --spring.profiles.active=prod
+```
+    
+or
 
 ```
 mvn spring-boot:run -Dspring.profiles.active=prod

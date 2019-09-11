@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import io.github.mariazevedo88.financialjavaapi.model.Statistic;
@@ -20,29 +19,6 @@ import io.github.mariazevedo88.financialjavaapi.model.Transaction;
 public class StatisticService {
 	
 	/**
-	 * Method that creates a JSON with statistics based on the transactions that happened in the last 60 seconds.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 08/09/2019
-	 * 
-	 * @param statistics
-	 * @return JSONObject
-	 */
-	@SuppressWarnings("unchecked")
-	public JSONObject createJSONWithStatistics(Statistic statistics) {
-		
-		var jsonStatistic = new JSONObject();
-		
-		jsonStatistic.put("sum", statistics.getSum().toString());
-		jsonStatistic.put("avg", statistics.getAvg().toString());
-		jsonStatistic.put("min", statistics.getMin().toString());
-		jsonStatistic.put("max", statistics.getMax().toString());
-		jsonStatistic.put("count", statistics.getCount());
-		
-		return jsonStatistic;
-	}
-
-	/**
 	 * Method that creates statistics based on the transactions.
 	 * 
 	 * @author Mariana Azevedo
@@ -51,7 +27,7 @@ public class StatisticService {
 	 * @param transactions
 	 * @return Statistic
 	 */
-	public Statistic createStatistics(List<Transaction> transactions) {
+	public Statistic create(List<Transaction> transactions) {
 		
 		var statistics = new Statistic();
 		statistics.setCount(transactions.stream().count());

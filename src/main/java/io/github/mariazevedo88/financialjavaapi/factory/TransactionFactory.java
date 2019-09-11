@@ -4,5 +4,5 @@ import io.github.mariazevedo88.financialjavaapi.model.Transaction;
 
 public interface TransactionFactory {
 
-	Transaction createTransaction();
+	Transaction createTransaction(String type);
 }

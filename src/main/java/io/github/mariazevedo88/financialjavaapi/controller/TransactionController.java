@@ -1,6 +1,5 @@
 package io.github.mariazevedo88.financialjavaapi.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,13 +44,10 @@ public class TransactionController {
 	 */
 	@GetMapping(path = "/transactions")
 	public ResponseEntity<List<Transaction>> find() {
-		
 		if(transactionService.find().isEmpty()) {
 			return ResponseEntity.notFound().build(); 
 		}
-		
 		logger.info(transactionService.find());
-		
 		return ResponseEntity.ok(transactionService.find());
 	}
 	
@@ -65,15 +62,11 @@ public class TransactionController {
 	@DeleteMapping(path = "/transactions")
 	public ResponseEntity<Boolean> delete() {
 		try {
-			boolean isDeleted = transactionService.delete();
-			if(isDeleted) {
-				return ResponseEntity.noContent().build();
-			}else {
-				return ResponseEntity.status(HttpStatus.RESET_CONTENT).build();
-			}
+			transactionService.delete();
+			return ResponseEntity.noContent().build();
 		}catch(Exception e) {
 			logger.error(e);
-			return ResponseEntity.badRequest().body(null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
 	
@@ -85,28 +78,28 @@ public class TransactionController {
 	 * 
 	 * @param transaction, where: id - transaction id; nsu - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
 	 * autorizationNumber - is a one-time code used in the processing of online transactions; amount – transaction amount; a string of arbitrary length that is 
-	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone.
+	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone; type - transaction type: 
+	 * CARD (credit-card) or MONEY (paid in cash).
 	 * 
 	 * @return Returns an empty body with one of the following:
 	 * 201 – in case of success
 	 * 400 – if the JSON is invalid
 	 * 422 – if any of the fields are not parsable or the transaction date is in the future
 	 */
-	@PostMapping(path = "/transaction")
+	@PostMapping(path = "/transactions")
+	@ResponseBody
 	public ResponseEntity<Transaction> create(@RequestBody JSONObject transaction) {
 		try {
 			if(transactionService.isJSONValid(transaction.toString())) {
-				
-				Transaction transactionCreated = transactionService.createTransaction(transaction);
-				
-				URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/transactions").build().toUri();
+				Transaction transactionCreated = transactionService.create(transaction);
+				var uri = ServletUriComponentsBuilder.fromCurrentRequest().path(transactionCreated.getNsu()).build().toUri();
 				
 				if(transactionService.isTransactionInFuture(transactionCreated)){
 					logger.error("The transaction date is in the future.");
 					return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 				}else {
-					transactionService.addTransaction(transactionCreated);
-					return ResponseEntity.created(location).body(null);
+					transactionService.add(transactionCreated);
+					return ResponseEntity.created(uri).body(null);
 				}
 			}else {
 				return ResponseEntity.badRequest().body(null);
@@ -125,23 +118,24 @@ public class TransactionController {
 	 * 
 	 * @param transaction, where: id - transaction id; nsu - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
 	 * autorizationNumber - is a one-time code used in the processing of online transactions; amount – transaction amount; a string of arbitrary length that is 
-	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone.
+	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone; type - transaction type: 
+	 * CARD (credit-card) or MONEY (paid in cash).
 	 * 
 	 * @return Returns an empty body with one of the following:
 	 * 201 – in case of success
 	 * 400 – if the JSON is invalid
 	 * 422 – if any of the fields are not parsable or the transaction date is in the future
 	 */
-	@PutMapping(path = "/transaction/{id}")
+	@PutMapping(path = "/transactions/{id}", produces = { "application/json" })
 	public ResponseEntity<Transaction> create(@PathVariable("id") long id, @RequestBody JSONObject transaction) {
 		try {
-			Transaction transactionToUpdate = transactionService.findById(id);
 			if(transactionService.isJSONValid(transaction.toString())) {
+				Transaction transactionToUpdate = transactionService.findById(id);
 				if(transactionToUpdate == null){
 					logger.error("The transaction not found.");
 					return ResponseEntity.notFound().build(); 
 				}else {
-					Transaction transactionUpdated = transactionService.updateTransaction(transactionToUpdate, transaction);
+					Transaction transactionUpdated = transactionService.update(transactionToUpdate, transaction);
 					return ResponseEntity.ok(transactionUpdated);
 				}
 			}else {

@@ -1,0 +1,13 @@
+dist: trusty
+language: java
+sudo: false
+jdk:
+  - oraclejdk11
+
+git:
+  depth: 2 #clone repository to a maximum depth of 2 commits
+
+script: "mvn clean install -Dmaven.javadoc.skip=true -B -V"
+
+after_success:
+  - mvn clean integration-test
