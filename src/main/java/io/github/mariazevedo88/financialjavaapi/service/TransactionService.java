@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.factory.TransactionFactory;
 import io.github.mariazevedo88.financialjavaapi.factory.impl.TransactionFactoryImpl;
+import io.github.mariazevedo88.financialjavaapi.model.Link;
 import io.github.mariazevedo88.financialjavaapi.model.Transaction;
-import io.github.mariazevedo88.financialjavaapi.model.Transaction.TransactionTypeEnum;
 
 /**
  * Service that implements methods related to a transaction.
@@ -141,8 +142,23 @@ public class TransactionService {
 		transaction.setAmount(jsonTransaction.get("amount") != null ? parseAmount(jsonTransaction) : transaction.getAmount());
 		transaction.setTransactionDate(jsonTransaction.get("transactionDate") != null ? 
 				parseTransactionDate(jsonTransaction) : transaction.getTransactionDate());
-		transaction.setAutorizationNumber(TransactionTypeEnum.CARD == transaction.getType() ? autorizationNumber : null);
+		transaction.setAutorizationNumber(TransactionTypeEnum.CARD.getValue().equals(transaction.getType().getValue()) 
+				? autorizationNumber : null);
 		transaction.setNsu(nsu != null ? nsu : transaction.getNsu());
+	}
+	
+	/**
+	 * Method to add a transaction resource information
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 15/09/2019
+	 * 
+	 * @param uri
+	 * @param transaction
+	 */
+	public void setTransactionLinks(String uri, Transaction transaction) {
+		Link link = new Link("self", uri);
+		transaction.addLink(link);
 	}
 	
 	/**

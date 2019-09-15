@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
  * 
  * @author Mariana Azevedo
  * @since 08/09/2019
- * 
  */
 @AllArgsConstructor
 @NoArgsConstructor

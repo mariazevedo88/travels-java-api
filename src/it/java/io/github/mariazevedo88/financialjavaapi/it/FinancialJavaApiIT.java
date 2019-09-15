@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.model.Transaction;
-import io.github.mariazevedo88.financialjavaapi.model.Transaction.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.service.TransactionService;
 
 /**

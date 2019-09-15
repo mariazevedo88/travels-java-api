@@ -2,25 +2,25 @@
 
 [![Build Status](https://travis-ci.org/mariazevedo88/financial-java-api.svg?branch=master)](https://travis-ci.org/mariazevedo88/financial-java-api)
 
-A financial API for managing transactions
+A financial API for managing transactions. The API main URL `/financial/v1`.
 
 ## How API works?
 
 The API creates, updates, deletes and lists financial transactions. It also calculates statistics of the transactions created. The API has following endpoints:
 
-`POST/transaction` – endpoint to create a transaction.
+`POST/financial/v1/transactions` – endpoint to create a transaction.
 
-`PUT/transaction` – endpoint to update a transaction.
+`PUT/financial/v1/transactions` – endpoint to update a transaction.
 
-`GET/transactions` – returns the transactions created.
+`GET/financial/v1/transactions` – returns the transactions created.
 
-`DELETE/transactions` – deletes all transactions.
+`DELETE/financial/v1/transactions` – deletes all transactions.
 
-`GET/statistics` – returns the statistic based of the transactions created.
+`GET/financial/v1/statistics` – returns the statistic based of the transactions created.
 
 ### Details
 
-`POST/transaction`
+`POST/financial/v1/transaction`
 
 This endpoint is called to create a new transaction.
 
@@ -33,7 +33,7 @@ This endpoint is called to create a new transaction.
   "autorizationNumber": "010203",
   "amount": "22.88",
   "transactionDate": "2019-09-11T09:59:51.312Z",
-  "type": "CARD"
+  "type": "CARD",
 }
 </code>
 
@@ -51,13 +51,15 @@ This endpoint is called to create a new transaction.
 
 `type` - transaction type: CARD (credit-card) or MONEY (paid in cash).
 
+`links` - self-linking URL for the transaction. It is automatically generated.
+
 Returns an empty body with one of the following:
 
 201 – in case of success
 400 – if the JSON is invalid
 422 – if any of the fields are not parsable or the transaction date is in the future
 
-`PUT/transaction/{id}`
+`PUT/financial/v1/transaction/{id}`
 
 This endpoint is called to update a transaction.
 
@@ -74,7 +76,8 @@ This endpoint is called to update a transaction.
 }
 </code>
 
-Must be submitted the object that will be modified. Must return a transaction specified by ID and all fields recorded above, including the one that was updated.
+Must be submitted the object that will be modified. Must return a transaction specified by ID and all fields recorded above, including links and
+the one that was updated.
 
 <code>
 {   
@@ -83,19 +86,25 @@ Must be submitted the object that will be modified. Must return a transaction sp
    "autorizationNumber": "010203",
    "amount": "30.06",
    "transactionDate": "2019-09-11T09:59:51.312Z",
-   "type": "CARD"
+   "type": "CARD",
+   "links": [
+	    {
+	        "rel": "self",
+	        "href": "http://localhost:8080/financial/v1/transactions/1"
+	    }
+   ]
 }
 </code>
 
-`GET/transactions`
+`GET/financial/v1/transactions`
 
 This endpoint returns all transactions created.
 
-`DELETE/transactions`
+`DELETE/financial/v1/transactions`
 
 This endpoint causes all existing transactions to be deleted, accepting an empty request body and return a 204 status code.
 
-`GET/statistics`
+`GET/financial/v1/statistics`
 
 This endpoint returns the statistics based on the transactions created.
 
@@ -144,7 +153,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```
-java -jar financial-java-api-1.1.0.jar --spring.profiles.active=prod
+java -jar financial-java-api-1.0.0.jar --spring.profiles.active=prod
 ```
     
 or
