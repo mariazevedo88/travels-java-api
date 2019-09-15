@@ -61,7 +61,7 @@ public class FinancialJavaApiIT {
 
 		JSONObject map = setObjectToCreate();
 		
-		this.mockMvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+		this.mockMvc.perform(post("/financial/v1/transactions").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
         		.content(new ObjectMapper().writeValueAsString(map))).andExpect(status().isCreated());
 	}
 	
@@ -71,18 +71,18 @@ public class FinancialJavaApiIT {
 		Transaction transaction = transactionService.findById(1);
 		JSONObject map = setObjectToUpdate();
 		
-		this.mockMvc.perform(put("/transactions/" + transaction.getId()).contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+		this.mockMvc.perform(put("/financial/v1/transactions/" + transaction.getId()).contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
         		.content(new ObjectMapper().writeValueAsString(map))).andExpect(status().isOk());
 	}
 
 	@Test
     public void shouldReturnGetAllTransactions() throws Exception {
-		this.mockMvc.perform(get("/transactions")).andExpect(status().isOk());
+		this.mockMvc.perform(get("/financial/v1/transactions")).andExpect(status().isOk());
     }
 	
 	@Test
     public void shouldReturnRemoveAllTransactions() throws Exception {
-		this.mockMvc.perform(delete("/transactions")).andExpect(status().isNoContent());
+		this.mockMvc.perform(delete("/financial/v1/transactions")).andExpect(status().isNoContent());
     }
 	
 	@SuppressWarnings("unchecked")
