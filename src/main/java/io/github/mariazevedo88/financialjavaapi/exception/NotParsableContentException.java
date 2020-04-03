@@ -1,7 +1,7 @@
 package io.github.mariazevedo88.financialjavaapi.exception;
 
 /**
- * Class that implements NotParsableContentException
+ * Class that implements NotParsableContentException in the API
  * 
  * @author Mariana Azevedo
  * @since 14/09/2019
