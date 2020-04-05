@@ -28,9 +28,8 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>2.9.2</swagger.version>
-		<jmapper.version>1.1.1</jmapper.version>
+		<modelmapper.version>2.3.6</modelmapper.version>
 	</properties>
 
 	<dependencies>
@@ -97,7 +96,7 @@
 		<dependency>
 		  <groupId>org.modelmapper</groupId>
 		  <artifactId>modelmapper</artifactId>
-		  <version>2.3.6</version>
+		  <version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 
