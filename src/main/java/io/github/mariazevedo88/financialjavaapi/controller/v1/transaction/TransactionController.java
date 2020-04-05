@@ -38,6 +38,7 @@ import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundExc
 import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * SpringBoot RestController that creates all service endpoints related to the transaction.
@@ -82,6 +83,7 @@ public class TransactionController {
 	 * @throws NotParsableContentException
 	 */
 	@PostMapping
+	@ApiOperation(value = "Route to create a transaction")
 	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws NotParsableContentException {
 		
@@ -137,6 +139,7 @@ public class TransactionController {
 	 * @throws TransactionInvalidUpdateException
 	 */
 	@PutMapping(path = "/{id}")
+	@ApiOperation(value = "Route to update a transaction")
 	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException {
 		
@@ -187,6 +190,7 @@ public class TransactionController {
 	 * @throws TransactionNotFoundException 
 	 */
 	@GetMapping
+	@ApiOperation(value = "Route to find all transactions in the API")
 	public ResponseEntity<Response<List<TransactionDTO>>> findAll(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion) throws TransactionNotFoundException {
 		
@@ -240,6 +244,7 @@ public class TransactionController {
 	 * @throws TransactionNotFoundException
 	 */
 	@GetMapping(value = "/byNsu/{nsu}")
+	@ApiOperation(value = "Route to find transactions by the NSU in the API")
 	public ResponseEntity<Response<List<TransactionDTO>>> findByNsu(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion, @PathVariable("nsu") String transactionNSU) throws TransactionNotFoundException {
 		
@@ -288,6 +293,7 @@ public class TransactionController {
 	 * @throws TransactionNotFoundException
 	 */
 	@GetMapping(value = "/{id}")
+	@ApiOperation(value = "Route to find a transaction by your id in the API")
 	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion, @PathVariable("id") Long transactionId) throws TransactionNotFoundException {
 		
@@ -329,6 +335,7 @@ public class TransactionController {
 	 * @throws TransactionNotFoundException 
 	 */
 	@DeleteMapping(value = "/{id}")
+	@ApiOperation(value = "Route to delete a transaction in the API")
 	public ResponseEntity<Response<String>> delete(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
 		String apiVersion, @PathVariable("id") Long transactionId) throws TransactionNotFoundException {
 		

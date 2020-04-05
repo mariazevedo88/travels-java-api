@@ -2,7 +2,7 @@ package io.github.mariazevedo88.financialjavaapi.model.v1.transaction;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import lombok.AllArgsConstructor;
@@ -40,22 +46,28 @@ public class Transaction implements Serializable {
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String nsu;
 	
 	@Getter
 	@Setter
-	private String autorizationNumber;
+	private String authorizationNumber;
 	
 	@Getter
 	@Setter
-	private LocalDateTime transactionDate;
+	@NotNull
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private Date transactionDate;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private BigDecimal amount;
 	
 	@Getter
 	@Setter
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TransactionTypeEnum type;
 	

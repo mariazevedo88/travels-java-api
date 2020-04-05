@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -16,9 +17,14 @@ import lombok.Setter;
  * @author Mariana Azevedo
  * @since 01/04/2020
  */
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class StatisticDTO extends RepresentationModel<StatisticDTO> {
 
+	@Getter
+	@Setter
+	private Long id;
+	
 	@Getter
 	@Setter
 	@NotNull(message="Sum cannot be null")

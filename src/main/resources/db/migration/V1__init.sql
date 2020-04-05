@@ -1,7 +1,7 @@
 create table transaction(
 id serial,
 nsu varchar(20),
-autorization_number varchar(20),
+authorization_number varchar(20),
 transaction_date TIMESTAMP,
 amount numeric(10,2),
 type varchar(40),

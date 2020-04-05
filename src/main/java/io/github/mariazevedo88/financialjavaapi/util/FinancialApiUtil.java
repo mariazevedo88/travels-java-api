@@ -1,6 +1,6 @@
 package io.github.mariazevedo88.financialjavaapi.util;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
@@ -30,7 +30,7 @@ public class FinancialApiUtil {
 	 * @return boolean
 	 */
 	public static boolean isTransactionInFuture(Transaction transaction) {
-		return transaction.getTransactionDate().isAfter(LocalDateTime.now());
+		return transaction.getTransactionDate().after(new Date());
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class FinancialApiUtil {
 	 * @return boolean
 	 */
 	public static boolean isTransactionDTOInFuture(TransactionDTO dto) {
-		return dto.getTransactionDate().isAfter(LocalDateTime.now());
+		return dto.getTransactionDate().after(new Date());
 	}
 	
 }

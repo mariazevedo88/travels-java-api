@@ -1,12 +1,16 @@
 package io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import lombok.EqualsAndHashCode;
@@ -34,12 +38,14 @@ public class TransactionDTO extends RepresentationModel<TransactionDTO> {
 
 	@Getter
 	@Setter
-	private String autorizationNumber;
+	private String authorizationNumber;
 	
 	@Getter
 	@Setter
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	@NotNull(message="TransactionDate cannot be null")
-	private LocalDateTime transactionDate;
+	private Date transactionDate;
 	
 	@Getter
 	@Setter

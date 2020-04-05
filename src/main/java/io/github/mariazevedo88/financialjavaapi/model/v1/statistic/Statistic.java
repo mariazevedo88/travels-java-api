@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Class that implements the Statistic structure.
@@ -21,6 +23,7 @@ import lombok.Getter;
  */
 @Entity
 @Table(name = "statistics")
+@NoArgsConstructor
 @AllArgsConstructor
 public class Statistic implements Serializable {
 	
@@ -28,26 +31,32 @@ public class Statistic implements Serializable {
 
 	@Id
 	@Getter
+	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Getter
+	@Setter
 	@Column(name = "transactions_sum")
 	private BigDecimal sum;
 	
 	@Getter
+	@Setter
 	@Column(name = "transactions_avg")
 	private BigDecimal avg;
 	
 	@Getter
+	@Setter
 	@Column(name = "transactions_max")
 	private BigDecimal max;
 	
 	@Getter
+	@Setter
 	@Column(name = "transactions_min")
 	private BigDecimal min;
 	
 	@Getter
+	@Setter
 	@Column(name = "transactions_count")
 	private long count;
 	

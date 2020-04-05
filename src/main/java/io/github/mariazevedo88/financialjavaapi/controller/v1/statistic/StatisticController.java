@@ -24,6 +24,7 @@ import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction
 import io.github.mariazevedo88.financialjavaapi.service.v1.statistic.StatisticService;
 import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * SpringBoot RestController that creates all service endpoints related to the statistics.
@@ -61,6 +62,7 @@ public class StatisticController {
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 */
 	@GetMapping
+	@ApiOperation(value = "Route to create statistics in the API")
 	public ResponseEntity<Response<StatisticDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, 
 		defaultValue="${api.version}") String apiVersion) {
 		
@@ -76,7 +78,7 @@ public class StatisticController {
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
 		
-		return new ResponseEntity<>(response, headers, HttpStatus.OK);
+		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 		
 	}
 
