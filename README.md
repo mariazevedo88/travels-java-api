@@ -157,13 +157,14 @@ All BigDecimal values always contain exactly two decimal places, eg: 15.385 is r
 
 This project was developed with:
 
-Java 11 (Java Development Kit - JDK: 11.0.3)
-Spring Boot 2.2.6
-Spring Framework 2.2.6
-JUnit 5
-PostgreSQL 9.6.17
-Flyway 6.0.8
-Swagger 2.9.2
+* **Java 11 (Java Development Kit - JDK: 11.0.3)**
+* **Spring Boot 2.2.6**
+* **Spring Framework 2.2.6**
+* **JUnit 5**
+* **PostgreSQL 9.6.17**
+* **Flyway 6.0.8**
+* **Swagger 2.9.2**
+* **Heroku**
 
 ### Compile and Package
 
@@ -183,7 +184,7 @@ You need to have **PostgreSQL 9.6.17 or above** installed on your machine to run
 CREATE database financial;
 ```
 
-After creating the API database, you need to add your **Postgres** root `username` and `password` in the `application.properties` file. The lines that must be modified are as follows:
+After creating the API database, you need to add your **Postgres** root `username` and `password` in the `application.properties` file on `src/main/resource`. The lines that must be modified are as follows:
 
 ```
 spring.datasource.username=
