@@ -174,7 +174,7 @@ The API also was developed to run with an jar. In order to generate this jar, yo
 mvn package
 ```
 
-It will clean, compile and generate a jar at target directory, e.g. `financial-java-api-2.0.0.jar`
+It will clean, compile and generate a jar at target directory, e.g. `financial-java-api-2.0.0-SNAPSHOT.jar`
 
 ### Execution
 
@@ -212,7 +212,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```
-java -jar financial-java-api-2.0.0.jar --spring.profiles.active=prod
+java -jar financial-java-api-2.0.0-SNAPSHOT.jar --spring.profiles.active=prod
 ```
     
 or
