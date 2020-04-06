@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.service.v1.transaction.impl;
+package io.github.mariazevedo88.financialjavaapi.service.transaction.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
-import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 
 /**
  * Class that implements the transaction's service methods

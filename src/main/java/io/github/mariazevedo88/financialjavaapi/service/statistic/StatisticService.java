@@ -1,6 +1,6 @@
-package io.github.mariazevedo88.financialjavaapi.service.v1.statistic;
+package io.github.mariazevedo88.financialjavaapi.service.statistic;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 
 /**
  * Service Interface that provides methods for manipulating Statistics objects.

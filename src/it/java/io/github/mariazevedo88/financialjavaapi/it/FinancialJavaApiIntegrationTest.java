@@ -17,7 +17,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction.TransactionDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 
 /**

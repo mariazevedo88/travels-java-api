@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
  * Interface that implements the Transaction Repository, with JPA CRUD methods

@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.model.v1.statistic;
+package io.github.mariazevedo88.financialjavaapi.model.statistic;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

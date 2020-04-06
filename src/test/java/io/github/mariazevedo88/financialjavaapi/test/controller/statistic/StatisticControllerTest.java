@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
-import io.github.mariazevedo88.financialjavaapi.service.v1.statistic.StatisticService;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
 
 /**
  * Class that implements tests of the StatisticController funcionalities

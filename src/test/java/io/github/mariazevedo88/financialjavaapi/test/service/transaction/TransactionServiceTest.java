@@ -19,9 +19,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
-import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 
 /**
  * Class that implements tests of the TransactionService funcionalities.

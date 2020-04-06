@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.dto.model.v1.statistic;
+package io.github.mariazevedo88.financialjavaapi.dto.model.statistic;
 
 import java.math.BigDecimal;
 

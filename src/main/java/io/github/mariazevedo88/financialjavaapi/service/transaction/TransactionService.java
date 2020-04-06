@@ -1,9 +1,9 @@
-package io.github.mariazevedo88.financialjavaapi.service.v1.transaction;
+package io.github.mariazevedo88.financialjavaapi.service.transaction;
 
 import java.util.List;
 import java.util.Optional;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
  * Service Interface that provides methods for manipulating Transaction objects.

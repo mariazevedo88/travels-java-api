@@ -17,9 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRepository;
-import io.github.mariazevedo88.financialjavaapi.service.v1.statistic.StatisticService;
+import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
 
 /**
  * Class that implements tests of the StatisticService funcionalities.

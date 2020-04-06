@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.v1.statistic.StatisticDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.statistic.StatisticDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.response.Response;
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
-import io.github.mariazevedo88.financialjavaapi.service.v1.statistic.StatisticService;
-import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
+import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 import io.swagger.annotations.ApiOperation;
 
@@ -55,7 +55,6 @@ public class StatisticController {
 	 * 
 	 * 201 - Created: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.

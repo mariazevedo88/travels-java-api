@@ -30,10 +30,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction.TransactionDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
-import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 
 /**
  * Class that implements tests of the TransactionController funcionalities

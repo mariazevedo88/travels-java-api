@@ -30,13 +30,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction.TransactionDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.response.Response;
 import io.github.mariazevedo88.financialjavaapi.exception.NotParsableContentException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionInvalidUpdateException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
-import io.github.mariazevedo88.financialjavaapi.service.v1.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 import io.swagger.annotations.ApiOperation;
 
@@ -74,9 +74,9 @@ public class TransactionController {
 	 * 
 	 * 201 - Created: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
+	 * 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
@@ -129,25 +129,30 @@ public class TransactionController {
 	 * 
 	 * 200 - OK: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
+	 * 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws TransactionNotFoundException
 	 * @throws TransactionInvalidUpdateException
+	 * @throws NotParsableContentException 
 	 */
 	@PutMapping(path = "/{id}")
 	@ApiOperation(value = "Route to update a transaction")
 	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException {
+		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
+		}
+		
+		if(FinancialApiUtil.isTransactionDTOInFuture(dto)) {
+			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 
 		Optional<Transaction> transactionToFind = service.findById(dto.getId());
@@ -179,11 +184,8 @@ public class TransactionController {
 	 * 
 	 * HTTP Status:
 	 * 
-	 * 204 - OK: Everything worked as expected.
-	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
+	 * 200 - OK: Everything worked as expected.
 	 * 404 - Not Found: The requested resource doesn't exist.
-	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
@@ -235,7 +237,6 @@ public class TransactionController {
 	 * 
 	 * 200 - OK: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
@@ -284,7 +285,6 @@ public class TransactionController {
 	 * 
 	 * 200 - OK: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
@@ -326,7 +326,6 @@ public class TransactionController {
 	 * 
 	 * 204 - OK: Everything worked as expected.
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
-	 * 403 - Forbidden: Invalid credentials to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.

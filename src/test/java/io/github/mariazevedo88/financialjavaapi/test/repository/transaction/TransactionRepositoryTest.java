@@ -20,7 +20,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 
 /**

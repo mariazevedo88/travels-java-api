@@ -2,8 +2,8 @@ package io.github.mariazevedo88.financialjavaapi.util;
 
 import java.util.Date;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction.TransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.model.v1.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
+import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
  * Class that implements the FinancialAPI utility methods.

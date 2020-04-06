@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.dto.model.v1.transaction;
+package io.github.mariazevedo88.financialjavaapi.dto.model.transaction;
 
 import java.math.BigDecimal;
 import java.util.Date;

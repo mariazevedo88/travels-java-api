@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRepository;
 
 @SpringBootTest

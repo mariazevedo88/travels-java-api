@@ -1,11 +1,11 @@
-package io.github.mariazevedo88.financialjavaapi.service.v1.statistic.impl;
+package io.github.mariazevedo88.financialjavaapi.service.statistic.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.mariazevedo88.financialjavaapi.model.v1.statistic.Statistic;
+import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRepository;
-import io.github.mariazevedo88.financialjavaapi.service.v1.statistic.StatisticService;
+import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
 
 /**
  * Class that implements the statistic's service methods
