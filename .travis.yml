@@ -2,12 +2,11 @@ dist: trusty
 language: java
 sudo: false
 jdk:
-  - oraclejdk11
-
-git:
-  depth: 2 #clone repository to a maximum depth of 2 commits
-
-script: "mvn clean install -Dmaven.javadoc.skip=true -B -V"
-
-after_success:
-  - mvn clean integration-test
+- oraclejdk11
+before_install:
+- export TZ=Brazil/East
+deploy:
+  provider: heroku
+  app: financial-java-api
+  api_key:
+    secure: Ov7hv+6SFuJAgBM11+4Gwk9MMJYLF/Q6jDLXHoRemeAvGLNKUe8FZzYjYDQKDGiw58bFHAL4BJRVEN46rzrfwboPFv6vqXykh5cvPy4hpPQaiIodkyo2cR7s1eEGLfZawbaDF7lGD49mbwRNPliC5pYhrpUsRT7lGdwLLKgZGEZr6aGQDFPm7qJaES7OSLkc2fA+RdqxokhY53FQvus7Wy79btO90EmtZrJfGaLzF3a/LQOesdJUmBv+Pm8P7b8BjGqOwdF4h4CgrVZD5AebYlocR6BK5hRi2YqIWqJH3RLKfnxFwORa1h2UAhCnIpdZ5R4jZuPcPjmvUimkMMXmc6AGg2e2EiUbHC0aAQD53Ealilqp512ttTwVgZj+W6yZm7nUQi4qlw9xAyvDG1NF2rNhyuZxjZPL7Z3sSJDgDKlR5UfDCcI0Eh7BrlmyiXzCpbOV0oL/4jfR6Y3cCF/3PulbmrsiNoIF8K+6oMRwSWmFhbbm9692hiHBQbKmwQqRA51B2pEb1xOWzZNydkXtXsuUsF3jn7mAE+Au+/BUzsAL29fC1SiXX4X0WF/gVSXzsTkYs8fVUMiL7JeWEdAdjv4owLKhMavyUCRbPOED7AAo2C8NTTLvo/2SttdyllwWuHE1OMLibx8fr620J50pSGutlS++wHP/NWPamMqMpz8=
