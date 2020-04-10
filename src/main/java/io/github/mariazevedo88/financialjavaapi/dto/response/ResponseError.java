@@ -15,17 +15,15 @@ import lombok.experimental.Accessors;
  * @author Mariana Azevedo
  * @since 01/04/2020
  */
+@Getter
+@Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 public class ResponseError {
 	
-	@Getter
-	@Setter
 	@NotNull(message="Timestamp cannot be null")
 	private LocalDateTime timestamp;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Details cannot be null")
     private String details;
 

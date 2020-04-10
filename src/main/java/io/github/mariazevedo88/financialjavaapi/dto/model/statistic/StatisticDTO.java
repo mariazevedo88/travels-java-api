@@ -17,36 +17,26 @@ import lombok.Setter;
  * @author Mariana Azevedo
  * @since 01/04/2020
  */
+@Getter
+@Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class StatisticDTO extends RepresentationModel<StatisticDTO> {
 
-	@Getter
-	@Setter
 	private Long id;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Sum cannot be null")
 	private BigDecimal sum;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Avg cannot be null")
 	private BigDecimal avg;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Max cannot be null")
 	private BigDecimal max;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Min cannot be null")
 	private BigDecimal min;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Count cannot be null")
 	private long count;
 }

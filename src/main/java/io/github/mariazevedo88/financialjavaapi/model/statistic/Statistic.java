@@ -22,6 +22,8 @@ import lombok.Setter;
  * @since 01/04/2020
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "statistics")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,33 +32,21 @@ public class Statistic implements Serializable {
 	private static final long serialVersionUID = -7804600023031651840L;
 
 	@Id
-	@Getter
-	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Getter
-	@Setter
 	@Column(name = "transactions_sum")
 	private BigDecimal sum;
 	
-	@Getter
-	@Setter
 	@Column(name = "transactions_avg")
 	private BigDecimal avg;
 	
-	@Getter
-	@Setter
 	@Column(name = "transactions_max")
 	private BigDecimal max;
 	
-	@Getter
-	@Setter
 	@Column(name = "transactions_min")
 	private BigDecimal min;
 	
-	@Getter
-	@Setter
 	@Column(name = "transactions_count")
 	private long count;
 	
