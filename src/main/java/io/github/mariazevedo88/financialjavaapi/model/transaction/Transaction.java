@@ -31,42 +31,32 @@ import lombok.Setter;
  * @since 01/04/2020
  */
 @Entity
-@Table(name = "transaction")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "transaction")
 public class Transaction implements Serializable {
 	
 	private static final long serialVersionUID = -3656431259068389491L;
 	
 	@Id
-	@Getter
-	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Getter
-	@Setter
 	@NotNull
 	private String nsu;
 	
-	@Getter
-	@Setter
 	private String authorizationNumber;
 	
-	@Getter
-	@Setter
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date transactionDate;
 	
-	@Getter
-	@Setter
 	@NotNull
 	private BigDecimal amount;
 	
-	@Getter
-	@Setter
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TransactionTypeEnum type;

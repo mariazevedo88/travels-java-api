@@ -16,16 +16,14 @@ import lombok.Setter;
  *
  * @param <T>
  */
+@Getter
+@Setter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
 
-	@Getter
-	@Setter
 	private T data;
 	
-	@Getter
-	@Setter
 	private Object errors;
 	
 	/**

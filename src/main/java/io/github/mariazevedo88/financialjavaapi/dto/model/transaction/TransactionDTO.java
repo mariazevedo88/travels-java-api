@@ -23,37 +23,27 @@ import lombok.Setter;
  * @author Mariana Azevedo
  * @since 01/04/2020
  */
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class TransactionDTO extends RepresentationModel<TransactionDTO> {
 	
-	@Getter
-	@Setter
 	private Long id;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Nsu cannot be null")
 	@Length(min=6, message="Nsu must contain at least 6 characters")
 	private String nsu;
 
-	@Getter
-	@Setter
 	private String authorizationNumber;
 	
-	@Getter
-	@Setter
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	@NotNull(message="TransactionDate cannot be null")
 	private Date transactionDate;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Amount cannot be null")
 	private BigDecimal amount;
 	
-	@Getter
-	@Setter
 	@NotNull(message="Type cannot be null")
 	private TransactionTypeEnum type;
 

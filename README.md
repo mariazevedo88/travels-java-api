@@ -26,7 +26,7 @@ This endpoint is called to create a new transaction.
 
 **Body:**
 
-<code>
+```json
 {
   "nsu": "123456",
   "authorizationNumber": "010203",
@@ -34,7 +34,7 @@ This endpoint is called to create a new transaction.
   "transactionDate": "2020-04-05T09:59:51.312Z",
   "type": "CARD",
 }
-</code>
+```
 
 **Where:**
 
@@ -68,7 +68,7 @@ This endpoint is called to update a transaction.
 
 **Body:**
 
-<code>
+```json
 {
    "id": 1,
    "nsu": "123456",
@@ -77,12 +77,12 @@ This endpoint is called to update a transaction.
    "transactionDate": "2020-04-05T09:59:51.312Z",
    "type": "CARD"
 }
-</code>
+```
 
 Must be submitted the object that will be modified. Must return a transaction specified by ID and all fields recorded above, including links and
 the one that was updated.
 
-<code>
+```json
 {
    "data": {   
    		"id": 1,
@@ -99,7 +99,7 @@ the one that was updated.
    		]
 	}
 }
-</code>
+```
 
 `GET/financial/v1/transactions`
 
@@ -119,7 +119,7 @@ This endpoint returns the statistics based on the transactions created.
 
 **Returns:**
 
-<code>
+```json
 {
 	"data": { 
   		"sum": "150.06",
@@ -135,7 +135,7 @@ This endpoint returns the statistics based on the transactions created.
    		]
    	}
 }
-</code>
+```
  
 **Where:**
 
@@ -151,7 +151,7 @@ This endpoint returns the statistics based on the transactions created.
 
 `links` - self-linking URL for the statistic. It is automatically generated.
 
-All BigDecimal values always contain exactly two decimal places, eg: 15.385 is returned as 15.39.
+All `BigDecimal` values always contain exactly two decimal places, eg: `15.385` is returned as `15.39`.
 
 ### Technologies used
 
@@ -160,33 +160,36 @@ This project was developed with:
 * **Java 11 (Java Development Kit - JDK: 11.0.3)**
 * **Spring Boot 2.2.6**
 * **Spring Framework 2.2.6**
+* **Maven**
 * **JUnit 5**
-* **PostgreSQL 9.6.17**
+* **Surfire**
+* **PostgreSQL 12**
 * **Flyway 6.0.8**
 * **Swagger 2.9.2**
+* **Model Mapper 2.3.6**
 * **Heroku**
 
 ### Compile and Package
 
-The API also was developed to run with an jar. In order to generate this jar, you should run:
+The API also was developed to run with an `jar`. In order to generate this `jar`, you should run:
 
-```
+```bash
 mvn package
 ```
 
-It will clean, compile and generate a jar at target directory, e.g. `financial-java-api-2.0.0-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-2.0.1-SNAPSHOT.jar`
 
 ### Execution
 
 You need to have **PostgreSQL 9.6.17 or above** installed on your machine to run the API on `dev` profile. After installed, on the `pgAdmin` create a database named `financial`. If you don't have `pgAdmin` installed you can run on the `psql` console the follow command:
 
-```
+```sql
 CREATE database financial;
 ```
 
 After creating the API database, you need to add your **Postgres** root `username` and `password` in the `application.properties` file on `src/main/resource`. The lines that must be modified are as follows:
 
-```
+```properties
 spring.datasource.username=
 spring.datasource.password=
 ```
@@ -197,13 +200,13 @@ When the application is running **Flyway** will create the necessary tables for 
 
 * For unit test phase, you can run:
 
-```
+```bash
 mvn test
 ```
 
 * To run all tests (including Integration Tests):
 
-```
+```bash
 mvn integration-test
 ```
 
@@ -211,13 +214,13 @@ mvn integration-test
 
 In order to run the API, run the jar simply as following:
 
-```
-java -jar financial-java-api-2.0.0-SNAPSHOT.jar --spring.profiles.active=prod
+```bash
+java -jar financial-java-api-2.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 ```
     
 or
 
-```
+```bash
 mvn spring-boot:run -Dspring.profiles.active=prod
 ```
 
