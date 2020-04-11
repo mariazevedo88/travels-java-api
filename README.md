@@ -13,10 +13,10 @@ This API provides HTTP endpoints and tools for the following:
 * Create a Transaction: `POST/financial/v1/transactions`
 * Update a Transaction: `PUT/financial/v1/transactions`
 * Delete a Transaction (by id): `DELETE/financial/v1/transactions/1`
-* Get Statistics about the transactions of the API: `GET/financial/v1/statistics`
 * Get report of all transactions created: `GET/financial/v1/transactions`
 * Find a unique transaction by id: `GET/financial/v1/transactions/1`
-* Find transactions by NSU (Unique sequential number): `GET/financial/v1/transactions/byNsu/123456`
+* Find transactions by NSU (Unique sequential number): `GET/financial/v1/transactions/byNsu/{nsuNumber}`
+* Get Statistics about the transactions of the API: `GET/financial/v1/statistics`
 
 ### Details
 
