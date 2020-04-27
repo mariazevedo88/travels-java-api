@@ -16,7 +16,7 @@ public class FinancialApiUtil {
 	/**
 	 * Field to represent API version on the requests/responses header
 	 */
-	public static final String FINANCIAL_API_VERSION_HEADER = "goldgemapi-version";
+	public static final String FINANCIAL_API_VERSION_HEADER = "financialapi-version";
 	
 	private FinancialApiUtil() {}
 	

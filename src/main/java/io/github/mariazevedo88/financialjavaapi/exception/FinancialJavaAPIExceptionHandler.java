@@ -6,7 +6,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ServerErrorException;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -33,12 +32,10 @@ public class FinancialJavaAPIExceptionHandler<T> {
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { TransactionInvalidUpdateException.class })
-    protected ResponseEntity<Response<T>> handleTransactionInvalidUpdateException(TransactionInvalidUpdateException exception, 
-    		WebRequest request) {
+    protected ResponseEntity<Response<T>> handleTransactionInvalidUpdateException(TransactionInvalidUpdateException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -54,12 +51,10 @@ public class FinancialJavaAPIExceptionHandler<T> {
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { TransactionNotFoundException.class })
-    protected ResponseEntity<Response<T>> handleTransactionNotFoundException(TransactionNotFoundException exception, 
-    		WebRequest request) {
+    protected ResponseEntity<Response<T>> handleTransactionNotFoundException(TransactionNotFoundException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -68,18 +63,17 @@ public class FinancialJavaAPIExceptionHandler<T> {
     }
 	
 	/**
-	 * Method that handles with a HttpClientErrorException and returns an Conflict
+	 * Method that handles with a HttpClientErrorException and returns a Conflict
 	 * error with status code = 409.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { HttpClientErrorException.Conflict.class })
-    protected ResponseEntity<Response<T>> handleConflictException(HttpClientErrorException exception, WebRequest request) {
+    protected ResponseEntity<Response<T>> handleConflictException(HttpClientErrorException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -95,11 +89,10 @@ public class FinancialJavaAPIExceptionHandler<T> {
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { HttpMessageNotReadableException.class, JsonParseException.class, NotParsableContentException.class })
-    protected ResponseEntity<Response<T>> handleMessageNotReadableException(Exception exception, WebRequest request) {
+    protected ResponseEntity<Response<T>> handleMessageNotReadableException(Exception exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -108,19 +101,17 @@ public class FinancialJavaAPIExceptionHandler<T> {
     }
 	
 	/**
-	 * Method that handles with a HttpClientErrorException and returns an TooManyRequests error 
+	 * Method that handles with a HttpClientErrorException and returns a TooManyRequests error 
 	 * with status code = 429.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { HttpClientErrorException.TooManyRequests.class })
-    protected ResponseEntity<Response<T>> handleTooManyRequestException(HttpClientErrorException exception, 
-    		WebRequest request) {
+    protected ResponseEntity<Response<T>> handleTooManyRequestException(HttpClientErrorException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -136,12 +127,10 @@ public class FinancialJavaAPIExceptionHandler<T> {
 	 * @since 01/04/2020
 	 * 
 	 * @param exception
-	 * @param request
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { ServerErrorException.class })
-    protected ResponseEntity<Response<T>> handleAPIException(ServerErrorException exception, 
-    		WebRequest request) {
+    protected ResponseEntity<Response<T>> handleAPIException(ServerErrorException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
