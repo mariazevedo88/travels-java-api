@@ -29,7 +29,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<swagger.version>2.9.2</swagger.version>
-		<modelmapper.version>2.3.6</modelmapper.version>
+		<modelmapper.version>2.3.7</modelmapper.version>
 	</properties>
 
 	<dependencies>
