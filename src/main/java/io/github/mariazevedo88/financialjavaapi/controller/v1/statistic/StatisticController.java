@@ -41,7 +41,7 @@ public class StatisticController {
 	
 	@Autowired
 	private TransactionService transactionService;
-
+	
 	/**
 	 * Method that creates statistics based on the transactions.
 	 * 
