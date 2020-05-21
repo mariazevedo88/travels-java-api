@@ -13,6 +13,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  */
 @EnableZuulProxy
 @SpringBootApplication
+@SpringCloudApplication
 public class FinancialJavaApiApplication {
 	
 	public static void main(String[] args) {
