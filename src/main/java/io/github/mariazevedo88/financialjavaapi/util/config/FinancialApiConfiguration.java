@@ -25,7 +25,7 @@ import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.DefaultRateL
  * @since 02/04/2020
  */
 @Configuration
-public class FinancialApiConfig {
+public class FinancialApiConfiguration {
 	
 	/**
 	 * Method that allow discovering links by relation type from some source.
