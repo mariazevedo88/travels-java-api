@@ -85,7 +85,8 @@ public class TransactionController {
 	@PostMapping
 	@ApiOperation(value = "Route to create a transaction")
 	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws NotParsableContentException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
+		BindingResult result) throws NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
@@ -106,6 +107,7 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 	}
@@ -142,7 +144,8 @@ public class TransactionController {
 	@PutMapping(path = "/{id}")
 	@ApiOperation(value = "Route to update a transaction")
 	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @Valid @RequestBody TransactionDTO dto, BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
+		BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
@@ -170,6 +173,7 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -194,7 +198,7 @@ public class TransactionController {
 	@GetMapping
 	@ApiOperation(value = "Route to find all transactions in the API")
 	public ResponseEntity<Response<List<TransactionDTO>>> findAll(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion) throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey) throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
 		
@@ -209,7 +213,7 @@ public class TransactionController {
 		
 		itemsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, dto);
+				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
 				logger.error("There are no transactions registered in the database.");
 			}
@@ -219,6 +223,7 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -247,7 +252,8 @@ public class TransactionController {
 	@GetMapping(value = "/byNsu/{nsu}")
 	@ApiOperation(value = "Route to find transactions by the NSU in the API")
 	public ResponseEntity<Response<List<TransactionDTO>>> findByNsu(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @PathVariable("nsu") String transactionNSU) throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("nsu") String transactionNSU) 
+		throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
 		List<Transaction> transactions = service.findByNsu(transactionNSU);
@@ -261,7 +267,7 @@ public class TransactionController {
 		
 		transactionsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, dto);
+				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
 				logger.error("There are no transactions registered with the nsu=" + transactionNSU);
 			}
@@ -271,6 +277,8 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
 	
@@ -295,7 +303,8 @@ public class TransactionController {
 	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Route to find a transaction by your id in the API")
 	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @PathVariable("id") Long transactionId) throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
+		throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
 		Optional<Transaction> transaction = service.findById(transactionId);
@@ -310,6 +319,8 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
 	
@@ -336,7 +347,8 @@ public class TransactionController {
 	@DeleteMapping(value = "/{id}")
 	@ApiOperation(value = "Route to delete a transaction in the API")
 	public ResponseEntity<Response<String>> delete(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @PathVariable("id") Long transactionId) throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
+		throws TransactionNotFoundException {
 		
 		Response<String> response = new Response<>();
 		Optional<Transaction> transaction = service.findById(transactionId);
@@ -350,6 +362,8 @@ public class TransactionController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		
 		return new ResponseEntity<>(response, headers, HttpStatus.NO_CONTENT);
 	}
 	
@@ -407,8 +421,8 @@ public class TransactionController {
 	 * @param transactionDTO
 	 * @throws TransactionNotFoundException
 	 */
-	private void createSelfLinkInCollections(String apiVersion, final TransactionDTO transactionDTO) throws TransactionNotFoundException {
-		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, transactionDTO.getId())).withSelfRel();
+	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO) throws TransactionNotFoundException {
+		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, transactionDTO.getId())).withSelfRel();
 		transactionDTO.add(selfLink);
 	}
 	

@@ -2,8 +2,7 @@ package io.github.mariazevedo88.financialjavaapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * Class that starts the application
@@ -12,13 +11,15 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  * @since 03/04/2020 
  *
  */
-@EnableZuulProxy
+@EnableCaching
 @SpringBootApplication
-@SpringCloudApplication
 public class FinancialJavaApiApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(FinancialJavaApiApplication.class, args);
+//		new SpringApplicationBuilder(FinancialJavaApiApplication.class)
+//        .properties("spring.config.location=ratelimiting/application-bucket4j-starter.yml")
+//        .run(args);
 	}
 
 }
