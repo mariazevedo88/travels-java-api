@@ -168,6 +168,7 @@ This project was developed with:
 * **Swagger 2.9.2**
 * **Model Mapper 2.3.6**
 * **Heroku**
+* **Bucket4j**
 
 ### Compile and Package
 
