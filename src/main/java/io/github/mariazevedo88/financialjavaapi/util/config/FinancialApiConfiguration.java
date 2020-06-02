@@ -17,7 +17,7 @@ import org.springframework.plugin.core.SimplePluginRegistry;
  * @since 02/04/2020
  */
 @Configuration
-public class FinancialApiConfig {
+public class FinancialApiConfiguration {
 	
 	/**
 	 * Method that allow discovering links by relation type from some source.
@@ -33,5 +33,4 @@ public class FinancialApiConfig {
         plugins.add(new CollectionJsonLinkDiscoverer());
         return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
     }
-
 }

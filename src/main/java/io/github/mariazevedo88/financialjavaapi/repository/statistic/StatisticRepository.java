@@ -1,6 +1,7 @@
 package io.github.mariazevedo88.financialjavaapi.repository.statistic;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 
@@ -10,6 +11,7 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
  * @author Mariana Azevedo
  * @since 28/03/2020
  */
+@Repository
 public interface StatisticRepository extends JpaRepository<Statistic, Long>{
 
 }

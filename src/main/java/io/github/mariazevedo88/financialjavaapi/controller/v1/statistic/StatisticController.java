@@ -41,7 +41,7 @@ public class StatisticController {
 	
 	@Autowired
 	private TransactionService transactionService;
-
+	
 	/**
 	 * Method that creates statistics based on the transactions.
 	 * 
@@ -63,7 +63,8 @@ public class StatisticController {
 	@GetMapping
 	@ApiOperation(value = "Route to create statistics in the API")
 	public ResponseEntity<Response<StatisticDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, 
-		defaultValue="${api.version}") String apiVersion) {
+		defaultValue="${api.version}") String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, 
+		defaultValue="${api.key}") String apiKey) {
 		
 		Response<StatisticDTO> response = new Response<>();
 
@@ -76,6 +77,7 @@ public class StatisticController {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
+		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 		

@@ -17,6 +17,7 @@ public class FinancialApiUtil {
 	 * Field to represent API version on the requests/responses header
 	 */
 	public static final String FINANCIAL_API_VERSION_HEADER = "financialapi-version";
+	public static final String API_KEY_HEADER = "X-api-key";
 	
 	private FinancialApiUtil() {}
 	

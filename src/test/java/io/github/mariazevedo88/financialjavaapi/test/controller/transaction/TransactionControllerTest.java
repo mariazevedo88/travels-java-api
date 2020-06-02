@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -55,12 +57,20 @@ public class TransactionControllerTest {
 	private static final TransactionTypeEnum TYPE = TransactionTypeEnum.CARD;
 	private static final BigDecimal VALUE = BigDecimal.valueOf(288);
 	private static final String URL = "/financial/v1/transactions";
+	
+	private HttpHeaders headers;
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
 	private TransactionService service;
+	
+	@BeforeAll
+	private void setUp() {
+		headers = new HttpHeaders();
+        headers.set("X-api-key", "FX001-ZBSY6YSLP");
+	}
 	
 	/**
 	 * Method that tests to save an Transaction in the API
@@ -74,11 +84,12 @@ public class TransactionControllerTest {
 	public void testSave() throws Exception {
 		
 		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
-
+		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
 			.content(getJsonPayload(ID, NSU, AUTH, TRANSACTION_DATE, VALUE, TYPE))
 			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
+			.accept(MediaType.APPLICATION_JSON)
+			.headers(headers))
 		.andDo(MockMvcResultHandlers.print())
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$.data.id").value(ID))
@@ -105,7 +116,8 @@ public class TransactionControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
 				.content(getJsonPayload(ID, null, AUTH, TRANSACTION_DATE, VALUE, TYPE))
 				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
+				.accept(MediaType.APPLICATION_JSON)
+				.headers(headers))
 		.andExpect(status().isBadRequest())
 		.andExpect(jsonPath("$.errors.details").value("Nsu cannot be null"));
 	}
