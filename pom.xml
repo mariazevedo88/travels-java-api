@@ -22,7 +22,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<swagger.version>2.9.2</swagger.version>
-		<modelmapper.version>2.3.6</modelmapper.version>
+		<modelmapper.version>2.3.7</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
 	</properties>
 
