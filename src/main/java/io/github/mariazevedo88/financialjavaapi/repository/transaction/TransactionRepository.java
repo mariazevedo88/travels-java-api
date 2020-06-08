@@ -18,5 +18,4 @@ import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 	List<Transaction> findByNsu(String nsu);
-	
 }
