@@ -18,7 +18,7 @@ public enum APIUsagePlansEnum {
     }
     
     public Bandwidth getLimit() {
-        return Bandwidth.classic(bucketCapacity, Refill.intervally(bucketCapacity, Duration.ofHours(1)));
+        return Bandwidth.classic(bucketCapacity, Refill.intervally(bucketCapacity, Duration.ofMinutes(20)));
     }
     
     public int bucketCapacity() {

@@ -17,9 +17,6 @@ public class FinancialJavaApiApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(FinancialJavaApiApplication.class, args);
-//		new SpringApplicationBuilder(FinancialJavaApiApplication.class)
-//        .properties("spring.config.location=ratelimiting/application-bucket4j-starter.yml")
-//        .run(args);
 	}
 
 }

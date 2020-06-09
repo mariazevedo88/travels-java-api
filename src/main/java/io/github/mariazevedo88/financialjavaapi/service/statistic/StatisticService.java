@@ -1,5 +1,8 @@
 package io.github.mariazevedo88.financialjavaapi.service.statistic;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 
 /**
@@ -11,5 +14,8 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 public interface StatisticService {
 	
 	Statistic save(Statistic statistic);
+	
+	Optional<Statistic> verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, 
+			BigDecimal min, long count);
 	
 }

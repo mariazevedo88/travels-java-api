@@ -34,7 +34,6 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         }
 
         Bucket tokenBucket = pricingPlanService.resolveBucket(apiKey);
-
         ConsumptionProbe probe = tokenBucket.tryConsumeAndReturnRemaining(1);
 
         if (probe.isConsumed()) {
