@@ -15,7 +15,7 @@
  
         <listeners>
             <listener>
-                <class>io.github.mariazevedo88.financialjavaapi.util.config.CacheEventLoggerConfiguration</class>
+                <class>io.github.mariazevedo88.financialjavaapi.util.CacheEventLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
