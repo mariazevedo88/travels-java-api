@@ -62,8 +62,8 @@ public class StatisticController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "Route to create statistics in the API")
-	public ResponseEntity<Response<StatisticDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, 
-		defaultValue="${api.version}") String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, 
+	public ResponseEntity<Response<StatisticDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, 
+		defaultValue="${api.version}") String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, 
 		defaultValue="${api.key}") String apiKey) {
 		
 		Response<StatisticDTO> response = new Response<>();
@@ -76,8 +76,8 @@ public class StatisticController {
 		response.setData(dto);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 		

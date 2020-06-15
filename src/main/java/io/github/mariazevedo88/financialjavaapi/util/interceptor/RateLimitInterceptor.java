@@ -12,24 +12,30 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.mariazevedo88.financialjavaapi.service.ratelimiting.APIUsagePlansService;
+import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 
+/**
+ * Class that implements a interceptor of rate limiting in the API
+ * 
+ * @author Mariana Azevedo
+ * @since 11/06/2020
+ */
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
 	
-	private static final String HEADER_API_KEY = "X-api-key";
-    private static final String HEADER_LIMIT_REMAINING = "X-Rate-Limit-Remaining";
-    private static final String HEADER_RETRY_AFTER = "X-Rate-Limit-Retry-After-Seconds";
-	 
     @Autowired
     private APIUsagePlansService pricingPlanService;
  
+    /**
+     * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
-    	String apiKey = request.getHeader(HEADER_API_KEY);
-
+    	String apiKey = request.getHeader(FinancialApiUtil.HEADER_API_KEY);
+    	
         if (apiKey == null || apiKey.isEmpty()) {
-            response.sendError(HttpStatus.BAD_REQUEST.value(), "Missing Header: " + HEADER_API_KEY);
+            response.sendError(HttpStatus.BAD_REQUEST.value(), "Missing Header: " + FinancialApiUtil.HEADER_API_KEY);
             return false;
         }
 
@@ -38,7 +44,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
         if (probe.isConsumed()) {
 
-            response.addHeader(HEADER_LIMIT_REMAINING, String.valueOf(probe.getRemainingTokens()));
+            response.addHeader(FinancialApiUtil.HEADER_LIMIT_REMAINING, String.valueOf(probe.getRemainingTokens()));
             return true;
 
         } else {
@@ -46,10 +52,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             long waitForRefill = probe.getNanosToWaitForRefill() / 1_000_000_000;
 
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.addHeader(HEADER_RETRY_AFTER, String.valueOf(waitForRefill));
+            response.addHeader(FinancialApiUtil.HEADER_RETRY_AFTER, String.valueOf(waitForRefill));
             response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "You have exhausted your API Request Quota"); // 429
 
             return false;
         }
     }
+    
 }

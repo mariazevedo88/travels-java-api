@@ -179,7 +179,7 @@ public class FinancialJavaApiIntegrationTest {
     
     @Test
     @Order(8)
-	public void testRequestNotExceedingRateLimitCapacity() throws Exception {
+	public void testRequestExceedingRateLimitCapacity() throws Exception {
 	    
 	    final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -187,7 +187,7 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        for (int i = 1; i <= APIUsagePlansEnum.FREE.bucketCapacity(); i++) {
+        for (int i = 1; i <= APIUsagePlansEnum.FREE.getBucketCapacity(); i++) {
         	this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/transactions/1", 
         			HttpMethod.GET, entity, String.class);
         }

@@ -8,7 +8,7 @@ A financial API for managing transactions. The API main URL `/financial/v1`.
 
 ## Features
 
-This API provides HTTP endpoints and tools for the following:
+This API provides HTTP endpoint's and tools for the following:
 
 * Create a Transaction: `POST/financial/v1/transactions`
 * Update a Transaction: `PUT/financial/v1/transactions`
@@ -157,18 +157,18 @@ All `BigDecimal` values always contain exactly two decimal places, eg: `15.385` 
 
 This project was developed with:
 
-* **Java 11 (Java Development Kit - JDK: 11.0.3)**
-* **Spring Boot 2.2.6**
-* **Spring Framework 2.2.6**
+* **Java 11 (Java Development Kit - JDK: 11.0.7)**
+* **Spring Boot 2.3.0**
 * **Maven**
 * **JUnit 5**
 * **Surfire**
 * **PostgreSQL 12**
-* **Flyway 6.0.8**
+* **Flyway 6.4.1**
 * **Swagger 2.9.2**
-* **Model Mapper 2.3.6**
+* **Model Mapper 2.3.7**
 * **Heroku**
-* **Bucket4j**
+* **EhCache**
+* **Bucket4j 4.10.0**
 
 ### Compile and Package
 

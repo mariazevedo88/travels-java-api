@@ -30,12 +30,13 @@ public class StatisticServiceImpl implements StatisticService {
 		return statisticRepository.save(statistic);
 	}
 
+	/**
+	 * @see StatisticService#verifyIfStatisticsIsSame(BigDecimal, BigDecimal, BigDecimal, BigDecimal, long)
+	 */
 	@Override
 	public Optional<Statistic> verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, BigDecimal min,
 			long count) {
 		return statisticRepository.verifyIfStatisticsIsSame(sum, avg, max, min, count);
 	}
-
-	
 	
 }

@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
 	 * @see TransactionService#findByNsu(String)
 	 */
 	@Override
-	@Cacheable(value="transactionCache", key="#nsu")
+	@Cacheable(value="transactionNsuCache", key="#nsu", unless="#result==null")
 	public List<Transaction> findByNsu(String nsu) {
 		return repository.findByNsu(nsu);
 	}
@@ -52,6 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
 	 * @see TransactionService#findById(Long)
 	 */
 	@Override
+	@Cacheable(value="transactionIdCache", key="#id", unless="#result==null")
 	public Optional<Transaction> findById(Long id) {
 		return repository.findById(id);
 	}

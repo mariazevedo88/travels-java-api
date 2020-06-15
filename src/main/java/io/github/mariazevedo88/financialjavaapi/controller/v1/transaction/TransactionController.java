@@ -81,11 +81,12 @@ public class TransactionController {
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws NotParsableContentException
+	 * @throws BadRequestException 
 	 */
 	@PostMapping
 	@ApiOperation(value = "Route to create a transaction")
-	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
+	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
 		BindingResult result) throws NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
@@ -106,8 +107,8 @@ public class TransactionController {
 		response.setData(dtoSaved);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 	}
@@ -143,8 +144,8 @@ public class TransactionController {
 	 */
 	@PutMapping(path = "/{id}")
 	@ApiOperation(value = "Route to update a transaction")
-	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
+	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
 		BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
@@ -172,8 +173,8 @@ public class TransactionController {
 		response.setData(itemDTO);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -197,8 +198,8 @@ public class TransactionController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "Route to find all transactions in the API")
-	public ResponseEntity<Response<List<TransactionDTO>>> findAll(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey) throws TransactionNotFoundException {
+	public ResponseEntity<Response<List<TransactionDTO>>> findAll(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey) throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
 		
@@ -222,8 +223,8 @@ public class TransactionController {
 		response.setData(itemsDTO);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -251,8 +252,8 @@ public class TransactionController {
 	 */
 	@GetMapping(value = "/byNsu/{nsu}")
 	@ApiOperation(value = "Route to find transactions by the NSU in the API")
-	public ResponseEntity<Response<List<TransactionDTO>>> findByNsu(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("nsu") String transactionNSU) 
+	public ResponseEntity<Response<List<TransactionDTO>>> findByNsu(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("nsu") String transactionNSU) 
 		throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
@@ -276,8 +277,8 @@ public class TransactionController {
 		response.setData(transactionsDTO);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -302,8 +303,8 @@ public class TransactionController {
 	 */
 	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Route to find a transaction by your id in the API")
-	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
+	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
 		throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
@@ -318,8 +319,8 @@ public class TransactionController {
 		response.setData(dto);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.OK);
 	}
@@ -346,8 +347,8 @@ public class TransactionController {
 	 */
 	@DeleteMapping(value = "/{id}")
 	@ApiOperation(value = "Route to delete a transaction in the API")
-	public ResponseEntity<Response<String>> delete(@RequestHeader(value=FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.API_KEY_HEADER, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
+	public ResponseEntity<Response<String>> delete(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
 		throws TransactionNotFoundException {
 		
 		Response<String> response = new Response<>();
@@ -361,8 +362,8 @@ public class TransactionController {
 		response.setData("Transaction id=" + transactionId + " successfully deleted");
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add(FinancialApiUtil.FINANCIAL_API_VERSION_HEADER, apiVersion);
-		headers.add(FinancialApiUtil.API_KEY_HEADER, apiKey);
+		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
+		headers.add(FinancialApiUtil.HEADER_API_KEY, apiKey);
 		
 		return new ResponseEntity<>(response, headers, HttpStatus.NO_CONTENT);
 	}

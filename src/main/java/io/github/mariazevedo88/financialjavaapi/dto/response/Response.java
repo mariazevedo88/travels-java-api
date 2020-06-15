@@ -23,7 +23,6 @@ import lombok.Setter;
 public class Response<T> {
 
 	private T data;
-	
 	private Object errors;
 	
 	/**
@@ -35,7 +34,8 @@ public class Response<T> {
 	 * @param msgError
 	 */
     public void addErrorMsgToResponse(String msgError) {
-        ResponseError error = new ResponseError().setDetails(msgError)
+        ResponseError error = new ResponseError()
+        		.setDetails(msgError)
                 .setTimestamp(LocalDateTime.now());
         setErrors(error);
     }

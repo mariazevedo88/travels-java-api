@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class that implements the Transaction structure.
@@ -33,6 +34,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "transaction")

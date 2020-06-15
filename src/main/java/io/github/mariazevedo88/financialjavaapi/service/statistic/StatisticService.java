@@ -13,8 +13,30 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
  */
 public interface StatisticService {
 	
+	/**
+	 * Method that saves a statistic
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 08/06/2020
+	 * 
+	 * @param statistic
+	 * @return <code>Statistic</code> object
+	 */
 	Statistic save(Statistic statistic);
 	
+	/**
+	 * Method that verifies if the statistics already exists in the database
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 11/06/2020
+	 * 
+	 * @param sum
+	 * @param avg
+	 * @param max
+	 * @param min
+	 * @param count
+	 * @return <code>Optional<Statistic></code> object
+	 */
 	Optional<Statistic> verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, 
 			BigDecimal min, long count);
 	

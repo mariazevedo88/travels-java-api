@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration {
 	
 	/**
-	 * Method that configurates the endpoints mapped in the documentation.
+	 * Method that configure all the endpoint's mapped in the documentation.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
@@ -40,7 +40,7 @@ public class SwaggerConfiguration {
 	}
 
 	/**
-	 * Method that configurates the informations about the API. 
+	 * Method that configure the informations about the API. 
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020

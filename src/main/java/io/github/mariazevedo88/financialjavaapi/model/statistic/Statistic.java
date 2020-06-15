@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class that implements the Statistic structure.
@@ -24,9 +25,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "statistics")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "statistics")
 public class Statistic implements Serializable {
 	
 	private static final long serialVersionUID = -7804600023031651840L;
