@@ -165,7 +165,7 @@ This project was developed with:
 * **PostgreSQL 12**
 * **Flyway 6.4.1**
 * **Swagger 2.9.2**
-* **Model Mapper 2.3.7**
+* **Model Mapper 2.3.8**
 * **Heroku**
 * **EhCache**
 * **Bucket4j 4.10.0**
@@ -178,7 +178,7 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.0.0-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.0.1-SNAPSHOT.jar`
 
 ### Execution
 
@@ -216,7 +216,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-3.0.0-SNAPSHOT.jar --spring.profiles.active=prod
+java -jar financial-java-api-3.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 ```
     
 or
