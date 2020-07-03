@@ -36,11 +36,17 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/financial/v1/statistics")
 public class StatisticController {
 	
-	@Autowired
-	private StatisticService service;
+	private StatisticService statisticService;
+	
+	private TransactionService transactionService;
 	
 	@Autowired
-	private TransactionService transactionService;
+	public StatisticController(StatisticService statisticService, 
+			TransactionService transactionService) {
+		
+		this.statisticService = statisticService;
+		this.transactionService = transactionService;
+	}
 	
 	/**
 	 * Method that creates statistics based on the transactions.
@@ -69,7 +75,7 @@ public class StatisticController {
 		Response<StatisticDTO> response = new Response<>();
 
 		Statistic statistics = createStatistics(transactionService.findAll());
-		statistics = service.save(statistics);
+		statistics = statisticService.save(statistics);
 
 		StatisticDTO dto = convertEntityToDTO(statistics);
 		createSelfLink(statistics, dto);

@@ -52,8 +52,12 @@ public class TransactionController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 	
+	private TransactionService transactionService;
+	
 	@Autowired
-	private TransactionService service;
+	public TransactionController(TransactionService transactionService) {
+		this.transactionService = transactionService;
+	}
 	
 	/**
 	 * Method that creates a transaction in the database.
@@ -100,7 +104,7 @@ public class TransactionController {
 			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 		
-		Transaction transaction = service.save(convertDTOToEntity(dto));
+		Transaction transaction = transactionService.save(convertDTOToEntity(dto));
 		TransactionDTO dtoSaved = convertEntityToDTO(transaction);
 		createSelfLink(transaction, dtoSaved);
 		
@@ -159,14 +163,14 @@ public class TransactionController {
 			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 
-		Optional<Transaction> transactionToFind = service.findById(dto.getId());
+		Optional<Transaction> transactionToFind = transactionService.findById(dto.getId());
 		if (!transactionToFind.isPresent()) {
 			throw new TransactionNotFoundException("Transaction id=" + dto.getId() + " not found");
 		} else if (transactionToFind.get().getId().compareTo(dto.getId()) != 0) {
 			throw new TransactionInvalidUpdateException("You don't have permission to change the transaction id=" + dto.getId());
 		}
 
-		Transaction transaction = service.save(convertDTOToEntity(dto));
+		Transaction transaction = transactionService.save(convertDTOToEntity(dto));
 		TransactionDTO itemDTO = convertEntityToDTO(transaction);
 		
 		createSelfLink(transaction, itemDTO);
@@ -203,7 +207,7 @@ public class TransactionController {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
 		
-		List<Transaction> transactions = service.findAll();
+		List<Transaction> transactions = transactionService.findAll();
 		
 		if (transactions.isEmpty()) {
 			throw new TransactionNotFoundException("There are no transactions registered in the database.");
@@ -257,7 +261,7 @@ public class TransactionController {
 		throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
-		List<Transaction> transactions = service.findByNsu(transactionNSU);
+		List<Transaction> transactions = transactionService.findByNsu(transactionNSU);
 		
 		if (transactions.isEmpty()) {
 			throw new TransactionNotFoundException("There are no transactions registered with the nsu=" + transactionNSU);
@@ -308,7 +312,7 @@ public class TransactionController {
 		throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
-		Optional<Transaction> transaction = service.findById(transactionId);
+		Optional<Transaction> transaction = transactionService.findById(transactionId);
 		
 		if (!transaction.isPresent()) {
 			throw new TransactionNotFoundException("Transaction id=" + transactionId + " not found");
@@ -352,13 +356,13 @@ public class TransactionController {
 		throws TransactionNotFoundException {
 		
 		Response<String> response = new Response<>();
-		Optional<Transaction> transaction = service.findById(transactionId);
+		Optional<Transaction> transaction = transactionService.findById(transactionId);
 		
 		if (!transaction.isPresent()) {
 			throw new TransactionNotFoundException("Transaction id=" + transactionId + " not found");
 		}
 		
-		service.deleteById(transactionId);
+		transactionService.deleteById(transactionId);
 		response.setData("Transaction id=" + transactionId + " successfully deleted");
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
