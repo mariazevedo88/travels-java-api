@@ -16,11 +16,15 @@ import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticServi
  * @author Mariana Azevedo
  * @since 28/03/2020
  */
-@Service
+@Service("statisticService")
 public class StatisticServiceImpl implements StatisticService {
 
-	@Autowired
 	private StatisticRepository statisticRepository;
+	
+	@Autowired
+	public StatisticServiceImpl(StatisticRepository statisticRepository) {
+		this.statisticRepository = statisticRepository;
+	}
 	
 	/**
 	 * @see StatisticService#save(Statistic)

@@ -27,7 +27,7 @@ public class FinancialApiConfiguration {
 	 * 
 	 * @return <code>LinkDiscoverers</code> object
 	 */
-	@Bean
+	@Bean(name = "linkDiscover")
     public LinkDiscoverers discoverers() {
         List<LinkDiscoverer> plugins = new ArrayList<>();
         plugins.add(new CollectionJsonLinkDiscoverer());

@@ -16,8 +16,12 @@ import io.github.mariazevedo88.financialjavaapi.util.interceptor.RateLimitInterc
 @Configuration
 public class RateLimitingConfiguration implements WebMvcConfigurer {
 	
-	@Autowired
 	private RateLimitInterceptor interceptor;
+	
+	@Autowired
+	public RateLimitingConfiguration(RateLimitInterceptor interceptor) {
+		this.interceptor = interceptor;
+	}
 	
 	/**
 	 * Method that allow intercepting routes for rate limiting

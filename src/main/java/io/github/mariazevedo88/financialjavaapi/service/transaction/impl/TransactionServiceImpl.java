@@ -20,15 +20,19 @@ import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionS
 @Service
 public class TransactionServiceImpl implements TransactionService {
 	
+	private TransactionRepository transactionRepository;
+	
 	@Autowired
-	private TransactionRepository repository;
+	public TransactionServiceImpl(TransactionRepository transactionRepository) {
+		this.transactionRepository = transactionRepository;
+	}
 
 	/**
 	 * @see TransactionService#save(Transaction)
 	 */
 	@Override
 	public Transaction save(Transaction transaction) {
-		return repository.save(transaction);
+		return transactionRepository.save(transaction);
 	}
 
 	/**
@@ -37,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	@Cacheable(value="transactionNsuCache", key="#nsu", unless="#result==null")
 	public List<Transaction> findByNsu(String nsu) {
-		return repository.findByNsu(nsu);
+		return transactionRepository.findByNsu(nsu);
 	}
 
 	/**
@@ -45,7 +49,7 @@ public class TransactionServiceImpl implements TransactionService {
 	 */
 	@Override
 	public void deleteById(Long transactionId) {
-		repository.deleteById(transactionId);		
+		transactionRepository.deleteById(transactionId);		
 	}
 
 	/**
@@ -54,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	@Cacheable(value="transactionIdCache", key="#id", unless="#result==null")
 	public Optional<Transaction> findById(Long id) {
-		return repository.findById(id);
+		return transactionRepository.findById(id);
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
 	 */
 	@Override
 	public List<Transaction> findAll() {
-		return repository.findAll();
+		return transactionRepository.findAll();
 	}
 
 }

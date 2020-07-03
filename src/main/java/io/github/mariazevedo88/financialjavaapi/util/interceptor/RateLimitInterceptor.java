@@ -23,8 +23,12 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
 	
-    @Autowired
     private APIUsagePlansService pricingPlanService;
+    
+    @Autowired
+    public RateLimitInterceptor(APIUsagePlansService pricingPlanService) {
+    	this.pricingPlanService = pricingPlanService;
+	}
  
     /**
      * @see HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)
