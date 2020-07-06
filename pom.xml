@@ -24,12 +24,14 @@
 		<swagger.version>2.9.2</swagger.version>
 		<modelmapper.version>2.3.8</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
+		<spring.admin.version>2.2.3</spring.admin.version>
+		<gitcommit.version>4.0.0</gitcommit.version>
 	</properties>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.0.RELEASE</version>
+		<version>2.3.1.RELEASE</version>
 		<relativePath/>
 	</parent>
 
@@ -42,12 +44,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -68,6 +64,10 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -116,6 +116,16 @@
 		    <artifactId>bucket4j-core</artifactId>
 		    <version>${bucket4j.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>pl.project13.maven</groupId>
+		    <artifactId>git-commit-id-plugin</artifactId>
+		    <version>${gitcommit.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>de.codecentric</groupId>
+		    <artifactId>spring-boot-admin-starter-client</artifactId>
+		    <version>${spring.admin.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -123,6 +133,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+			        <execution>
+			            <goals>
+			                <goal>build-info</goal>
+			            </goals>
+			        </execution>
+			    </executions>
 			</plugin>
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -161,7 +178,7 @@
                             <goal>add-test-resource</goal>
                         </goals>
                         <configuration>
-                            <resources>
+                        	<resources>
                                 <resource>
                                     <directory>src/it/resources</directory>
                                 </resource>
