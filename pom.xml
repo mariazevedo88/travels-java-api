@@ -25,7 +25,6 @@
 		<modelmapper.version>2.3.8</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
 		<spring.admin.version>2.2.3</spring.admin.version>
-		<gitcommit.version>4.0.0</gitcommit.version>
 	</properties>
 
 	<parent>
@@ -115,11 +114,6 @@
 		    <groupId>com.github.vladimir-bukhtoyarov</groupId>
 		    <artifactId>bucket4j-core</artifactId>
 		    <version>${bucket4j.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>pl.project13.maven</groupId>
-		    <artifactId>git-commit-id-plugin</artifactId>
-		    <version>${gitcommit.version}</version>
 		</dependency>
 		<dependency>
 		    <groupId>de.codecentric</groupId>
