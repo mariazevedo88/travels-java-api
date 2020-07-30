@@ -5,7 +5,7 @@
 	
 	<groupId>io.github.mariazevedo88</groupId>
 	<artifactId>financial-java-api</artifactId>
-	<version>3.0.2-SNAPSHOT</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
 	<name>financial-java-api</name>
@@ -21,7 +21,7 @@
 	
 	<properties>
 		<java.version>11</java.version>
-		<swagger.version>2.10.5</swagger.version>
+		<swagger.version>3.0.0</swagger.version>
 		<modelmapper.version>2.3.8</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
 		<spring.admin.version>2.2.3</spring.admin.version>
@@ -69,6 +69,16 @@
 		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-boot-starter</artifactId>
+		    <version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>de.codecentric</groupId>
+		    <artifactId>spring-boot-admin-starter-client</artifactId>
+		    <version>${spring.admin.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -88,16 +98,6 @@
 		    <artifactId>flyway-core</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-		    <version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>${swagger.version}</version>
-		</dependency>
-		<dependency>
 		  <groupId>org.modelmapper</groupId>
 		  <artifactId>modelmapper</artifactId>
 		  <version>${modelmapper.version}</version>
@@ -114,11 +114,6 @@
 		    <groupId>com.github.vladimir-bukhtoyarov</groupId>
 		    <artifactId>bucket4j-core</artifactId>
 		    <version>${bucket4j.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>de.codecentric</groupId>
-		    <artifactId>spring-boot-admin-starter-client</artifactId>
-		    <version>${spring.admin.version}</version>
 		</dependency>
 	</dependencies>
 
