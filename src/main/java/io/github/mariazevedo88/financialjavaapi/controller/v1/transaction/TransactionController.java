@@ -10,8 +10,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -39,6 +37,7 @@ import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * SpringBoot RestController that creates all service endpoints related to the transaction.
@@ -46,11 +45,10 @@ import io.swagger.annotations.ApiOperation;
  * @author Mariana Azevedo
  * @since 08/09/2019
  */
+@Log4j2
 @RestController
 @RequestMapping("/financial/v1/transactions")
 public class TransactionController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 	
 	private TransactionService transactionService;
 	
@@ -220,7 +218,7 @@ public class TransactionController {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
-				logger.error("There are no transactions registered in the database.");
+				log.error("There are no transactions registered in the database.");
 			}
 		});
 		
@@ -274,7 +272,7 @@ public class TransactionController {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
-				logger.error("There are no transactions registered with the nsu=" + transactionNSU);
+				log.error("There are no transactions registered with the nsu=" + transactionNSU);
 			}
 		});
 		
