@@ -1,8 +1,8 @@
 package io.github.mariazevedo88.financialjavaapi.service.transaction;
 
 import java.util.List;
-import java.util.Optional;
 
+import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
@@ -43,7 +43,7 @@ public interface TransactionService {
 	 * @param id
 	 * @return <code>Optional<Transaction></code> object
 	 */
-	Optional<Transaction> findById(Long id);
+	Transaction findById(Long id) throws TransactionNotFoundException;
 	
 	/**
 	 * Method that find a transaction by a nsu.

@@ -1,12 +1,12 @@
 package io.github.mariazevedo88.financialjavaapi.service.transaction.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
@@ -53,12 +53,13 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	/**
+	 * @throws TransactionNotFoundException 
 	 * @see TransactionService#findById(Long)
 	 */
 	@Override
-	@Cacheable(value="transactionIdCache", key="#id", unless="#result==null")
-	public Optional<Transaction> findById(Long id) {
-		return transactionRepository.findById(id);
+	@Cacheable(value="transactionIdCache", key="#id")
+	public Transaction findById(Long id) throws TransactionNotFoundException {
+		return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction id=" + id + " not found"));
 	}
 
 	/**

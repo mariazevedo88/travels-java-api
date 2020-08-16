@@ -5,7 +5,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -161,10 +160,8 @@ public class TransactionController {
 			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 
-		Optional<Transaction> transactionToFind = transactionService.findById(dto.getId());
-		if (!transactionToFind.isPresent()) {
-			throw new TransactionNotFoundException("Transaction id=" + dto.getId() + " not found");
-		} else if (transactionToFind.get().getId().compareTo(dto.getId()) != 0) {
+		Transaction transactionToFind = transactionService.findById(dto.getId());
+		if (transactionToFind.getId().compareTo(dto.getId()) != 0) {
 			throw new TransactionInvalidUpdateException("You don't have permission to change the transaction id=" + dto.getId());
 		}
 
@@ -310,14 +307,10 @@ public class TransactionController {
 		throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
-		Optional<Transaction> transaction = transactionService.findById(transactionId);
+		Transaction transaction = transactionService.findById(transactionId);
 		
-		if (!transaction.isPresent()) {
-			throw new TransactionNotFoundException("Transaction id=" + transactionId + " not found");
-		}
-		
-		TransactionDTO dto = convertEntityToDTO(transaction.get());
-		createSelfLink(transaction.get(), dto);
+		TransactionDTO dto = convertEntityToDTO(transaction);
+		createSelfLink(transaction, dto);
 		response.setData(dto);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -354,14 +347,10 @@ public class TransactionController {
 		throws TransactionNotFoundException {
 		
 		Response<String> response = new Response<>();
-		Optional<Transaction> transaction = transactionService.findById(transactionId);
+		Transaction transaction = transactionService.findById(transactionId);
 		
-		if (!transaction.isPresent()) {
-			throw new TransactionNotFoundException("Transaction id=" + transactionId + " not found");
-		}
-		
-		transactionService.deleteById(transactionId);
-		response.setData("Transaction id=" + transactionId + " successfully deleted");
+		transactionService.deleteById(transaction.getId());
+		response.setData("Transaction id=" + transaction.getId() + " successfully deleted");
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);

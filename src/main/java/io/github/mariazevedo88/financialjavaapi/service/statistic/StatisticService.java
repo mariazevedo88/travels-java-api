@@ -1,8 +1,8 @@
 package io.github.mariazevedo88.financialjavaapi.service.statistic;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
+import io.github.mariazevedo88.financialjavaapi.exception.DuplicateStatisticsException;
 import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 
 /**
@@ -37,7 +37,7 @@ public interface StatisticService {
 	 * @param count
 	 * @return <code>Optional<Statistic></code> object
 	 */
-	Optional<Statistic> verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, 
-			BigDecimal min, long count);
+	Statistic verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, 
+			BigDecimal min, long count) throws DuplicateStatisticsException;
 	
 }
