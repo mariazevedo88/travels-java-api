@@ -4,9 +4,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.TimeZone;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,7 +40,7 @@ import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 
 /**
- * Class that implements tests of the TransactionController funcionalities
+ * Class that implements tests of the TransactionController features
  * 
  * @author Mariana Azevedo
  * @since 05/04/2020
@@ -53,7 +55,7 @@ public class TransactionControllerTest {
 	private static final Long ID = 1L;
 	private static final String NSU = "654789";
 	private static final String AUTH = "010203";
-	private static final Date TRANSACTION_DATE = new Date();
+	private static final String TRANSACTION_DATE = "2020-08-21T18:32:04.150";
 	private static final TransactionTypeEnum TYPE = TransactionTypeEnum.CARD;
 	private static final BigDecimal VALUE = BigDecimal.valueOf(288);
 	private static final String URL = "/financial/v1/transactions";
@@ -86,7 +88,7 @@ public class TransactionControllerTest {
 		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-			.content(getJsonPayload(ID, NSU, AUTH, TRANSACTION_DATE, VALUE, TYPE))
+			.content(getJsonPayload(ID, NSU, AUTH, getMockTransactionDate(), VALUE, TYPE))
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
@@ -95,7 +97,7 @@ public class TransactionControllerTest {
 		.andExpect(jsonPath("$.data.id").value(ID))
 		.andExpect(jsonPath("$.data.nsu").value(NSU))
 		.andExpect(jsonPath("$.data.authorizationNumber").value(AUTH))
-		.andExpect(jsonPath("$.data.transactionDate").value(getDateTimeFormater(TRANSACTION_DATE)))
+		.andExpect(jsonPath("$.data.transactionDate").value(TRANSACTION_DATE))
 		.andExpect(jsonPath("$.data.amount").value(VALUE))
 		.andExpect(jsonPath("$.data.type").value(TYPE.toString()));
 	}
@@ -114,7 +116,7 @@ public class TransactionControllerTest {
 		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-				.content(getJsonPayload(ID, null, AUTH, TRANSACTION_DATE, VALUE, TYPE))
+				.content(getJsonPayload(ID, null, AUTH, getMockTransactionDate(), VALUE, TYPE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
@@ -129,11 +131,12 @@ public class TransactionControllerTest {
 	 * @since 05/04/2020
 	 * 
 	 * @return <code>Transaction</code> object
+	 * @throws ParseException 
 	 */
-	private Transaction getMockTransaction() {
+	private Transaction getMockTransaction() throws ParseException {
 		
 		Transaction transaction = new Transaction(ID, NSU, AUTH,
-				TRANSACTION_DATE, VALUE, TYPE);
+				getMockTransactionDate(), VALUE, TYPE);
 		
 		return transaction;
 	}
@@ -148,11 +151,11 @@ public class TransactionControllerTest {
 	 * @param name
 	 * @param email
 	 * @param password
-	 * @return <code>String</code> with the TrnsactionDTO payload
+	 * @return <code>String</code> with the TransactionDTO payload
 	 * 
 	 * @throws JsonProcessingException
 	 */
-	private String getJsonPayload(Long id, String nsu, String authorization, Date transactionDate,
+	private String getJsonPayload(Long id, String nsu, String authorization, LocalDateTime transactionDate,
 			BigDecimal amount, TransactionTypeEnum type) throws JsonProcessingException {
 		
 		TransactionDTO dto = new TransactionDTO();
@@ -168,18 +171,10 @@ public class TransactionControllerTest {
 		return mapper.writeValueAsString(dto);
 	}
 	
-	/**
-	 * Method that format a date as yyyy-MM-ddTHH:mm:ss.SSSZ.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 05/04/2020
-	 * 
-	 * @return <code>String</code> object
-	 */
-	private String getDateTimeFormater(Date date) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return formatter.format(date);
-	}
+	private LocalDateTime getMockTransactionDate() throws ParseException{
+    	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dateISO8601 = inputFormat.parse(TRANSACTION_DATE.concat("Z"));
+        return dateISO8601.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }
 
 }

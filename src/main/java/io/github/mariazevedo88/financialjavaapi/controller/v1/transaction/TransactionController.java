@@ -1,15 +1,19 @@
 package io.github.mariazevedo88.financialjavaapi.controller.v1.transaction;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
@@ -78,7 +83,7 @@ public class TransactionController {
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws NotParsableContentException
@@ -136,7 +141,7 @@ public class TransactionController {
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 	 * 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws TransactionNotFoundException
@@ -179,43 +184,43 @@ public class TransactionController {
 	}
 
 	/**
-	 * Method that search for all the transactions saved.
+	 * Method that search for all the transactions saved in a period of time.
 	 *  
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @return ResponseEntity with a Response<List<TransactionDTO>> object and the HTTP status
+	 * @return ResponseEntity with a Response<Page<TransactionDTO>> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
 	 * 200 - OK: Everything worked as expected.
 	 * 404 - Not Found: The requested resource doesn't exist.
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws TransactionNotFoundException 
 	 */
 	@GetMapping
-	@ApiOperation(value = "Route to find all transactions in the API")
-	public ResponseEntity<Response<List<TransactionDTO>>> findAll(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey) throws TransactionNotFoundException {
+	@ApiOperation(value = "Route to find all transactions of the API in a period of time")
+	public ResponseEntity<Response<Page<TransactionDTO>>> findAllBetweenDates(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") 
+	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @RequestParam(name="page", defaultValue = "0") int page) 
+	    throws TransactionNotFoundException {
 		
-		Response<List<TransactionDTO>> response = new Response<>();
+		Response<Page<TransactionDTO>> response = new Response<>();
 		
-		List<Transaction> transactions = transactionService.findAll();
+		Page<Transaction> transactions = transactionService.findBetweenDates(startDate.atTime(0, 0, 0), endDate.atTime(0, 0, 0), page);
 		
 		if (transactions.isEmpty()) {
-			throw new TransactionNotFoundException("There are no transactions registered in the database.");
+			throw new TransactionNotFoundException("There are no transactions registered between startDate=" + startDate + " and endDate=" + endDate);
 		}
 		
-		List<TransactionDTO> itemsDTO = new ArrayList<>();
-		transactions.stream().forEach(i -> itemsDTO.add(convertEntityToDTO(i)));
-		
+		Page<TransactionDTO> itemsDTO = transactions.map(this::convertEntityToDTO);
 		itemsDTO.stream().forEach(dto -> {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
-				log.error("There are no transactions registered in the database.");
+				log.error("There are no transactions registered between startDate= {} and endDate= {}", startDate, endDate);
 			}
 		});
 		

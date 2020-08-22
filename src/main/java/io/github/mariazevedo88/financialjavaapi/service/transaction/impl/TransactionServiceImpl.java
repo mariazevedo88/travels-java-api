@@ -1,9 +1,13 @@
 package io.github.mariazevedo88.financialjavaapi.service.transaction.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
@@ -21,6 +25,9 @@ import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionS
 public class TransactionServiceImpl implements TransactionService {
 	
 	private TransactionRepository transactionRepository;
+	
+	@Value("${pagination.items_per_page}")
+	private int itemsPerPage;
 	
 	@Autowired
 	public TransactionServiceImpl(TransactionRepository transactionRepository) {
@@ -60,6 +67,15 @@ public class TransactionServiceImpl implements TransactionService {
 	@Cacheable(value="transactionIdCache", key="#id")
 	public Transaction findById(Long id) throws TransactionNotFoundException {
 		return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction id=" + id + " not found"));
+	}
+
+	/**
+	 * @see TransactionService#findBetweenDates()
+	 */
+	@Override
+	public Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page) {
+		PageRequest pg = PageRequest.of(page, itemsPerPage);
+		return transactionRepository.findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(startDate, endDate, pg);
 	}
 
 	/**

@@ -13,6 +13,7 @@ import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.mariazevedo88.financialjavaapi.service.ratelimiting.APIUsagePlansService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that implements a interceptor of rate limiting in the API
@@ -20,6 +21,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  * @author Mariana Azevedo
  * @since 11/06/2020
  */
+@Log4j2
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
 	
@@ -40,6 +42,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
     	
         if (apiKey == null || apiKey.isEmpty()) {
             response.sendError(HttpStatus.BAD_REQUEST.value(), "Missing Header: " + FinancialApiUtil.HEADER_API_KEY);
+
+            log.error("Missing Header: " + FinancialApiUtil.HEADER_API_KEY);
             return false;
         }
 
@@ -58,6 +62,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.addHeader(FinancialApiUtil.HEADER_RETRY_AFTER, String.valueOf(waitForRefill));
             response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "You have exhausted your API Request Quota"); // 429
+            
+            log.error("You have exhausted your API Request Quota");
 
             return false;
         }

@@ -1,6 +1,7 @@
 package io.github.mariazevedo88.financialjavaapi.util;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
@@ -45,7 +46,7 @@ public class FinancialApiUtil {
 	 * @return boolean
 	 */
 	public static boolean isTransactionInFuture(Transaction transaction) {
-		return transaction.getTransactionDate().after(new Date());
+		return transaction.getTransactionDate().isAfter(LocalDateTime.now());
 	}
 	
 	/**
@@ -58,7 +59,31 @@ public class FinancialApiUtil {
 	 * @return boolean
 	 */
 	public static boolean isTransactionDTOInFuture(TransactionDTO dto) {
-		return dto.getTransactionDate().after(new Date());
+		return dto.getTransactionDate().isAfter(LocalDateTime.now());
+	}
+	
+	/**
+	 * Method that format a date as yyyy-MM-dd.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 21/08/2020
+	 * 
+	 * @return <code>DateTimeFormatter</code> object
+	 */
+	public static DateTimeFormatter getDateFormater() {
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	}
+	
+	/**
+	 * Method that format a date as yyyy-MM-dd'T'HH:mm:ss.SSS'Z'.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 21/08/2020
+	 * 
+	 * @return <code>DateTimeFormatter</code> object
+	 */
+	public static DateTimeFormatter getDateTimeFormater() {
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	}
 	
 }

@@ -1,11 +1,10 @@
 package io.github.mariazevedo88.financialjavaapi.test.repository.transaction;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -50,7 +49,7 @@ public class TransactionRepositoryTest {
 		Transaction transaction = new Transaction();
 		transaction.setNsu("220788");
 		transaction.setAuthorizationNumber("000123");
-		transaction.setTransactionDate(new Date());
+		transaction.setTransactionDate(LocalDateTime.now());
 		transaction.setAmount(new BigDecimal(100d));
 		transaction.setType(TransactionTypeEnum.CARD);
 		
@@ -69,7 +68,7 @@ public class TransactionRepositoryTest {
 		Transaction transaction = new Transaction();
 		transaction.setNsu("270257");
 		transaction.setAuthorizationNumber("000123");
-		transaction.setTransactionDate(new Date());
+		transaction.setTransactionDate(LocalDateTime.now());
 		transaction.setAmount(new BigDecimal(100d));
 		transaction.setType(TransactionTypeEnum.CARD);
 		
@@ -88,9 +87,7 @@ public class TransactionRepositoryTest {
 	public void testFindByNsu(){
 		
 		List<Transaction> response = repository.findByNsu("220788");
-		
 		assertFalse(response.isEmpty());
-		assertEquals("220788", response.get(0).getNsu());
 	}
 	
 	/**
