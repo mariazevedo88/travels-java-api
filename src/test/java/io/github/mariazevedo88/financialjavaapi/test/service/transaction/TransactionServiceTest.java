@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
@@ -69,7 +70,7 @@ public class TransactionServiceTest {
 	}
 	
 	/**
-	 * Method that test the service that search for an Transaction by the nsu.
+	 * Method that test the service that search for a Transaction by the NSU.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 05/04/2020
@@ -84,6 +85,12 @@ public class TransactionServiceTest {
 		assertTrue(!response.isEmpty());
 	}
 	
+	/**
+	 * Method that test the service that search for transactions in a period of time.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 21/08/2020
+	 */
 	@Test
 	public void testFindBetweenDates() {
 		
@@ -94,17 +101,17 @@ public class TransactionServiceTest {
 		BDDMockito.given(repository.findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(Mockito.any(LocalDateTime.class), 
 				Mockito.any(LocalDateTime.class), Mockito.any(PageRequest.class))).willReturn(page);
 		
-		Page<Transaction> response = service.findBetweenDates(DATE, DATE, 0);
+		Page<Transaction> response = service.findBetweenDates(DATE, DATE, 0, PageOrderEnum.ASC);
 		assertNotNull(response);
 	}
 	
 	/**
-	 * Method that fill a mock of a Wallet and WalletItem to use as return in the tests.
+	 * Method that fill a mock of a Transaction to use as return in the tests.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
 	 * 
-	 * @return <code>WalletItem</code> object
+	 * @return <code>Transaction</code> object
 	 */
 	private Transaction getMockTransaction() {
 		

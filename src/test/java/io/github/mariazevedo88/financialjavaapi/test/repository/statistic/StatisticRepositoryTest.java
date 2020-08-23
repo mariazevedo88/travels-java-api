@@ -18,6 +18,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRepository;
 
+/**
+ * Class that implements tests of the StatisticRepository features
+ * 
+ * @author Mariana Azevedo
+ * @since 24/03/2020
+ */
 @SpringBootTest
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ActiveProfiles("test")
@@ -28,7 +34,7 @@ public class StatisticRepositoryTest {
 	private StatisticRepository repository;
 	
 	/**
-	 * Method that test the repository that save an User in the API.
+	 * Method that test the repository that save a Statistic in the API.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020

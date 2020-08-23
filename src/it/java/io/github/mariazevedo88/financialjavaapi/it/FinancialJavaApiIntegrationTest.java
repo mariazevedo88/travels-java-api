@@ -4,11 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -57,7 +53,8 @@ public class FinancialJavaApiIntegrationTest {
         TransactionDTO dtoNsu123456 = new TransactionDTO(); 
         dtoNsu123456.setNsu("123456");
         dtoNsu123456.setAuthorizationNumber("014785");
-        dtoNsu123456.setTransactionDate(getMockTransactionDate());
+        dtoNsu123456.setTransactionDate(FinancialApiUtil.
+        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"));
         dtoNsu123456.setAmount(new BigDecimal(100d));
         dtoNsu123456.setType(TransactionTypeEnum.CARD);
         
@@ -81,7 +78,8 @@ public class FinancialJavaApiIntegrationTest {
     	//id=2
     	TransactionDTO dtoNsu258963 = new TransactionDTO(); 
         dtoNsu258963.setNsu("258963");
-        dtoNsu258963.setTransactionDate(getMockTransactionDate());
+        dtoNsu258963.setTransactionDate(FinancialApiUtil.
+        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"));
         dtoNsu258963.setAmount(new BigDecimal(2546.93));
         dtoNsu258963.setType(TransactionTypeEnum.MONEY);
         
@@ -100,7 +98,7 @@ public class FinancialJavaApiIntegrationTest {
     
     @Test
     @Order(3)
-    public void testFindAllTransactions() {
+    public void testFindAllTransactions() throws ParseException {
     	
     	final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -108,8 +106,12 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<String> entity = new HttpEntity<>(headers);
         
-        String startDate = LocalDate.now().minusDays(1).format(FinancialApiUtil.getDateFormater());
-		String endDate = LocalDate.now().plusDays(5).format(FinancialApiUtil.getDateFormater());
+        LocalDateTime startDateTime = FinancialApiUtil.
+        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z");
+        LocalDateTime endDateTime = startDateTime.plusDays(5);
+        
+        String startDate = startDateTime.format(FinancialApiUtil.getDateFormater());
+		String endDate = endDateTime.format(FinancialApiUtil.getDateFormater());
 
 		ResponseEntity<String> responseEntity = this.restTemplate
         		.exchange("http://localhost:" + port + "/financial/v1/transactions?startDate=" + startDate + "&endDate=" + endDate,  
@@ -207,11 +209,5 @@ public class FinancialJavaApiIntegrationTest {
     	//Too many requests
         assertEquals(429, responseEntity.getStatusCodeValue());
 	}
-    
-    private LocalDateTime getMockTransactionDate() throws ParseException{
-    	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        Date dateISO8601 = inputFormat.parse("2020-08-21T18:32:04.150Z");
-        return dateISO8601.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
+import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
@@ -70,13 +71,14 @@ public interface TransactionService {
 	List<Transaction> findAll();
 	
 	/**
-	 * Method that find all transactions.
+	 * Method that find all transactions in a period of time
 	 * 
 	 * @author Mariana Azevedo
-	 * @since 08/09/2019
+	 * @since 21/08/2020
 	 * 
 	 * @return <code>Page<Transaction></code> object
 	 */
-	Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page);
+	Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page,
+			PageOrderEnum order);
 
 }

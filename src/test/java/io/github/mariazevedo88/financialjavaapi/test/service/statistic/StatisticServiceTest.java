@@ -75,9 +75,7 @@ public class StatisticServiceTest {
 	 * @return <code>Statistic</code> object
 	 */
 	private Statistic getMockStatistic() {
-		
-		Statistic statistic = new Statistic(1L, SUM, AVG, MAX, MIN, COUNT);
-		return statistic;
+		return new Statistic(1L, SUM, AVG, MAX, MIN, COUNT);
 	}
 
 }

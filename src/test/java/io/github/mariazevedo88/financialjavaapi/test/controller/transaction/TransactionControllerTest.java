@@ -5,10 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,6 +35,7 @@ import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.Transactio
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
+import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 
 /**
  * Class that implements tests of the TransactionController features
@@ -88,7 +86,8 @@ public class TransactionControllerTest {
 		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-			.content(getJsonPayload(ID, NSU, AUTH, getMockTransactionDate(), VALUE, TYPE))
+			.content(getJsonPayload(ID, NSU, AUTH, FinancialApiUtil.
+			 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
@@ -116,7 +115,8 @@ public class TransactionControllerTest {
 		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-				.content(getJsonPayload(ID, null, AUTH, getMockTransactionDate(), VALUE, TYPE))
+				.content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
+				 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
@@ -136,7 +136,8 @@ public class TransactionControllerTest {
 	private Transaction getMockTransaction() throws ParseException {
 		
 		Transaction transaction = new Transaction(ID, NSU, AUTH,
-				getMockTransactionDate(), VALUE, TYPE);
+			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), 
+			VALUE, TYPE);
 		
 		return transaction;
 	}
@@ -148,9 +149,11 @@ public class TransactionControllerTest {
 	 * @since 05/04/2020
 	 * 
 	 * @param id
-	 * @param name
-	 * @param email
-	 * @param password
+	 * @param nsu
+	 * @param authorization
+	 * @param transactionDate
+	 * @param amount
+	 * @param type
 	 * @return <code>String</code> with the TransactionDTO payload
 	 * 
 	 * @throws JsonProcessingException
@@ -170,11 +173,5 @@ public class TransactionControllerTest {
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		return mapper.writeValueAsString(dto);
 	}
-	
-	private LocalDateTime getMockTransactionDate() throws ParseException{
-    	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        Date dateISO8601 = inputFormat.parse(TRANSACTION_DATE.concat("Z"));
-        return dateISO8601.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-    }
 
 }

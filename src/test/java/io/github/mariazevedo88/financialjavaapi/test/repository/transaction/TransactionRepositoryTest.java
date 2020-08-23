@@ -23,10 +23,10 @@ import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 
 /**
- * Class that implements tests of the TransactionRepository funcionalities
+ * Class that implements tests of the TransactionRepository features
  * 
  * @author Mariana Azevedo
- * @since 04/04/2020
+ * @since 24/03/2020
  */
 @SpringBootTest
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
@@ -38,7 +38,7 @@ public class TransactionRepositoryTest {
 	private TransactionRepository repository;
 	
 	/**
-	 * Method to setup an User to use in the tests.
+	 * Method to setup a Transaction to use in the tests.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
@@ -57,7 +57,7 @@ public class TransactionRepositoryTest {
 	}
 	
 	/**
-	 * Method that test the repository that save an User in the API.
+	 * Method that test the repository that save a Transaction in the API.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
@@ -78,7 +78,7 @@ public class TransactionRepositoryTest {
 	}
 	
 	/**
-	 * Method that test the repository that search for an User by the email.
+	 * Method that test the repository that search for a Transaction by the NSU.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
@@ -91,7 +91,7 @@ public class TransactionRepositoryTest {
 	}
 	
 	/**
-	 * Method to remove all User test data.
+	 * Method to remove all transactions test data.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020

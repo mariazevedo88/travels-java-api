@@ -21,15 +21,15 @@ import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 	/**
-	 * Method to search for all the transactions in the API.
+	 * Method to search for all the transactions in the API in a period of time.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 21/08/2020
 	 * 
 	 * @return <code>Page<Transaction></code> object
 	 */
-	Page<Transaction> findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(LocalDateTime startDate, 
-			LocalDateTime endDate, Pageable pg);
+	Page<Transaction> findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual
+		(LocalDateTime startDate, LocalDateTime endDate, Pageable pg);
 	
 	/**
 	 * Method to search for all the transactions in the same NSU (unique sequential number).

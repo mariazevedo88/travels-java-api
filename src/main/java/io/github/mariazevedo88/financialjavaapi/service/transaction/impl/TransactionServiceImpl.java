@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
+import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
@@ -66,16 +69,22 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	@Cacheable(value="transactionIdCache", key="#id")
 	public Transaction findById(Long id) throws TransactionNotFoundException {
-		return transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction id=" + id + " not found"));
+		return transactionRepository.findById(id).orElseThrow(() -> 
+			new TransactionNotFoundException("Transaction id=" + id + " not found"));
 	}
 
 	/**
 	 * @see TransactionService#findBetweenDates()
 	 */
 	@Override
-	public Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page) {
-		PageRequest pg = PageRequest.of(page, itemsPerPage);
-		return transactionRepository.findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(startDate, endDate, pg);
+	public Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page, 
+			PageOrderEnum order) {
+		Sort sort = Direction.ASC.name().equals(order.getValue()) ? 
+				Sort.by("id").ascending() : Sort.by("id").descending();
+		PageRequest pg = PageRequest.of(page, itemsPerPage, sort);
+		return transactionRepository.
+				findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(startDate, 
+					endDate, pg);
 	}
 
 	/**

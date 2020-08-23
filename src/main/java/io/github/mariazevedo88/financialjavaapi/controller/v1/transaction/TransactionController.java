@@ -3,6 +3,7 @@ package io.github.mariazevedo88.financialjavaapi.controller.v1.transaction;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import io.github.mariazevedo88.financialjavaapi.dto.response.Response;
 import io.github.mariazevedo88.financialjavaapi.exception.NotParsableContentException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionInvalidUpdateException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
+import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
@@ -204,15 +206,20 @@ public class TransactionController {
 	@ApiOperation(value = "Route to find all transactions of the API in a period of time")
 	public ResponseEntity<Response<Page<TransactionDTO>>> findAllBetweenDates(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
 		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") 
-	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @RequestParam(name="page", defaultValue = "0") int page) 
-	    throws TransactionNotFoundException {
+	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @RequestParam(name="page", defaultValue = "0") int page,
+	    @RequestParam(name="order", defaultValue = "ASC") String order) throws TransactionNotFoundException {
 		
 		Response<Page<TransactionDTO>> response = new Response<>();
 		
-		Page<Transaction> transactions = transactionService.findBetweenDates(startDate.atTime(0, 0, 0), endDate.atTime(0, 0, 0), page);
+		LocalDateTime startDateTime = FinancialApiUtil.convertLocalDateToLocalDateTime(startDate);
+		LocalDateTime endDateTime = FinancialApiUtil.convertLocalDateToLocalDateTime(endDate);
+		
+		Page<Transaction> transactions = transactionService.findBetweenDates(startDateTime, endDateTime, 
+				page, PageOrderEnum.getDirection(order));
 		
 		if (transactions.isEmpty()) {
-			throw new TransactionNotFoundException("There are no transactions registered between startDate=" + startDate + " and endDate=" + endDate);
+			throw new TransactionNotFoundException("There are no transactions registered between startDate=" + startDate 
+					+ " and endDate=" + endDate);
 		}
 		
 		Page<TransactionDTO> itemsDTO = transactions.map(this::convertEntityToDTO);
@@ -274,7 +281,7 @@ public class TransactionController {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
-				log.error("There are no transactions registered with the nsu=" + transactionNSU);
+				log.error("There are no transactions registered with the nsu= {}", transactionNSU);
 			}
 		});
 		

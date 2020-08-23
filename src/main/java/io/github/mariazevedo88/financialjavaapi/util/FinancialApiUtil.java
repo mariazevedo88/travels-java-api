@@ -1,7 +1,12 @@
 package io.github.mariazevedo88.financialjavaapi.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
@@ -84,6 +89,36 @@ public class FinancialApiUtil {
 	 */
 	public static DateTimeFormatter getDateTimeFormater() {
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	}
+	
+	/**
+	 * Method that converts a string to a LocalDateTime.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 23/08/2020
+	 * 
+	 * @param dateAsString
+	 * 
+	 * @return <code>LocalDateTime</code> object
+	 * @throws ParseException
+	 */
+	public static LocalDateTime getLocalDateTimeFromString(String dateAsString) throws ParseException{
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dateISO8601 = inputFormat.parse(dateAsString);
+        return dateISO8601.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+	
+	/**
+	 * Method that converts a local date to a local date time.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 23/08/2020
+	 * 
+	 * @param date
+	 * @return <code>LocalDateTime</code> object
+	 */
+	public static LocalDateTime convertLocalDateToLocalDateTime(LocalDate date) {
+		return date.atTime(0, 0, 0);
 	}
 	
 }

@@ -29,7 +29,7 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
 
 /**
- * Class that implements tests of the StatisticController funcionalities
+ * Class that implements tests of the StatisticController features
  * 
  * @author Mariana Azevedo
  * @since 05/04/2020
@@ -64,7 +64,7 @@ public class StatisticControllerTest {
 	}
 	
 	/**
-	 * Method that tests to save an Statistic in the API
+	 * Method that tests to save a Statistic in the API
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 05/04/2020
@@ -99,16 +99,7 @@ public class StatisticControllerTest {
 	 * @return <code>Statistic</code> object
 	 */
 	private Statistic getMockStatistic() {
-		
-		Statistic statistic = new Statistic();
-		statistic.setId(ID);
-		statistic.setSum(SUM);
-		statistic.setAvg(AVG);
-		statistic.setMin(MIN);
-		statistic.setMax(MAX);
-		statistic.setCount(COUNT);
-		
-		return statistic;
+		return new Statistic(ID, SUM, AVG, MAX, MIN, COUNT);
 	}
 
 }
