@@ -22,7 +22,7 @@ import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRe
 import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticService;
 
 /**
- * Class that implements tests of the StatisticService funcionalities.
+ * Class that implements tests of the StatisticService features.
  * 
  * @author Mariana Azevedo
  * @since 05/04/2020
@@ -46,7 +46,7 @@ public class StatisticServiceTest {
 	private StatisticRepository repository;
 	
 	/**
-	 * Method that test the service that save a Wallet and a WalletItem in the API.
+	 * Method that test the service that save a Statistic in the API.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020

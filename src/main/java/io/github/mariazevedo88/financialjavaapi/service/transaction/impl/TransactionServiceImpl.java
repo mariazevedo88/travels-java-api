@@ -63,8 +63,8 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	/**
-	 * @throws TransactionNotFoundException 
 	 * @see TransactionService#findById(Long)
+	 * @throws TransactionNotFoundException 
 	 */
 	@Override
 	@Cacheable(value="transactionIdCache", key="#id")

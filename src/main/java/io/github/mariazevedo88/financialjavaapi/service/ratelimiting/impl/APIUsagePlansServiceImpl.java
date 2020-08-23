@@ -12,7 +12,7 @@ import io.github.mariazevedo88.financialjavaapi.model.enumeration.APIUsagePlansE
 import io.github.mariazevedo88.financialjavaapi.service.ratelimiting.APIUsagePlansService;
 
 /**
- * Class that implements the API usage plans service methods
+ * Class that implements the API usage plans service methods.
  * 
  * @author Mariana Azevedo
  * @since 11/06/2020

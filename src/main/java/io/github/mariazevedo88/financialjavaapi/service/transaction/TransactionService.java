@@ -71,10 +71,16 @@ public interface TransactionService {
 	List<Transaction> findAll();
 	
 	/**
-	 * Method that find all transactions in a period of time
+	 * Method that find all transactions in a period of time.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 21/08/2020
+	 * 
+	 * @param startDate - the start date of the search
+	 * @param endDate - the end date of the search
+	 * @param page - the page that will be return in the search
+	 * @param order - the sort order that the results should be shown: 
+	 *        ASC - ascending order; DESC - descending order
 	 * 
 	 * @return <code>Page<Transaction></code> object
 	 */

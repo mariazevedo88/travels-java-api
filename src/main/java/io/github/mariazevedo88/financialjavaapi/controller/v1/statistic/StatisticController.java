@@ -27,7 +27,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * SpringBoot RestController that creates all service endpoints related to the statistics.
+ * SpringBoot RestController that creates all service end-points related to the statistics.
  * 
  * @author Mariana Azevedo
  * @since 09/09/2019
@@ -55,6 +55,8 @@ public class StatisticController {
 	 * @since 03/04/2020
 	 * 
 	 * @param apiVersion
+	 * @param apiKey
+	 * 
 	 * @return ResponseEntity with a Response<StatisticDTO> object and the HTTP status
 	 * 
 	 * HTTP Status:
@@ -96,7 +98,7 @@ public class StatisticController {
 	 * @since 03/04/2020
 	 * 
 	 * @param transactions
-	 * @return a Statistic object
+	 * @return a <code>Statistic</code> object
 	 */
 	private Statistic createStatistics(List<Transaction> transactions) {
 		
@@ -123,7 +125,7 @@ public class StatisticController {
 	 * @since 03/04/2020
 	 * 
 	 * @param statistic
-	 * @return a StatisticDTO object
+	 * @return a <code>StatisticDTO</code> object
 	 */
 	private StatisticDTO convertEntityToDTO(Statistic statistic) {
 		

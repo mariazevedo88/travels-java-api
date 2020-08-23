@@ -35,8 +35,8 @@ public class StatisticServiceImpl implements StatisticService {
 	}
 
 	/**
-	 * @throws DuplicateStatisticsException 
 	 * @see StatisticService#verifyIfStatisticsIsSame(BigDecimal, BigDecimal, BigDecimal, BigDecimal, long)
+	 * @throws DuplicateStatisticsException 
 	 */
 	@Override
 	public Statistic verifyIfStatisticsIsSame(BigDecimal sum, BigDecimal avg, BigDecimal max, 

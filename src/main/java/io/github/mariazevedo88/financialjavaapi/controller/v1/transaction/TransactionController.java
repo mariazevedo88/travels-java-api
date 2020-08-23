@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * SpringBoot RestController that creates all service endpoints related to the transaction.
+ * SpringBoot RestController that creates all service end-points related to the transaction.
  * 
  * @author Mariana Azevedo
  * @since 08/09/2019
@@ -69,14 +69,15 @@ public class TransactionController {
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @param apiVersion
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
 	 * @param dto, where: id - transaction id; nsu - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
-	 * autorizationNumber - is a one-time code used in the processing of online transactions; amount – transaction amount; a string of arbitrary length that is 
+	 * authorizationNumber - is a one-time code used in the processing of online transactions; amount – transaction amount; a string of arbitrary length that is 
 	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone; type - transaction type: 
 	 * CARD (credit-card) or MONEY (paid in cash). 
 	 * @param result - Bind result
 	 * 
-	 * @return ResponseEntity with a Response<TransactionDTO> object and the HTTP status
+	 * @return ResponseEntity with a <code>Response<TransactionDTO></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -94,8 +95,8 @@ public class TransactionController {
 	@PostMapping
 	@ApiOperation(value = "Route to create a transaction")
 	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
-		BindingResult result) throws NotParsableContentException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
+		@Valid @RequestBody TransactionDTO dto, BindingResult result) throws NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
@@ -127,14 +128,15 @@ public class TransactionController {
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @param apiVersion
-	 * @param dto, where: id - transaction id; nsu - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
+	 * @param dto, where: id - transaction id; NSU - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
 	 * autorizationNumber - is a one-time code used in the processing of online transactions; amount – transaction amount; a string of arbitrary length that is 
 	 * parsable as a BigDecimal; transactionDate – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone; type - transaction type: 
 	 * CARD (credit-card) or MONEY (paid in cash).
 	 * @param result - Bind result
 	 * 
-	 * @return ResponseEntity with a Response<TransactionDTO> object and the HTTP status
+	 * @return ResponseEntity with a <code>Response<TransactionDTO></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -191,7 +193,14 @@ public class TransactionController {
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @return ResponseEntity with a Response<Page<TransactionDTO>> object and the HTTP status
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
+	 * @param startDate - the start date of the search
+	 * @param endDate - the end date of the search
+	 * @param page - the page that will be return in the search
+	 * @param order - the sort order that the results should be shown: ASC - ascending order; DESC - descending order
+	 * 
+	 * @return ResponseEntity with a <code>Response<Page<TransactionDTO>></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -215,7 +224,7 @@ public class TransactionController {
 		LocalDateTime endDateTime = FinancialApiUtil.convertLocalDateToLocalDateTime(endDate);
 		
 		Page<Transaction> transactions = transactionService.findBetweenDates(startDateTime, endDateTime, 
-				page, PageOrderEnum.getDirection(order));
+				page, PageOrderEnum.getSortDirection(order));
 		
 		if (transactions.isEmpty()) {
 			throw new TransactionNotFoundException("There are no transactions registered between startDate=" + startDate 
@@ -241,14 +250,16 @@ public class TransactionController {
 	}
 
 	/**
-	 * Method that search for all the transactions given a nsu.
+	 * Method that search for all the transactions given a NSU.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @param apiVersion
-	 * @param transactionNSU
-	 * @return ResponseEntity with a Response<String> object and the HTTP status
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
+	 * @param transactionNSU - the NSU of the transaction
+	 * 
+	 * @return ResponseEntity with a <code>Response<String></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -264,8 +275,8 @@ public class TransactionController {
 	@GetMapping(value = "/byNsu/{nsu}")
 	@ApiOperation(value = "Route to find transactions by the NSU in the API")
 	public ResponseEntity<Response<List<TransactionDTO>>> findByNsu(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("nsu") String transactionNSU) 
-		throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
+		@PathVariable("nsu") String transactionNSU) throws TransactionNotFoundException {
 		
 		Response<List<TransactionDTO>> response = new Response<>();
 		List<Transaction> transactions = transactionService.findByNsu(transactionNSU);
@@ -297,9 +308,11 @@ public class TransactionController {
 	/**
 	 * Method that search a transactions by the id.
 	 * 
-	 * @param apiVersion
-	 * @param transactionId
-	 * @return ResponseEntity with a Response<TransactionDTO> object and the HTTP status
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
+	 * @param transactionId - the id of the transaction
+	 * 
+	 * @return ResponseEntity with a <code>Response<TransactionDTO></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -315,8 +328,8 @@ public class TransactionController {
 	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Route to find a transaction by your id in the API")
 	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
-		throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
+		@PathVariable("id") Long transactionId) throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
 		Transaction transaction = transactionService.findById(transactionId);
@@ -338,8 +351,11 @@ public class TransactionController {
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
 	 * 
-	 * @param transactionId
-	 * @return ResponseEntity with a Response<String> object and the HTTP status
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
+	 * @param transactionId - the id of the transaction
+	 * 
+	 * @return ResponseEntity with a <code>Response<String></code> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -347,7 +363,7 @@ public class TransactionController {
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on Goldgem's end (These are rare).
 	 * 
 	 * @throws TransactionNotFoundException 
@@ -355,8 +371,8 @@ public class TransactionController {
 	@DeleteMapping(value = "/{id}")
 	@ApiOperation(value = "Route to delete a transaction in the API")
 	public ResponseEntity<Response<String>> delete(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId) 
-		throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
+		@PathVariable("id") Long transactionId) throws TransactionNotFoundException {
 		
 		Response<String> response = new Response<>();
 		Transaction transaction = transactionService.findById(transactionId);
@@ -372,13 +388,13 @@ public class TransactionController {
 	}
 	
 	/**
-	 * Method to convert an Transaction DTO to an Transaction entity.
+	 * Method to convert an Transaction DTO to a Transaction entity.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 03/04/2020
 	 * 
 	 * @param dto
-	 * @return a Transaction object
+	 * @return a <code>Transaction</code> object
 	 */
 	private Transaction convertDTOToEntity(TransactionDTO dto) {
 		
@@ -387,13 +403,13 @@ public class TransactionController {
 	}
 
 	/**
-	 * Method to convert an Transaction entity to an Transaction DTO.
+	 * Method to convert an Transaction entity to a Transaction DTO.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 03/04/2020
 	 * 
 	 * @param transaction
-	 * @return a TransactionDTO object
+	 * @return a <code>TransactionDTO</code> object
 	 */
 	private TransactionDTO convertEntityToDTO(Transaction transaction) {
 		
@@ -421,12 +437,15 @@ public class TransactionController {
 	 * @author Mariana Azevedo
 	 * @since 03/04/2020
 	 * 
-	 * @param apiVersion
+	 * @param apiVersion - API version at the moment
+	 * @param apiKey - API Key to access the routes
 	 * @param transactionDTO
 	 * @throws TransactionNotFoundException
 	 */
-	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO) throws TransactionNotFoundException {
-		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, transactionDTO.getId())).withSelfRel();
+	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO) 
+			throws TransactionNotFoundException {
+		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, 
+				transactionDTO.getId())).withSelfRel();
 		transactionDTO.add(selfLink);
 	}
 	

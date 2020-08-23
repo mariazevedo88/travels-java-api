@@ -4,7 +4,7 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 
 /**
- * Service Interface that provides methods for manipulating API Usage Plans.
+ * Interface that provides methods for manipulating API Usage Plans.
  * 
  * @author Mariana Azevedo
  * @since 11/06/2020

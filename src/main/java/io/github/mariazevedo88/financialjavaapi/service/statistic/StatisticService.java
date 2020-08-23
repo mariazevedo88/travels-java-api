@@ -6,7 +6,7 @@ import io.github.mariazevedo88.financialjavaapi.exception.DuplicateStatisticsExc
 import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 
 /**
- * Service Interface that provides methods for manipulating Statistics objects.
+ * Interface that provides methods for manipulating Statistics objects.
  * 
  * @author Mariana Azevedo
  * @since 08/09/2019
@@ -14,7 +14,7 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 public interface StatisticService {
 	
 	/**
-	 * Method that saves a statistic
+	 * Method that saves a statistic.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 08/06/2020
@@ -25,7 +25,7 @@ public interface StatisticService {
 	Statistic save(Statistic statistic);
 	
 	/**
-	 * Method that verifies if the statistics already exists in the database
+	 * Method that verifies if the statistics already exists in the database.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 11/06/2020

@@ -22,7 +22,7 @@ This API provides HTTP endpoint's and tools for the following:
 
 `POST/financial/v1/transaction`
 
-This endpoint is called to create a new transaction.
+This end-point is called to create a new transaction.
 
 **Body:**
 
@@ -59,12 +59,12 @@ Returns an empty body with one of the following:
 * 404 - Not Found: The requested resource doesn't exist.
 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
 * 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
-* 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+* 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 
 `PUT/financial/v1/transaction/{id}`
 
-This endpoint is called to update a transaction.
+This end-point is called to update a transaction.
 
 **Body:**
 
@@ -103,11 +103,11 @@ the one that was updated.
 
 `GET/financial/v1/transactions`
 
-This endpoint returns all transactions created.
+This end-point returns all transactions created.
 
 `DELETE/financial/v1/transaction/{id}`
 
-This endpoint causes a transaction for a specific id to be deleted, accepting an empty request body and return a 204 status code.
+This end-point causes a transaction for a specific id to be deleted, accepting an empty request body and return a 204 status code.
 
 **Where:**
 
@@ -115,7 +115,7 @@ This endpoint causes a transaction for a specific id to be deleted, accepting an
 
 `GET/financial/v1/statistics`
 
-This endpoint returns the statistics based on the transactions created.
+This end-point returns the statistics based on the transactions created.
 
 **Returns:**
 
@@ -151,7 +151,7 @@ This endpoint returns the statistics based on the transactions created.
 
 `links` - self-linking URL for the statistic. It is automatically generated.
 
-All `BigDecimal` values always contain exactly two decimal places, eg: `15.385` is returned as `15.39`.
+All `BigDecimal` values always contain exactly two decimal places, e.g: `15.385` is returned as `15.39`.
 
 ### Technologies used
 
@@ -179,7 +179,7 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.0.3-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.1.0-SNAPSHOT.jar`
 
 ### Execution
 
@@ -196,7 +196,7 @@ spring.datasource.username=
 spring.datasource.password=
 ```
 
-When the application is running **Flyway** will create the necessary tables for the creation of the words and the execution of the compare between the endpoints. In the test profile, the application uses **H2** database (data in memory).
+When the application is running **Flyway** will create the necessary tables for the creation of the words and the execution of the compare between the end-points. In the test profile, the application uses **H2** database (data in memory).
 
 ### Test
 
@@ -217,7 +217,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-3.0.3-SNAPSHOT.jar --spring.profiles.active=prod
+java -jar financial-java-api-3.1.0-SNAPSHOT.jar --spring.profiles.active=prod
 ```
     
 or

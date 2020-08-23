@@ -19,6 +19,16 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
 @Repository
 public interface StatisticRepository extends JpaRepository<Statistic, Long>{
 	
+	/**
+	 * Method that search for a statistic that already exists on the API.
+	 * 
+	 * @param sum
+	 * @param avg
+	 * @param max
+	 * @param min
+	 * @param count
+	 * @return <code>Optional<Statistic></code> object
+	 */
 	@Query(value = "select s.id, s.sum, s.avg, s.max, s.min, s.count from Statistic s "
 			+ "where s.sum = :sum and s.avg = :avg and s.max = :max and s.min = :min "
 			+ "and s.count = :count")

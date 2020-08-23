@@ -64,7 +64,7 @@ public class StatisticControllerTest {
 	}
 	
 	/**
-	 * Method that tests to save a Statistic in the API
+	 * Method that tests to save a Statistic in the API.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 05/04/2020

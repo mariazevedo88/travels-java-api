@@ -63,7 +63,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             response.addHeader(FinancialApiUtil.HEADER_RETRY_AFTER, String.valueOf(waitForRefill));
             response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "You have exhausted your API Request Quota"); // 429
             
-            log.error("You have exhausted your API Request Quota");
+            log.info("You have exhausted your API Request Quota");
 
             return false;
         }
