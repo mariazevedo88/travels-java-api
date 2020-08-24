@@ -158,13 +158,13 @@ All `BigDecimal` values always contain exactly two decimal places, e.g: `15.385`
 This project was developed with:
 
 * **Java 11 (Java Development Kit - JDK: 11.0.7)**
-* **Spring Boot 2.3.2**
-* **Spring Admin Client 2.2.3**
+* **Spring Boot 2.3.3**
+* **Spring Admin Client 2.2.4**
 * **Maven**
 * **JUnit 5**
 * **Surfire**
 * **PostgreSQL 12**
-* **Flyway 6.4.1**
+* **Flyway 6.4.4**
 * **Swagger 3.0.0**
 * **Model Mapper 2.3.8**
 * **Heroku**
@@ -217,20 +217,20 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-3.1.0-SNAPSHOT.jar --spring.profiles.active=prod
+java -jar financial-java-api-3.1.0-SNAPSHOT.jar --spring.profiles.active=dev
 ```
     
 or
 
 ```bash
-mvn spring-boot:run -Dspring.profiles.active=prod
+mvn spring-boot:run -Dspring.profiles.active=dev
 ```
 
 By default, the API will be available at [http://localhost:8080/financial/v1](http://localhost:8080/financial/v1)
 
 ### Documentation
 
-* Swagger (development environment): http://localhost:8080/swagger-ui/index.html
+* Swagger (development environment): [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 #### Medium Articles
 
