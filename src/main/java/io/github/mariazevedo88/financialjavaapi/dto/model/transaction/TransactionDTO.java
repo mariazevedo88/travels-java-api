@@ -9,10 +9,12 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.zero_x_baadf00d.partialize.annotation.Partialize;
 
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import lombok.EqualsAndHashCode;
@@ -28,6 +30,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Partialize(
+		allowedFields = {"id", "nsu", "authorizationNumber", "transactionDate", "amount", "type"},
+		defaultFields = {"nsu", "transactionDate", "amount"}
+)
 public class TransactionDTO extends RepresentationModel<TransactionDTO> {
 	
 	private Long id;

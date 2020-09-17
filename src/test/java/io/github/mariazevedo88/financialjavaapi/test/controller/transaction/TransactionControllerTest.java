@@ -64,7 +64,7 @@ public class TransactionControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private TransactionService service;
+	private TransactionService transactionService;
 	
 	@BeforeAll
 	private void setUp() {
@@ -83,13 +83,11 @@ public class TransactionControllerTest {
 	@Test
 	public void testSave() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
+		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
-		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-			.content(getJsonPayload(ID, NSU, AUTH, FinancialApiUtil.
-			 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON)
+		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, NSU, AUTH, 
+			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
+			.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
 		.andDo(MockMvcResultHandlers.print())
 		.andExpect(status().isCreated())
@@ -112,13 +110,11 @@ public class TransactionControllerTest {
 	@Test
 	public void testSaveInvalidTransaction() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
+		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
-		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-				.content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
+		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
 				 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
 		.andExpect(status().isBadRequest())
 		.andExpect(jsonPath("$.errors.details").value("Nsu cannot be null"));
@@ -135,10 +131,8 @@ public class TransactionControllerTest {
 	 */
 	private Transaction getMockTransaction() throws ParseException {
 		
-		Transaction transaction = new Transaction(ID, NSU, AUTH,
-			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), 
-			VALUE, TYPE);
-		
+		Transaction transaction = new Transaction(ID, NSU, AUTH, FinancialApiUtil.getLocalDateTimeFromString
+				(TRANSACTION_DATE.concat("Z")), VALUE, TYPE);
 		return transaction;
 	}
 	

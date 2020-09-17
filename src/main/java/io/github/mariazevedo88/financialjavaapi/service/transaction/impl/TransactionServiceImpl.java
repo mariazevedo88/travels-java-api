@@ -12,6 +12,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ContainerNode;
+import com.zero_x_baadf00d.partialize.Partialize;
+
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
@@ -93,6 +98,17 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<Transaction> findAll() {
 		return transactionRepository.findAll();
+	}
+
+	/**
+	 * @see TransactionService#getPartialJsonResponse(String, TransactionDTO)
+	 */
+	@Override
+	public TransactionDTO getPartialJsonResponse(String fields, TransactionDTO dto) {
+		
+		final Partialize partialize = new Partialize();
+		final ContainerNode<?> node = partialize.buildPartialObject(fields, TransactionDTO.class, dto);
+		return new ObjectMapper().convertValue(node, TransactionDTO.class);
 	}
 
 }

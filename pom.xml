@@ -25,6 +25,7 @@
 		<modelmapper.version>2.3.8</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
 		<spring.admin.version>2.3.0</spring.admin.version>
+		<partialize.version>release~20.05</partialize.version>
 	</properties>
 
 	<parent>
@@ -33,6 +34,13 @@
 		<version>2.3.3.RELEASE</version>
 		<relativePath/>
 	</parent>
+	
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -114,6 +122,11 @@
 		    <groupId>com.github.vladimir-bukhtoyarov</groupId>
 		    <artifactId>bucket4j-core</artifactId>
 		    <version>${bucket4j.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.github.thibaultmeyer</groupId>
+		    <artifactId>partialize</artifactId>
+		    <version>${partialize.version}</version>
 		</dependency>
 	</dependencies>
 

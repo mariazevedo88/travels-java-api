@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
@@ -86,5 +87,16 @@ public interface TransactionService {
 	 */
 	Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page,
 			PageOrderEnum order);
-
+	
+	/**
+	 * Method to build a partial response in requests regarding Transaction.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 17/09/2020
+	 * 
+	 * @param fields
+	 * @param dto
+	 * @return a <code>TransactionDTO</code> object
+	 */
+	TransactionDTO getPartialJsonResponse(String fields, TransactionDTO dto);
 }
