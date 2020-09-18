@@ -11,7 +11,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -109,10 +108,10 @@ public class TransactionController {
 			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 		
-		Transaction transaction = convertDTOToEntity(dto); 
+		Transaction transaction = dto.convertDTOToEntity(); 
 		Transaction transactionToCreate = transactionService.save(transaction);
 
-		TransactionDTO dtoSaved = convertEntityToDTO(transactionToCreate);
+		TransactionDTO dtoSaved = transactionToCreate.convertEntityToDTO();
 		createSelfLink(transactionToCreate, dtoSaved);
 
 		response.setData(dtoSaved);
@@ -176,10 +175,10 @@ public class TransactionController {
 			throw new TransactionInvalidUpdateException("You don't have permission to change the transaction id=" + dto.getId());
 		}
 
-		Transaction transaction = convertDTOToEntity(dto);
+		Transaction transaction = dto.convertDTOToEntity();
 		Transaction transactionToUpdate = transactionService.save(transaction);
 		
-		TransactionDTO itemDTO = convertEntityToDTO(transactionToUpdate);
+		TransactionDTO itemDTO = transactionToUpdate.convertEntityToDTO();
 		createSelfLink(transactionToUpdate, itemDTO);
 		response.setData(itemDTO);
 		
@@ -234,7 +233,7 @@ public class TransactionController {
 					+ " and endDate=" + endDate);
 		}
 		
-		Page<TransactionDTO> itemsDTO = transactions.map(this::convertEntityToDTO);
+		Page<TransactionDTO> itemsDTO = transactions.map(t -> t.convertEntityToDTO());
 		itemsDTO.stream().forEach(dto -> {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto, null);
@@ -289,7 +288,7 @@ public class TransactionController {
 		}
 		
 		List<TransactionDTO> transactionsDTO = new ArrayList<>();
-		transactions.stream().forEach(t -> transactionsDTO.add(convertEntityToDTO(t)));
+		transactions.stream().forEach(t -> transactionsDTO.add(t.convertEntityToDTO()));
 		
 		transactionsDTO.stream().forEach(dto -> {
 			try {
@@ -338,7 +337,7 @@ public class TransactionController {
 		Response<TransactionDTO> response = new Response<>();
 		Transaction transaction = transactionService.findById(transactionId);
 		
-		TransactionDTO dto = convertEntityToDTO(transaction);
+		TransactionDTO dto = transaction.convertEntityToDTO();
 		
 		if(fields != null) {
 			dto = transactionService.getPartialJsonResponse(fields, dto);
@@ -426,36 +425,6 @@ public class TransactionController {
 		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, 
 				transactionDTO.getId(), fields)).withSelfRel();
 		transactionDTO.add(selfLink);
-	}
-	
-	/**
-	 * Method to convert an Transaction DTO to a Transaction entity.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 03/04/2020
-	 * 
-	 * @param dto
-	 * @return a <code>Transaction</code> object
-	 */
-	public Transaction convertDTOToEntity(TransactionDTO dto) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(dto, Transaction.class);
-	}
-
-	/**
-	 * Method to convert an Transaction entity to a Transaction DTO.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 03/04/2020
-	 * 
-	 * @param transaction
-	 * @return a <code>TransactionDTO</code> object
-	 */
-	public TransactionDTO convertEntityToDTO(Transaction transaction) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(transaction, TransactionDTO.class);
 	}
 	
 }

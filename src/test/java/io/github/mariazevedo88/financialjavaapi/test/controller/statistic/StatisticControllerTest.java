@@ -35,10 +35,10 @@ import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticServi
  * @since 05/04/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class StatisticControllerTest {
 	
 	private static final Long ID = 1L;

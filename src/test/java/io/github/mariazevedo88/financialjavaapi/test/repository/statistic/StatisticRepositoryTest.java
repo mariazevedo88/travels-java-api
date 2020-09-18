@@ -42,12 +42,8 @@ public class StatisticRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		Statistic statistic = new Statistic();
-		statistic.setSum(new BigDecimal(200d));
-		statistic.setMin(new BigDecimal(100d));
-		statistic.setMax(new BigDecimal(100d));
-		statistic.setAvg(new BigDecimal(100d));
-		statistic.setCount(2);
+		Statistic statistic = new Statistic(null, new BigDecimal(200d), new BigDecimal(100d),
+				new BigDecimal(100d), new BigDecimal(100d), 2);
 		
 		Statistic response = repository.save(statistic);
 		

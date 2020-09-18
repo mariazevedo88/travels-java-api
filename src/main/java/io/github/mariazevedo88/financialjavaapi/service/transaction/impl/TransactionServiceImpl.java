@@ -32,7 +32,7 @@ import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionS
 @Service
 public class TransactionServiceImpl implements TransactionService {
 	
-	private TransactionRepository transactionRepository;
+	TransactionRepository transactionRepository;
 	
 	@Value("${pagination.items_per_page}")
 	private int itemsPerPage;

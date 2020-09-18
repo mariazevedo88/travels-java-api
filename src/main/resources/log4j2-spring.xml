@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+					pattern="%d [%level] [%t] [%logger{40}] - %msg%n%throwable" />
+		</Console>
+
+		<RollingFile name="RollingFile"
+					 fileName="/var/log/apis/financial-java-api/financial-java-api.log"
+					 filePattern="/var/log/apis/financial-java-api/$${date:yyyy-MM}/financial-java-api.log-%d{MM-dd-yyyy}-%i.log.tar.gz">
+			<PatternLayout
+					pattern="%d [%level] [%t] [%logger{40}] - %msg%n%throwable" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="RollingFile"/>
+		</Root>
+	</Loggers>
+</Configuration>
