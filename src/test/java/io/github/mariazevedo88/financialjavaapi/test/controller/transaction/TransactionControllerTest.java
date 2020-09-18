@@ -44,10 +44,10 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  * @since 05/04/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class TransactionControllerTest {
 	
 	private static final Long ID = 1L;
@@ -61,17 +61,16 @@ public class TransactionControllerTest {
 	private HttpHeaders headers;
 
 	@Autowired
-	private MockMvc mockMvc;
-
+	MockMvc mockMvc;
+	
 	@MockBean
-	private TransactionService service;
+	TransactionService transactionService;
 	
 	@BeforeAll
 	private void setUp() {
 		headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
-	}
-	
+	}	
 	/**
 	 * Method that tests to save an Transaction in the API
 	 * 
@@ -83,13 +82,11 @@ public class TransactionControllerTest {
 	@Test
 	public void testSave() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
+		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
-		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-			.content(getJsonPayload(ID, NSU, AUTH, FinancialApiUtil.
-			 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON)
+		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, NSU, AUTH, 
+			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
+			.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
 		.andDo(MockMvcResultHandlers.print())
 		.andExpect(status().isCreated())
@@ -112,13 +109,11 @@ public class TransactionControllerTest {
 	@Test
 	public void testSaveInvalidTransaction() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
+		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
-		mockMvc.perform(MockMvcRequestBuilders.post(URL)
-				.content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
+		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
 				 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
 		.andExpect(status().isBadRequest())
 		.andExpect(jsonPath("$.errors.details").value("Nsu cannot be null"));
@@ -135,10 +130,8 @@ public class TransactionControllerTest {
 	 */
 	private Transaction getMockTransaction() throws ParseException {
 		
-		Transaction transaction = new Transaction(ID, NSU, AUTH,
-			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), 
-			VALUE, TYPE);
-		
+		Transaction transaction = new Transaction(ID, NSU, AUTH, FinancialApiUtil.getLocalDateTimeFromString
+				(TRANSACTION_DATE.concat("Z")), VALUE, TYPE);
 		return transaction;
 	}
 	
@@ -161,13 +154,7 @@ public class TransactionControllerTest {
 	private String getJsonPayload(Long id, String nsu, String authorization, LocalDateTime transactionDate,
 			BigDecimal amount, TransactionTypeEnum type) throws JsonProcessingException {
 		
-		TransactionDTO dto = new TransactionDTO();
-		dto.setId(id);
-		dto.setNsu(nsu);
-		dto.setAuthorizationNumber(authorization);
-		dto.setTransactionDate(transactionDate);
-        dto.setAmount(amount);
-        dto.setType(type);
+		TransactionDTO dto = new TransactionDTO(id, nsu, authorization, transactionDate, amount, type);
 	        
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

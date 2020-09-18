@@ -46,12 +46,8 @@ public class TransactionRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
-		Transaction transaction = new Transaction();
-		transaction.setNsu("220788");
-		transaction.setAuthorizationNumber("000123");
-		transaction.setTransactionDate(LocalDateTime.now());
-		transaction.setAmount(new BigDecimal(100d));
-		transaction.setType(TransactionTypeEnum.CARD);
+		Transaction transaction = new Transaction(null, "220788", "000123", 
+			LocalDateTime.now(), new BigDecimal(100d), TransactionTypeEnum.CARD);
 		
 		repository.save(transaction);
 	}
@@ -65,12 +61,8 @@ public class TransactionRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		Transaction transaction = new Transaction();
-		transaction.setNsu("270257");
-		transaction.setAuthorizationNumber("000123");
-		transaction.setTransactionDate(LocalDateTime.now());
-		transaction.setAmount(new BigDecimal(100d));
-		transaction.setType(TransactionTypeEnum.CARD);
+		Transaction transaction = new Transaction(null, "270257", "000123", LocalDateTime.now(),
+				new BigDecimal(100d), TransactionTypeEnum.CARD);
 		
 		Transaction response = repository.save(transaction);
 		

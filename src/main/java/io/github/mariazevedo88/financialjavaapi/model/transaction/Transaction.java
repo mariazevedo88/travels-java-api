@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
+import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,6 +61,19 @@ public class Transaction implements Serializable {
 	
 	public Transaction (TransactionTypeEnum type){
 		this.type = type;
+	}
+	
+	/**
+	 * Method to convert an Transaction entity to a Transaction DTO.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 03/04/2020
+	 * 
+	 * @param transaction
+	 * @return a <code>TransactionDTO</code> object
+	 */
+	public TransactionDTO convertEntityToDTO() {
+		return new ModelMapper().map(this, TransactionDTO.class);
 	}
 	
 }

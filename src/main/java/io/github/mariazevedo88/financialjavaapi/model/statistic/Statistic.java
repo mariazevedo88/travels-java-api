@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.modelmapper.ModelMapper;
+
+import io.github.mariazevedo88.financialjavaapi.dto.model.statistic.StatisticDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,5 +61,18 @@ public class Statistic implements Serializable {
 		this.max = max;
 		this.min = min;
 		this.count = count;
+	}
+	
+	/**
+	 * Method to convert an Statistic entity to an Statistic DTO.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 03/04/2020
+	 * 
+	 * @param statistic
+	 * @return a <code>StatisticDTO</code> object
+	 */
+	public StatisticDTO convertEntityToDTO() {
+		return new ModelMapper().map(this, StatisticDTO.class);
 	}
 }

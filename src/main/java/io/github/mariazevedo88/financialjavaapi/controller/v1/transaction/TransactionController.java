@@ -11,7 +11,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -109,10 +108,12 @@ public class TransactionController {
 			throw new NotParsableContentException("Date of the transaction is in the future.");
 		}
 		
-		Transaction transaction = transactionService.save(convertDTOToEntity(dto));
-		TransactionDTO dtoSaved = convertEntityToDTO(transaction);
-		createSelfLink(transaction, dtoSaved);
-		
+		Transaction transaction = dto.convertDTOToEntity(); 
+		Transaction transactionToCreate = transactionService.save(transaction);
+
+		TransactionDTO dtoSaved = transactionToCreate.convertEntityToDTO();
+		createSelfLink(transactionToCreate, dtoSaved);
+
 		response.setData(dtoSaved);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -174,10 +175,11 @@ public class TransactionController {
 			throw new TransactionInvalidUpdateException("You don't have permission to change the transaction id=" + dto.getId());
 		}
 
-		Transaction transaction = transactionService.save(convertDTOToEntity(dto));
-		TransactionDTO itemDTO = convertEntityToDTO(transaction);
+		Transaction transaction = dto.convertDTOToEntity();
+		Transaction transactionToUpdate = transactionService.save(transaction);
 		
-		createSelfLink(transaction, itemDTO);
+		TransactionDTO itemDTO = transactionToUpdate.convertEntityToDTO();
+		createSelfLink(transactionToUpdate, itemDTO);
 		response.setData(itemDTO);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -231,10 +233,10 @@ public class TransactionController {
 					+ " and endDate=" + endDate);
 		}
 		
-		Page<TransactionDTO> itemsDTO = transactions.map(this::convertEntityToDTO);
+		Page<TransactionDTO> itemsDTO = transactions.map(t -> t.convertEntityToDTO());
 		itemsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, apiKey, dto);
+				createSelfLinkInCollections(apiVersion, apiKey, dto, null);
 			} catch (TransactionNotFoundException e) {
 				log.error("There are no transactions registered between startDate= {} and endDate= {}", startDate, endDate);
 			}
@@ -286,11 +288,11 @@ public class TransactionController {
 		}
 		
 		List<TransactionDTO> transactionsDTO = new ArrayList<>();
-		transactions.stream().forEach(t -> transactionsDTO.add(convertEntityToDTO(t)));
+		transactions.stream().forEach(t -> transactionsDTO.add(t.convertEntityToDTO()));
 		
 		transactionsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, apiKey, dto);
+				createSelfLinkInCollections(apiVersion, apiKey, dto, null);
 			} catch (TransactionNotFoundException e) {
 				log.error("There are no transactions registered with the nsu= {}", transactionNSU);
 			}
@@ -311,6 +313,7 @@ public class TransactionController {
 	 * @param apiVersion - API version at the moment
 	 * @param apiKey - API Key to access the routes
 	 * @param transactionId - the id of the transaction
+	 * @param fields - Transaction fields that should be returned in JSON as Partial Response
 	 * 
 	 * @return ResponseEntity with a <code>Response<TransactionDTO></code> object and the HTTP status
 	 * 
@@ -320,7 +323,7 @@ public class TransactionController {
 	 * 400 - Bad Request: The request was unacceptable, often due to missing a required parameter.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 	 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 	 * 
 	 * @throws TransactionNotFoundException
@@ -328,13 +331,18 @@ public class TransactionController {
 	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Route to find a transaction by your id in the API")
 	public ResponseEntity<Response<TransactionDTO>> findById(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
-		@PathVariable("id") Long transactionId) throws TransactionNotFoundException {
+		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @PathVariable("id") Long transactionId,
+		@RequestParam(required = false) String fields) throws TransactionNotFoundException {
 		
 		Response<TransactionDTO> response = new Response<>();
 		Transaction transaction = transactionService.findById(transactionId);
 		
-		TransactionDTO dto = convertEntityToDTO(transaction);
+		TransactionDTO dto = transaction.convertEntityToDTO();
+		
+		if(fields != null) {
+			dto = transactionService.getPartialJsonResponse(fields, dto);
+		}
+		
 		createSelfLink(transaction, dto);
 		response.setData(dto);
 		
@@ -388,36 +396,6 @@ public class TransactionController {
 	}
 	
 	/**
-	 * Method to convert an Transaction DTO to a Transaction entity.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 03/04/2020
-	 * 
-	 * @param dto
-	 * @return a <code>Transaction</code> object
-	 */
-	private Transaction convertDTOToEntity(TransactionDTO dto) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(dto, Transaction.class);
-	}
-
-	/**
-	 * Method to convert an Transaction entity to a Transaction DTO.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 03/04/2020
-	 * 
-	 * @param transaction
-	 * @return a <code>TransactionDTO</code> object
-	 */
-	private TransactionDTO convertEntityToDTO(Transaction transaction) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(transaction, TransactionDTO.class);
-	}
-	
-	/**
 	 * Method that creates a self link to transaction object
 	 * 
 	 * @author Mariana Azevedo
@@ -442,10 +420,10 @@ public class TransactionController {
 	 * @param transactionDTO
 	 * @throws TransactionNotFoundException
 	 */
-	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO) 
+	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO, String fields) 
 			throws TransactionNotFoundException {
 		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, 
-				transactionDTO.getId())).withSelfRel();
+				transactionDTO.getId(), fields)).withSelfRel();
 		transactionDTO.add(selfLink);
 	}
 	

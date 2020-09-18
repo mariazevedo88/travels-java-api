@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -41,9 +40,7 @@ public class StatisticController {
 	private TransactionService transactionService;
 	
 	@Autowired
-	public StatisticController(StatisticService statisticService, 
-			TransactionService transactionService) {
-		
+	public StatisticController(StatisticService statisticService, TransactionService transactionService) {
 		this.statisticService = statisticService;
 		this.transactionService = transactionService;
 	}
@@ -77,10 +74,10 @@ public class StatisticController {
 		Response<StatisticDTO> response = new Response<>();
 
 		Statistic statistics = createStatistics(transactionService.findAll());
-		statistics = statisticService.save(statistics);
+		Statistic statisticsToCreate = statisticService.save(statistics);
 
-		StatisticDTO dto = convertEntityToDTO(statistics);
-		createSelfLink(statistics, dto);
+		StatisticDTO dto = statisticsToCreate.convertEntityToDTO();
+		createSelfLink(statisticsToCreate, dto);
 		response.setData(dto);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -116,21 +113,6 @@ public class StatisticController {
 		
 		long count = transactions.stream().count();
 		return new Statistic(sum, avg, min, max, count);
-	}
-	
-	/**
-	 * Method to convert an Statistic entity to an Statistic DTO.
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 03/04/2020
-	 * 
-	 * @param statistic
-	 * @return a <code>StatisticDTO</code> object
-	 */
-	private StatisticDTO convertEntityToDTO(Statistic statistic) {
-		
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(statistic, StatisticDTO.class);
 	}
 	
 	/**
