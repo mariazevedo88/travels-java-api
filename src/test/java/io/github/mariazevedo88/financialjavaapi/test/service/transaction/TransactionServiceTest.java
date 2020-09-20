@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,12 @@ import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
@@ -39,9 +43,10 @@ import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionS
  * @since 05/04/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class TransactionServiceTest {
 	
 	@Autowired
@@ -59,6 +64,7 @@ public class TransactionServiceTest {
 	 * @since 05/04/2020
 	 */
 	@Test
+	@Order(1)
 	public void testSave() {
 		
 		BDDMockito.given(repository.save(Mockito.any(Transaction.class)))
@@ -76,6 +82,7 @@ public class TransactionServiceTest {
 	 * @since 05/04/2020
 	 */
 	@Test
+	@Order(2)
 	public void testFindByNsu() {
 		
 		BDDMockito.given(repository.findByNsu(Mockito.anyString()))
@@ -92,6 +99,7 @@ public class TransactionServiceTest {
 	 * @since 21/08/2020
 	 */
 	@Test
+	@Order(3)
 	public void testFindBetweenDates() {
 		
 		List<Transaction> transactions = new ArrayList<>();
@@ -99,9 +107,9 @@ public class TransactionServiceTest {
 		Page<Transaction> page = new PageImpl<>(transactions);
 		
 		BDDMockito.given(repository.findAllByTransactionDateGreaterThanEqualAndTransactionDateLessThanEqual(Mockito.any(LocalDateTime.class), 
-				Mockito.any(LocalDateTime.class), Mockito.any(PageRequest.class))).willReturn(page);
+				Mockito.any(LocalDateTime.class), Mockito.any(Pageable.class))).willReturn(page);
 		
-		Page<Transaction> response = service.findBetweenDates(DATE, DATE, 0, PageOrderEnum.ASC);
+		Page<Transaction> response = service.findBetweenDates(DATE, DATE, PageRequest.of(1, 10, Sort.by("id").ascending()));
 		assertNotNull(response);
 	}
 	

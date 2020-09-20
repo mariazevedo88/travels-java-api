@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -59,8 +59,7 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<TransactionDTO> entity = new HttpEntity<>(dtoNsu123456, headers);
         
-        ResponseEntity<String> responseEntity = this.restTemplate
-        		.exchange("http://localhost:" + port + "/financial/v1/transactions", 
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/transactions", 
         				HttpMethod.POST, entity, String.class);
         
         assertEquals(201, responseEntity.getStatusCodeValue());
@@ -80,8 +79,7 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<TransactionDTO> entity = new HttpEntity<>(dtoNsu258963, headers);
         
-        ResponseEntity<String> responseEntity = this.restTemplate
-        		.exchange("http://localhost:" + port + "/financial/v1/transactions", 
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/transactions", 
         				HttpMethod.POST, entity, String.class);
         
         assertEquals(201, responseEntity.getStatusCodeValue());
@@ -97,16 +95,12 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<String> entity = new HttpEntity<>(headers);
         
-        LocalDateTime startDateTime = FinancialApiUtil.
-        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z");
-        LocalDateTime endDateTime = startDateTime.plusDays(5);
-        
-        String startDate = startDateTime.format(FinancialApiUtil.getDateFormater());
-		String endDate = endDateTime.format(FinancialApiUtil.getDateFormater());
+        String startDate = LocalDate.of(2020, 8, 20).toString();
+		String endDate = LocalDate.of(2020, 8, 30).toString();
 
 		ResponseEntity<String> responseEntity = this.restTemplate
-        		.exchange("http://localhost:" + port + "/financial/v1/transactions?startDate=" + startDate + "&endDate=" + endDate,  
-        				HttpMethod.GET, entity, String.class);
+        		.exchange("http://localhost:" + port + "/financial/v1/transactions?startDate=" + startDate + "&endDate=" + endDate
+        				+ "&page=" + 1 + "&size=" + 2 + "&order=ASC", HttpMethod.GET, entity, String.class);
     	
         assertEquals(200, responseEntity.getStatusCodeValue());
     }

@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -47,6 +50,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class TransactionControllerTest {
 	
@@ -80,6 +84,7 @@ public class TransactionControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@Order(1)
 	public void testSave() throws Exception {
 		
 		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
@@ -107,6 +112,7 @@ public class TransactionControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@Order(2)
 	public void testSaveInvalidTransaction() throws Exception {
 		
 		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());

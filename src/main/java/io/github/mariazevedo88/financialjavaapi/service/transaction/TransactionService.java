@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 
 /**
@@ -79,14 +79,13 @@ public interface TransactionService {
 	 * 
 	 * @param startDate - the start date of the search
 	 * @param endDate - the end date of the search
-	 * @param page - the page that will be return in the search
-	 * @param order - the sort order that the results should be shown: 
-	 *        ASC - ascending order; DESC - descending order
+	 * @param pageable - object for pagination information: the page that will be return in the search, 
+	 * the size of page, and sort direction that the results should be shown: ASC - ascending order; 
+	 * DESC - descending order.
 	 * 
 	 * @return <code>Page<Transaction></code> object
 	 */
-	Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, int page,
-			PageOrderEnum order);
+	Page<Transaction> findBetweenDates(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 	
 	/**
 	 * Method to build a partial response in requests regarding Transaction.

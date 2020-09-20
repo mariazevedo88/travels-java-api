@@ -13,6 +13,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -37,7 +39,6 @@ import io.github.mariazevedo88.financialjavaapi.dto.response.Response;
 import io.github.mariazevedo88.financialjavaapi.exception.NotParsableContentException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionInvalidUpdateException;
 import io.github.mariazevedo88.financialjavaapi.exception.TransactionNotFoundException;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.PageOrderEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
@@ -55,7 +56,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/financial/v1/transactions")
 public class TransactionController {
 	
-	private TransactionService transactionService;
+	TransactionService transactionService;
 	
 	@Autowired
 	public TransactionController(TransactionService transactionService) {
@@ -93,9 +94,9 @@ public class TransactionController {
 	 */
 	@PostMapping
 	@ApiOperation(value = "Route to create a transaction")
-	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, 
-		@Valid @RequestBody TransactionDTO dto, BindingResult result) throws NotParsableContentException {
+	public ResponseEntity<Response<TransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") String apiVersion, 
+			@RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, BindingResult result) 
+					throws NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
@@ -155,9 +156,9 @@ public class TransactionController {
 	 */
 	@PutMapping(path = "/{id}")
 	@ApiOperation(value = "Route to update a transaction")
-	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
-		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, 
-		BindingResult result) throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
+	public ResponseEntity<Response<TransactionDTO>> update(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") String apiVersion, 
+		@RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @Valid @RequestBody TransactionDTO dto, BindingResult result) 
+		throws TransactionNotFoundException, TransactionInvalidUpdateException, NotParsableContentException {
 		
 		Response<TransactionDTO> response = new Response<>();
 
@@ -199,8 +200,9 @@ public class TransactionController {
 	 * @param apiKey - API Key to access the routes
 	 * @param startDate - the start date of the search
 	 * @param endDate - the end date of the search
-	 * @param page - the page that will be return in the search
-	 * @param order - the sort order that the results should be shown: ASC - ascending order; DESC - descending order
+	 * @param pageable Object for pagination information: the page that will be return in the search, 
+	 * the size of page, and sort direction that the results should be shown: ASC - ascending order; 
+	 * DESC - descending order.
 	 * 
 	 * @return ResponseEntity with a <code>Response<Page<TransactionDTO>></code> object and the HTTP status
 	 * 
@@ -217,16 +219,15 @@ public class TransactionController {
 	@ApiOperation(value = "Route to find all transactions of the API in a period of time")
 	public ResponseEntity<Response<Page<TransactionDTO>>> findAllBetweenDates(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 
 		String apiVersion, @RequestHeader(value=FinancialApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") 
-	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @RequestParam(name="page", defaultValue = "0") int page,
-	    @RequestParam(name="order", defaultValue = "ASC") String order) throws TransactionNotFoundException {
+	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @PageableDefault(page = 1, size = 10, sort = {"id"}) Pageable pageable) 
+	    		throws TransactionNotFoundException {
 		
 		Response<Page<TransactionDTO>> response = new Response<>();
 		
 		LocalDateTime startDateTime = FinancialApiUtil.convertLocalDateToLocalDateTime(startDate);
 		LocalDateTime endDateTime = FinancialApiUtil.convertLocalDateToLocalDateTime(endDate);
 		
-		Page<Transaction> transactions = transactionService.findBetweenDates(startDateTime, endDateTime, 
-				page, PageOrderEnum.getSortDirection(order));
+		Page<Transaction> transactions = transactionService.findBetweenDates(startDateTime, endDateTime, pageable);
 		
 		if (transactions.isEmpty()) {
 			throw new TransactionNotFoundException("There are no transactions registered between startDate=" + startDate 
@@ -236,7 +237,7 @@ public class TransactionController {
 		Page<TransactionDTO> itemsDTO = transactions.map(t -> t.convertEntityToDTO());
 		itemsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, apiKey, dto, null);
+				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
 				log.error("There are no transactions registered between startDate= {} and endDate= {}", startDate, endDate);
 			}
@@ -292,7 +293,7 @@ public class TransactionController {
 		
 		transactionsDTO.stream().forEach(dto -> {
 			try {
-				createSelfLinkInCollections(apiVersion, apiKey, dto, null);
+				createSelfLinkInCollections(apiVersion, apiKey, dto);
 			} catch (TransactionNotFoundException e) {
 				log.error("There are no transactions registered with the nsu= {}", transactionNSU);
 			}
@@ -420,10 +421,10 @@ public class TransactionController {
 	 * @param transactionDTO
 	 * @throws TransactionNotFoundException
 	 */
-	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO, String fields) 
+	private void createSelfLinkInCollections(String apiVersion, String apiKey, final TransactionDTO transactionDTO) 
 			throws TransactionNotFoundException {
-		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, 
-				transactionDTO.getId(), fields)).withSelfRel();
+		Link selfLink = linkTo(methodOn(TransactionController.class).findById(apiVersion, apiKey, transactionDTO.getId(), null))
+				.withSelfRel().expand();
 		transactionDTO.add(selfLink);
 	}
 	

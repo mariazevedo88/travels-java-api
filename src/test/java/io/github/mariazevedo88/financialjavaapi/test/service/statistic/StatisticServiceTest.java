@@ -28,9 +28,9 @@ import io.github.mariazevedo88.financialjavaapi.service.statistic.StatisticServi
  * @since 05/04/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class StatisticServiceTest {
 	
 	private static final BigDecimal SUM = BigDecimal.valueOf(500);

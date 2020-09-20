@@ -13,7 +13,7 @@ This API provides HTTP endpoint's and tools for the following:
 * Create a Transaction: `POST/financial/v1/transactions`
 * Update a Transaction: `PUT/financial/v1/transactions`
 * Delete a Transaction (by id): `DELETE/financial/v1/transactions/1`
-* Get report of transactions in a period of time (sorted and paginated): `GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-09-18&order=DESC&page=2`
+* Get report of transactions in a period of time (sorted and paginated): `GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-09-20&page=2&size=5&sort=DESC`
 * Find a unique transaction by id: `GET/financial/v1/transactions/1`
 * Find a unique transaction by id, but filtering JSON fields: `GET/financial/v1/transactions/1?fields=id,nsu,transactionDate,amount`
 * Find transactions by NSU (Unique sequential number): `GET/financial/v1/transactions/byNsu/{nsuNumber}`
@@ -94,7 +94,7 @@ the one that was updated.
    		"type": "CARD",
    		"links": [
 	    	{
-	       		"rel": "self",
+	       	"rel": "self",
 	        	"href": "http://localhost:8080/financial/v1/transactions/1"
 	    	}
    		]
@@ -102,10 +102,10 @@ the one that was updated.
 }
 ```
 
-`GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-01-18&order=DESC&page=2`
+`GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-01-18&page=2&size=5&sort=DESC`
 
-This end-point returns transactions created within the period specified in the request. E.g: in the above query, we are looking for 
-all transactions carried out between 01-18 January 2020. Also, the result should return in descending order and only the page 2.
+The end-point returns transactions were created within the period specified in the request. E.g., in the above query, we are looking for all transactions carried out between 01-18 January 2020. Also, the result should return in descending order and only page 2
+with five transactions.
 
 `DELETE/financial/v1/transaction/{id}`
 
@@ -131,7 +131,7 @@ This end-point returns the statistics based on the transactions created.
   		"count": 2,
   		"links": [
 	    	{
-	       		"rel": "self",
+	       	"rel": "self",
 	        	"href": "http://localhost:8080/financial/v1/statistics/1"
 	    	}
    		]
@@ -182,7 +182,7 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.1.2-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.1.3-SNAPSHOT.jar`
 
 ### Execution
 
@@ -220,7 +220,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-3.1.2-SNAPSHOT.jar --spring.profiles.active=dev
+java -jar financial-java-api-3.1.3-SNAPSHOT.jar --spring.profiles.active=dev
 ```
     
 or

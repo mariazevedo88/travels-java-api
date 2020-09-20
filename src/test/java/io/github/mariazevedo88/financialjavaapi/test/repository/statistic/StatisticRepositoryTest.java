@@ -25,9 +25,9 @@ import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRe
  * @since 24/03/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class StatisticRepositoryTest {
 	
 	@Autowired

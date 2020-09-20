@@ -6,11 +6,11 @@
 
 	<groupId>io.github.mariazevedo88</groupId>
 	<artifactId>financial-java-api</artifactId>
-	<version>3.1.2-SNAPSHOT</version>
+	<version>3.1.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>financial-java-api</name>
-	<description>A financial API for managing transactions</description>
+	<description>A financial API for managing transactions. It is built with Java, Spring Boot, and Spring Framework.</description>
 
 	<developers>
 		<developer>

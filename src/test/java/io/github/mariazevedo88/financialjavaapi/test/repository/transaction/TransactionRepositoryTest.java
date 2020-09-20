@@ -11,6 +11,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,9 +32,10 @@ import io.github.mariazevedo88.financialjavaapi.repository.transaction.Transacti
  * @since 24/03/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class TransactionRepositoryTest {
 	
 	@Autowired
@@ -59,6 +63,7 @@ public class TransactionRepositoryTest {
 	 * @since 24/03/2020
 	 */
 	@Test
+	@Order(1)
 	public void testSave() {
 		
 		Transaction transaction = new Transaction(null, "270257", "000123", LocalDateTime.now(),
@@ -76,6 +81,7 @@ public class TransactionRepositoryTest {
 	 * @since 24/03/2020
 	 */
 	@Test
+	@Order(2)
 	public void testFindByNsu(){
 		
 		List<Transaction> response = repository.findByNsu("220788");
