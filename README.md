@@ -240,6 +240,7 @@ By default, the API will be available at [http://localhost:8080/financial/v1](ht
 * [Construindo uma API RESTful com Java e Spring Framework— Parte 1 (PT-BR)](https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-46b74371d107)
 * [Construindo uma API RESTful com Java e Spring Framework— Parte 2 (PT-BR)](https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-parte-2-7a6c3e2ad453)
 * [Construindo uma API RESTful com Java e Spring Framework— Parte 3 (PT-BR)](https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-parte-3-ab34fcc00dee)
+* [Construindo uma API RESTful com Java e Spring Framework— Parte 4 (PT-BR)](https://medium.com/@mari_azevedo/construindo-uma-api-restful-com-java-e-spring-framework-parte-4-6287f68ffc3c)
 
 ### License
 
