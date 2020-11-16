@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.zero_x_baadf00d.partialize.annotation.Partialize;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -60,6 +60,9 @@ public class TransactionDTO extends RepresentationModel<TransactionDTO> {
 	
 	@NotNull(message="Type cannot be null")
 	private TransactionTypeEnum type;
+	
+	@NotNull(message="Account Id cannot be null")
+	private Long accountId;
 	
 	/**
 	 * Method to convert an Transaction DTO to a Transaction entity.

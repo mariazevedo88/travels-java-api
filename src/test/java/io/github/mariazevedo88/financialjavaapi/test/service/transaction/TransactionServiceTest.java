@@ -31,7 +31,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
@@ -124,7 +126,8 @@ public class TransactionServiceTest {
 	private Transaction getMockTransaction() {
 		
 		Transaction transaction = new Transaction(1L, "123456", "010203",
-				DATE, BigDecimal.valueOf(288), TransactionTypeEnum.CARD);
+				DATE, BigDecimal.valueOf(288), TransactionTypeEnum.CARD,
+				new Account(1L, "123456", AccountTypeEnum.CHECKING_ACCOUNT));
 		return transaction;
 	}
 

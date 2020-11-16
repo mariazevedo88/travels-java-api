@@ -21,8 +21,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.repository.account.AccountRepository;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 
 /**
@@ -41,6 +44,13 @@ public class TransactionRepositoryTest {
 	@Autowired
 	private TransactionRepository repository;
 	
+	@Autowired
+	private AccountRepository accountRepository;
+	
+	static final String ACCOUNT_NUMBER = "12345-60";
+	
+	Account account;
+	
 	/**
 	 * Method to setup a Transaction to use in the tests.
 	 * 
@@ -50,8 +60,15 @@ public class TransactionRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
+		account = new Account();
+		account.setAccountNumber(ACCOUNT_NUMBER);
+		account.setAccountType(AccountTypeEnum.CHECKING_ACCOUNT);
+		
+		accountRepository.save(account);
+		
 		Transaction transaction = new Transaction(null, "220788", "000123", 
-			LocalDateTime.now(), new BigDecimal(100d), TransactionTypeEnum.CARD);
+			LocalDateTime.now(), new BigDecimal(100d), TransactionTypeEnum.CARD,
+			account);
 		
 		repository.save(transaction);
 	}
@@ -66,8 +83,9 @@ public class TransactionRepositoryTest {
 	@Order(1)
 	public void testSave() {
 		
-		Transaction transaction = new Transaction(null, "270257", "000123", LocalDateTime.now(),
-				new BigDecimal(100d), TransactionTypeEnum.CARD);
+		Transaction transaction = new Transaction(null, "270257", "000123", 
+				LocalDateTime.now(), new BigDecimal(100d), TransactionTypeEnum.CARD,
+				account);
 		
 		Transaction response = repository.save(transaction);
 		

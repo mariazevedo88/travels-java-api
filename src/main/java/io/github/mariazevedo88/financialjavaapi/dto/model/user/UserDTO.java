@@ -20,7 +20,7 @@ import lombok.Setter;
  */
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class UserDTO extends RepresentationModel<UserDTO>{
+public class UserDTO extends RepresentationModel<UserDTO> {
 	
 	@Getter
 	private Long id;
@@ -41,8 +41,15 @@ public class UserDTO extends RepresentationModel<UserDTO>{
 	
 	@Getter
 	@NotNull(message="The User access role cannot be null.")
-	@Pattern(regexp="^(ROLE_ADMIN|ROLE_USER)$", message="For the access role only the values ROLE_ADMIN or ROLE_USER are accepted.")
+	@Pattern(regexp="^(ROLE_ADMIN|ROLE_USER)$", 
+		message="For the access role only the values ROLE_ADMIN or ROLE_USER are accepted.")
 	private String role;
+	
+	public UserDTO (Long id, String name, String password) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
+	}
 	
 	public String getPassword() {
 		return BcryptUtil.getHash(this.password);

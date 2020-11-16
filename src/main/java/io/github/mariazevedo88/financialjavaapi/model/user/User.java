@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.RoleEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.RoleEnum;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -31,7 +31,7 @@ import io.github.mariazevedo88.financialjavaapi.util.security.JwtTokenUtil;
  * SpringBoot RestController that implements the API authentication end-points.
  *  
  * @author Mariana Azevedo
- * @since 11/10/2020
+ * @since 15/11/2020
  */
 @RestController
 @RequestMapping("/financial/v1/auth")
@@ -50,7 +50,7 @@ public class AuthenticationController {
 	 * Method that generates valid jwt tokens to authorize access for API clients.
 	 * 
 	 * @author Mariana Azevedo
-	 * @since 11/10/2020
+	 * @since 15/11/2020
 	 * 
 	 * @param dto
 	 * @param result
@@ -63,8 +63,8 @@ public class AuthenticationController {
 	 * 401 - Unauthorized: No valid API key provided.
 	 * 403 - Forbidden: The API key doesn't have permissions to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
-	 * 500, 502, 503, 504 - Server Errors: something went wrong on Goldgem's end (These are rare).
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
+	 * 500, 502, 503, 504 - Server Errors: something went wrong on Financial Java API end (These are rare).
 	 * 
 	 * @throws AuthenticationException
 	 */

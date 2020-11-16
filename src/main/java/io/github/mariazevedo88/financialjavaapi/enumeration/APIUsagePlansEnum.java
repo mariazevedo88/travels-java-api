@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.model.enumeration;
+package io.github.mariazevedo88.financialjavaapi.enumeration;
 
 import java.time.Duration;
 

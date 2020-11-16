@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.RoleEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.RoleEnum;
 import io.github.mariazevedo88.financialjavaapi.model.user.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

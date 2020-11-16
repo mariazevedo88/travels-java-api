@@ -17,35 +17,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.mariazevedo88.financialjavaapi.controller.v1.transaction.TransactionController;
-import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserTransactionDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserAccountDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.response.Response;
-import io.github.mariazevedo88.financialjavaapi.model.user.UserTransaction;
-import io.github.mariazevedo88.financialjavaapi.service.user.UserTransactionService;
+import io.github.mariazevedo88.financialjavaapi.model.user.UserAccount;
+import io.github.mariazevedo88.financialjavaapi.service.user.UserAccountService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 
 /**
  * SpringBoot RestController that implements all API service end-points related to the 
- * transaction that the user's have.
+ * user account that the user's have.
  * 
  * @author Mariana Azevedo
  * @since 13/10/2020
  */
 @RestController
-@RequestMapping("/financial/v1/user-transaction")
-public class UserTransactionController {
+@RequestMapping("/financial/v1/user-account")
+public class UserAccountController {
 
 	@Autowired
-	private UserTransactionService service;
+	private UserAccountService service;
 	
 	/**
-	 * Method that creates an association with the user and a transaction in the Financial API.
+	 * Method that creates an association with the user and a account in the Financial API.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 13/10/2020
 	 * 
 	 * @param dto
 	 * @param result
-	 * @return ResponseEntity with a Response<UserTransactionDTO> object and the HTTP status
+	 * @return ResponseEntity with a Response<UserAccountDTO> object and the HTTP status
 	 * 
 	 * HTTP Status:
 	 * 
@@ -60,29 +60,29 @@ public class UserTransactionController {
 	 * 
 	 */
 	@PostMapping
-	public ResponseEntity<Response<UserTransactionDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, 
-		defaultValue="${api.version}") String apiVersion, @Valid @RequestBody UserTransactionDTO dto, BindingResult result) {
+	public ResponseEntity<Response<UserAccountDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, 
+		defaultValue="${api.version}") String apiVersion, @Valid @RequestBody UserAccountDTO dto, BindingResult result) {
 		
-		Response<UserTransactionDTO> response = new Response<>();
+		Response<UserAccountDTO> response = new Response<>();
 		
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 		
-		UserTransaction userTransaction = service.save(dto.convertDTOToEntity());
-		UserTransactionDTO userTransactionDTO = userTransaction.convertEntityToDTO();
+		UserAccount userAccount = service.save(dto.convertDTOToEntity());
+		UserAccountDTO userAccountDTO = userAccount.convertEntityToDTO();
 		
-		//Self link - User Transaction
-		createSelfLink(userTransaction, userTransactionDTO);
+		//Self link - User Account
+		createSelfLink(userAccount, userAccountDTO);
 		
 		//Relationship link - User
-		createUserRelLink(userTransaction, userTransactionDTO);
+		createUserRelLink(userAccount, userAccountDTO);
 		
-		//Relationship link - Transaction
-		createTransactionRelLink(userTransaction, userTransactionDTO);
+		//Relationship link - Account
+		createAccountRelLink(userAccount, userAccountDTO);
 		
-		response.setData(userTransactionDTO);
+		response.setData(userAccountDTO);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add(FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, apiVersion);
@@ -91,31 +91,33 @@ public class UserTransactionController {
 	}
 
 	/**
-	 * Method that creates a self link to UserTransaction object
+	 * Method that creates a self link to UserAccount object
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 13/10/2020
 	 * 
-	 * @param userTransaction
-	 * @param userTransactionDTO
+	 * @param userAccount
+	 * @param userAccountDTO
 	 */
-	private void createSelfLink(UserTransaction userTransaction, UserTransactionDTO userTransactionDTO) {
-		Link selfLink = WebMvcLinkBuilder.linkTo(UserTransactionController.class).slash(userTransaction.getId()).withSelfRel();
-		userTransactionDTO.add(selfLink);
+	private void createSelfLink(UserAccount userAccount, UserAccountDTO userAccountDTO) {
+		Link selfLink = WebMvcLinkBuilder.linkTo(UserAccountController.class)
+				.slash(userAccount.getId()).withSelfRel();
+		userAccountDTO.add(selfLink);
 	}
 	
 	/**
-	 * Method that creates a relationship link to Transaction object
+	 * Method that creates a relationship link to User Account object
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 13/10/2020
 	 * 
-	 * @param userTransaction
-	 * @param userTransactionDTO
+	 * @param userAccount
+	 * @param userAccountDTO
 	 */
-	private void createTransactionRelLink(UserTransaction userTransaction, UserTransactionDTO userTransactionDTO) {
-		Link relTransactionLink = WebMvcLinkBuilder.linkTo(TransactionController.class).slash(userTransaction.getTransaction().getId()).withRel("transaction");
-		userTransactionDTO.add(relTransactionLink);
+	private void createAccountRelLink(UserAccount userAccount, UserAccountDTO userAccountDTO) {
+		Link relTransactionLink = WebMvcLinkBuilder.linkTo(TransactionController.class)
+				.slash(userAccount.getAccount().getId()).withRel("account");
+		userAccountDTO.add(relTransactionLink);
 	}
 
 	/**
@@ -127,8 +129,9 @@ public class UserTransactionController {
 	 * @param userTransaction
 	 * @param userTransactionDTO
 	 */
-	private void createUserRelLink(UserTransaction userTransaction, UserTransactionDTO userTransactionDTO) {
-		Link relUserLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userTransaction.getUser().getId()).withRel("user");
+	private void createUserRelLink(UserAccount userTransaction, UserAccountDTO userTransactionDTO) {
+		Link relUserLink = WebMvcLinkBuilder.linkTo(UserController.class)
+				.slash(userTransaction.getUser().getId()).withRel("user");
 		userTransactionDTO.add(relUserLink);
 	}
 }

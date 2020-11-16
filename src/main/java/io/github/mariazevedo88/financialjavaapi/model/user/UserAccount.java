@@ -13,8 +13,8 @@ import javax.persistence.Table;
 
 import org.modelmapper.ModelMapper;
 
-import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserTransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
+import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserAccountDTO;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +28,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "users_financial_transaction")
-public class UserTransaction implements Serializable {
+@Table(name = "user_account")
+public class UserAccount implements Serializable {
 
 	private static final long serialVersionUID = 7536502811640528298L;
 	
@@ -37,13 +37,13 @@ public class UserTransaction implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JoinColumn(name = "financial_user", referencedColumnName = "id")
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 	
-	@JoinColumn(name = "financial_transaction", referencedColumnName = "id")
+	@JoinColumn(name = "account_id", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Transaction transaction;
+	private Account account;
 	
 	/**
 	 * Method to convert an User Transaction entity to an User Transaction DTO.
@@ -54,8 +54,8 @@ public class UserTransaction implements Serializable {
 	 * @param userTransaction
 	 * @return an UserTransactionDTO object
 	 */
-	public UserTransactionDTO convertEntityToDTO() {
-		return new ModelMapper().map(this, UserTransactionDTO.class);
+	public UserAccountDTO convertEntityToDTO() {
+		return new ModelMapper().map(this, UserAccountDTO.class);
 	}
 
 }

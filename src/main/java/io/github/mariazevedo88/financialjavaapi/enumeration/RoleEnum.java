@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.model.enumeration;
+package io.github.mariazevedo88.financialjavaapi.enumeration;
 
 /**
  * Enum that represents the 2 types of roles in the API: ROLE_ADMIN and ROLE_USER.

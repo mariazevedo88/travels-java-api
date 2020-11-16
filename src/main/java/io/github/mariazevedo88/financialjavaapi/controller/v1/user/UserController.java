@@ -51,8 +51,8 @@ public class UserController {
 	 * 403 - Forbidden: The API key doesn't have permissions to perform the request.
 	 * 404 - Not Found: The requested resource doesn't exist.
 	 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
-	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential backoff of your requests.
-	 * 500, 502, 503, 504 - Server Errors: something went wrong on Goldgem's end (These are rare).
+	 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
+	 * 500, 502, 503, 504 - Server Errors: something went wrong on Financial's end (These are rare).
 	 */
 	@PostMapping
 	public ResponseEntity<Response<UserDTO>> create(@RequestHeader(value=FinancialApiUtil.HEADER_FINANCIAL_API_VERSION, defaultValue="${api.version}") 

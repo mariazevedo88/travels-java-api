@@ -35,7 +35,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
@@ -55,6 +57,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 public class TransactionControllerTest {
 	
 	private static final Long ID = 1L;
+	private static final Long ACCOUNT_ID = 1L;
 	private static final String NSU = "654789";
 	private static final String AUTH = "010203";
 	private static final String TRANSACTION_DATE = "2020-08-21T18:32:04.150";
@@ -90,7 +93,7 @@ public class TransactionControllerTest {
 		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, NSU, AUTH, 
-			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
+			FinancialApiUtil.getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE, ACCOUNT_ID))
 			.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
 		.andDo(MockMvcResultHandlers.print())
@@ -118,7 +121,7 @@ public class TransactionControllerTest {
 		BDDMockito.given(transactionService.save(Mockito.any(Transaction.class))).willReturn(getMockTransaction());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, null, AUTH, FinancialApiUtil.
-				 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE))
+				 getLocalDateTimeFromString(TRANSACTION_DATE.concat("Z")), VALUE, TYPE, ACCOUNT_ID))
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
 		.andExpect(status().isBadRequest())
@@ -137,7 +140,7 @@ public class TransactionControllerTest {
 	private Transaction getMockTransaction() throws ParseException {
 		
 		Transaction transaction = new Transaction(ID, NSU, AUTH, FinancialApiUtil.getLocalDateTimeFromString
-				(TRANSACTION_DATE.concat("Z")), VALUE, TYPE);
+				(TRANSACTION_DATE.concat("Z")), VALUE, TYPE, new Account(1L, "123456", AccountTypeEnum.CHECKING_ACCOUNT));
 		return transaction;
 	}
 	
@@ -158,9 +161,10 @@ public class TransactionControllerTest {
 	 * @throws JsonProcessingException
 	 */
 	private String getJsonPayload(Long id, String nsu, String authorization, LocalDateTime transactionDate,
-			BigDecimal amount, TransactionTypeEnum type) throws JsonProcessingException {
+			BigDecimal amount, TransactionTypeEnum type, Long accountId) throws JsonProcessingException {
 		
-		TransactionDTO dto = new TransactionDTO(id, nsu, authorization, transactionDate, amount, type);
+		TransactionDTO dto = new TransactionDTO(id, nsu, authorization, transactionDate, 
+				amount, type, accountId);
 	        
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
