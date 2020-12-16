@@ -60,10 +60,7 @@ public class TransactionRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
-		account = new Account();
-		account.setAccountNumber(ACCOUNT_NUMBER);
-		account.setAccountType(AccountTypeEnum.CHECKING_ACCOUNT);
-		
+		account = new Account(null, ACCOUNT_NUMBER, AccountTypeEnum.CHECKING_ACCOUNT);
 		accountRepository.save(account);
 		
 		Transaction transaction = new Transaction(null, "220788", "000123", 

@@ -56,16 +56,16 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MockitoTestExecutionListener.class })
 public class TransactionControllerTest {
 	
-	private static final Long ID = 1L;
-	private static final Long ACCOUNT_ID = 1L;
-	private static final String NSU = "654789";
-	private static final String AUTH = "010203";
-	private static final String TRANSACTION_DATE = "2020-08-21T18:32:04.150";
-	private static final TransactionTypeEnum TYPE = TransactionTypeEnum.CARD;
-	private static final BigDecimal VALUE = BigDecimal.valueOf(288);
-	private static final String URL = "/financial/v1/transactions";
+	static final Long ID = 1L;
+	static final Long ACCOUNT_ID = 1L;
+	static final String NSU = "654789";
+	static final String AUTH = "010203";
+	static final String TRANSACTION_DATE = "2020-08-21T18:32:04.150";
+	static final TransactionTypeEnum TYPE = TransactionTypeEnum.CARD;
+	static final BigDecimal VALUE = BigDecimal.valueOf(288);
+	static final String URL = "/financial/v1/transactions";
 	
-	private HttpHeaders headers;
+	HttpHeaders headers;
 
 	@Autowired
 	MockMvc mockMvc;
@@ -77,7 +77,8 @@ public class TransactionControllerTest {
 	private void setUp() {
 		headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
-	}	
+	}
+	
 	/**
 	 * Method that tests to save an Transaction in the API
 	 * 

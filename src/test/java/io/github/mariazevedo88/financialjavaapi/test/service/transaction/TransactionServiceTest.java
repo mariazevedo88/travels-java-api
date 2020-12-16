@@ -88,7 +88,7 @@ public class TransactionServiceTest {
 	public void testFindByNsu() {
 		
 		BDDMockito.given(repository.findByNsu(Mockito.anyString()))
-				.willReturn(Collections.singletonList(new Transaction()));
+			.willReturn(Collections.singletonList(new Transaction()));
 		
 		List<Transaction> response = service.findByNsu("123456");
 		assertTrue(!response.isEmpty());

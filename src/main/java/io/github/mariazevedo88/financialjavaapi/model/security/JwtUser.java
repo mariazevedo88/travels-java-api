@@ -28,6 +28,11 @@ public class JwtUser implements UserDetails {
 		this.authorities = authorities;
 	}
 	
+	public JwtUser(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
 	/**
 	 * @see UserDetails#getAuthorities()
 	 * 

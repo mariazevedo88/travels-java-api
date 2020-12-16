@@ -15,7 +15,9 @@ import org.modelmapper.ModelMapper;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserAccountDTO;
 import io.github.mariazevedo88.financialjavaapi.model.account.Account;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -28,7 +30,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_account")
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users_accounts")
 public class UserAccount implements Serializable {
 
 	private static final long serialVersionUID = 7536502811640528298L;

@@ -28,7 +28,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "account")
+@Table(name = "accounts")
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = -6762432601286928295L;
@@ -45,6 +45,10 @@ public class Account implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "account_type")
 	private AccountTypeEnum accountType; 
+	
+	public Account(Long id) {
+		this.id = id;
+	}
 
 	/**
 	 * Method to convert an Account entity to a Account DTO.

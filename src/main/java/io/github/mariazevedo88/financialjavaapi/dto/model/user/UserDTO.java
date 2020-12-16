@@ -5,11 +5,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
+import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.RepresentationModel;
 
+import io.github.mariazevedo88.financialjavaapi.model.user.User;
 import io.github.mariazevedo88.financialjavaapi.util.security.BcryptUtil;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -19,6 +23,8 @@ import lombok.Setter;
  * @since 13/10/2020
  */
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class UserDTO extends RepresentationModel<UserDTO> {
 	
@@ -45,13 +51,26 @@ public class UserDTO extends RepresentationModel<UserDTO> {
 		message="For the access role only the values ROLE_ADMIN or ROLE_USER are accepted.")
 	private String role;
 	
-	public UserDTO (Long id, String name, String password) {
+	public UserDTO (Long id, String email, String password) {
 		this.id = id;
-		this.name = name;
+		this.email = email;
 		this.password = password;
 	}
 	
 	public String getPassword() {
 		return BcryptUtil.getHash(this.password);
+	}
+	
+	/**
+	 * Method to convert an User DTO to an User entity
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 11/10/2020
+	 * 
+	 * @param dto
+	 * @return an User object
+	 */
+	public User convertDTOToEntity() {
+		return new ModelMapper().map(this, User.class);
 	}
 }

@@ -2,7 +2,6 @@ package io.github.mariazevedo88.financialjavaapi.controller.v1.user;
 
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -30,7 +29,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  * @since 11/10/2020
  */
 @RestController
-@RequestMapping("/financial/v1/user")
+@RequestMapping("/financial/v1/users")
 public class UserController {
 	
 	@Autowired
@@ -65,8 +64,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 		
-		User user = service.save(convertDTOToEntity(dto));
-		UserDTO userDTO = convertEntityToDTO(user);
+		User user = service.save(dto.convertDTOToEntity());
+		UserDTO userDTO = user.convertEntityToDTO();
 		
 		//Self link
 		createSelfLink(user, userDTO);
@@ -78,34 +77,6 @@ public class UserController {
 		return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
 	}
 
-	/**
-	 * Method to convert an User DTO to an User entity
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 11/10/2020
-	 * 
-	 * @param dto
-	 * @return an User object
-	 */
-	private User convertDTOToEntity(UserDTO dto) {
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(dto, User.class);
-	}
-	
-	/**
-	 * Method to convert an User entity to an User DTO
-	 * 
-	 * @author Mariana Azevedo
-	 * @since 11/10/2020
-	 * 
-	 * @param user
-	 * @return an UserDTO object
-	 */
-	private UserDTO convertEntityToDTO(User user) {
-		ModelMapper modelMapper = new ModelMapper();
-		return modelMapper.map(user, UserDTO.class);
-	}
-	
 	/**
 	 * Method that creates a self link to User object
 	 * 

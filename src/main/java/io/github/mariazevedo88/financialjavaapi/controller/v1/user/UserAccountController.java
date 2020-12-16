@@ -31,7 +31,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  * @since 13/10/2020
  */
 @RestController
-@RequestMapping("/financial/v1/user-account")
+@RequestMapping("/financial/v1/users-accounts")
 public class UserAccountController {
 
 	@Autowired

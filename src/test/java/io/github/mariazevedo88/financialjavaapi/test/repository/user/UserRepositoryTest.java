@@ -33,7 +33,7 @@ import io.github.mariazevedo88.financialjavaapi.repository.user.UserRepository;
 @TestInstance(Lifecycle.PER_CLASS)
 public class UserRepositoryTest {
 	
-	private static final String EMAIL = "email@test.com";
+	static final String EMAIL = "email@test.com";
 
 	@Autowired
 	private UserRepository repository;
@@ -47,12 +47,8 @@ public class UserRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
-		User user = new User();
-		user.setName("Setup User");
-		user.setPassword("123");
-		user.setEmail(EMAIL);
-		user.setRole(RoleEnum.ROLE_ADMIN);
-		
+		User user = new User(null, "Setup User", "123", EMAIL, 
+				RoleEnum.ROLE_ADMIN);
 		repository.save(user);
 	}
 	
@@ -65,12 +61,7 @@ public class UserRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		User user = new User();
-		user.setName("Test");
-		user.setPassword("123456");
-		user.setEmail("test@test.com");
-		user.setRole(RoleEnum.ROLE_ADMIN);
-		
+		User user = new User(null, "Test", "123456", "test@test.com", RoleEnum.ROLE_USER);
 		User response = repository.save(user);
 		
 		assertNotNull(response);

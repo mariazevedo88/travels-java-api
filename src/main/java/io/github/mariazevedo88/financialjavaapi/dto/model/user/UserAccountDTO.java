@@ -7,8 +7,10 @@ import org.springframework.hateoas.RepresentationModel;
 import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import io.github.mariazevedo88.financialjavaapi.model.user.User;
 import io.github.mariazevedo88.financialjavaapi.model.user.UserAccount;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -19,16 +21,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class UserAccountDTO extends RepresentationModel<UserAccountDTO>{
 
 	private Long id;
 	
 	@NotNull(message = "Id cannot be null")
-	private Long user;
+	private Long userId;
 	
 	@NotNull(message = "Account Id cannot be null")
-	private Long account;
+	private Long accountId;
 	
 	/**
 	 * Method to convert an User Account DTO to an User Account entity.
@@ -40,17 +44,10 @@ public class UserAccountDTO extends RepresentationModel<UserAccountDTO>{
 	 */
 	public UserAccount convertDTOToEntity() {
 		
-		User user = new User();
-		user.setId(this.getUser());
+		User user = new User(this.getUserId());
+		Account account = new Account(this.getAccountId());
 		
-		Account account = new Account();
-		account.setId(this.getAccount());
-		
-		UserAccount userAccount = new UserAccount();
-		userAccount.setId(this.getId());
-		userAccount.setUser(user);
-		userAccount.setAccount(account);
-		
+		UserAccount userAccount = new UserAccount(this.getId(), user, account);
 		return userAccount;
 	}
 	

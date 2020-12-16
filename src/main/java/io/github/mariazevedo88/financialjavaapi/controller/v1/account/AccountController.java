@@ -43,7 +43,7 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @RestController
-@RequestMapping("/financial/v1/account")
+@RequestMapping("/financial/v1/accounts")
 public class AccountController {
 
 	AccountService accountService;

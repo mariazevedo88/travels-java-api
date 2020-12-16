@@ -47,10 +47,8 @@ public class AccountRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
-		Account account = new Account();
-		account.setAccountNumber(ACCOUNT_NUMBER);
-		account.setAccountType(AccountTypeEnum.CHECKING_ACCOUNT);
-		
+		Account account = new Account(null, ACCOUNT_NUMBER, 
+				AccountTypeEnum.CHECKING_ACCOUNT);
 		repository.save(account);
 	}
 	
@@ -63,9 +61,8 @@ public class AccountRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		Account account = new Account();
-		account.setAccountNumber("98756-401");
-		account.setAccountType(AccountTypeEnum.SAVINGS_ACCOUNT);
+		Account account = new Account(null, "98756-401", 
+				AccountTypeEnum.SAVINGS_ACCOUNT);
 		
 		Account response = repository.save(account);
 		
