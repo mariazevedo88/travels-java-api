@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -80,6 +81,17 @@ public class AccountServiceTest {
 
 		Optional<Account> response = service.findByAccountNumber(ACCOUNT_NUMBER);
 		assertTrue(!response.isEmpty());
+	}
+	
+	/**
+	 * Method to remove all Account test data.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 17/12/2020
+	 */
+	@AfterAll
+	private void tearDown() {
+		repository.deleteAll();
 	}
 	
 	/**

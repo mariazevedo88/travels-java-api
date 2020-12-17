@@ -88,8 +88,8 @@ public class UserAccountRepositoryTest {
 	@AfterAll
 	private void tearDown() {
 		userAccRepository.deleteAll();
-		userRepository.deleteAll();
 		accountRepository.deleteAll();
+		userRepository.deleteAll();
 	}
 
 }
