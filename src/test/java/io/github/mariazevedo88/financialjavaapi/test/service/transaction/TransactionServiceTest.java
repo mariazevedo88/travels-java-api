@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -31,7 +32,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import io.github.mariazevedo88.financialjavaapi.model.transaction.Transaction;
 import io.github.mariazevedo88.financialjavaapi.repository.transaction.TransactionRepository;
 import io.github.mariazevedo88.financialjavaapi.service.transaction.TransactionService;
@@ -86,7 +89,7 @@ public class TransactionServiceTest {
 	public void testFindByNsu() {
 		
 		BDDMockito.given(repository.findByNsu(Mockito.anyString()))
-				.willReturn(Collections.singletonList(new Transaction()));
+			.willReturn(Collections.singletonList(new Transaction()));
 		
 		List<Transaction> response = service.findByNsu("123456");
 		assertTrue(!response.isEmpty());
@@ -124,8 +127,20 @@ public class TransactionServiceTest {
 	private Transaction getMockTransaction() {
 		
 		Transaction transaction = new Transaction(1L, "123456", "010203",
-				DATE, BigDecimal.valueOf(288), TransactionTypeEnum.CARD);
+				DATE, BigDecimal.valueOf(288), TransactionTypeEnum.CARD,
+				new Account(1L, "635241", AccountTypeEnum.CHECKING_ACCOUNT));
 		return transaction;
+	}
+	
+	/**
+	 * Method to remove all Account test data.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 25/10/2020
+	 */
+	@AfterAll
+	private void tearDown() {
+		repository.deleteAll();
 	}
 
 }

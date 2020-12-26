@@ -12,8 +12,8 @@ import org.springframework.plugin.core.SimplePluginRegistry;
 
 import com.zero_x_baadf00d.partialize.PartializeConverterManager;
 
-import io.github.mariazevedo88.financialjavaapi.util.BigDecimalConverter;
-import io.github.mariazevedo88.financialjavaapi.util.LocalDateTimeConverter;
+import io.github.mariazevedo88.financialjavaapi.util.converters.BigDecimalConverter;
+import io.github.mariazevedo88.financialjavaapi.util.converters.LocalDateTimeConverter;
 
 /**
  * Class that implements the necessary settings for the API to works.

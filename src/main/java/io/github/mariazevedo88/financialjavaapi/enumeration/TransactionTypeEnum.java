@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.model.enumeration;
+package io.github.mariazevedo88.financialjavaapi.enumeration;
 
 /**
  * Enum that classifies the transaction's payment type.
