@@ -25,8 +25,8 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
+		<spring.admin.version>2.3.1</spring.admin.version>
 		<modelmapper.version>2.3.8</modelmapper.version>
-		<spring.admin.version>2.3.0</spring.admin.version>
 		<partialize.version>release~20.05</partialize.version>
 	</properties>
 
@@ -34,7 +34,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.4.RELEASE</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 
 	<repositories>
