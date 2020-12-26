@@ -51,7 +51,7 @@ import io.github.mariazevedo88.financialjavaapi.service.account.AccountService;
 public class AccountControllerTest {
 	
 	static final String URL = "/financial/v1/accounts";
-	static final String ACCOUNT_NUMBER = "123456";
+	static final String ACCOUNT_NUMBER = "985552";
 	static final Long ACCOUNT_ID = 1L;
 
 	HttpHeaders headers;
@@ -103,7 +103,7 @@ public class AccountControllerTest {
 	 * @throws ParseException 
 	 */
 	private Account getMockAccount() throws ParseException {
-		return new Account(1L, ACCOUNT_NUMBER, AccountTypeEnum.CHECKING_ACCOUNT);
+		return new Account(ACCOUNT_ID, ACCOUNT_NUMBER, AccountTypeEnum.CHECKING_ACCOUNT);
 	}
 	
 	/**
@@ -125,5 +125,5 @@ public class AccountControllerTest {
 		AccountDTO dto = new AccountDTO(id, accountNumber, accountType);
 		return new ObjectMapper().writeValueAsString(dto);
 	}
-
+	
 }

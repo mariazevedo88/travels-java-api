@@ -63,7 +63,6 @@ public class Transaction implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TransactionTypeEnum type;
 	
-	@NotNull
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Account account;

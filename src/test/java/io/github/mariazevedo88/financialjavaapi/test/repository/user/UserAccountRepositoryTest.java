@@ -1,6 +1,5 @@
 package io.github.mariazevedo88.financialjavaapi.test.repository.user;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,13 +26,13 @@ import io.github.mariazevedo88.financialjavaapi.repository.user.UserRepository;
  * @since 06/12/2020
  */
 @SpringBootTest
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class UserAccountRepositoryTest {
 	
-	static final String EMAIL = "email@test.com";
-	static final String ACCOUNT_NUMBER = "12345-60";
+	static final String EMAIL = "main@test.com";
+	static final String ACCOUNT_NUMBER = "99988-7";
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -48,6 +47,8 @@ public class UserAccountRepositoryTest {
 	
 	User user;
 	
+	UserAccount userAccount;
+	
 	/**
 	 * Method to setup an User and Account to use in the tests.
 	 * 
@@ -57,12 +58,12 @@ public class UserAccountRepositoryTest {
 	@BeforeAll
 	private void setUp() {
 		
-		user = new User(null, "Setup User", "123", EMAIL, 
+		user = new User(null, "Main User", "9999", EMAIL, 
 				RoleEnum.ROLE_ADMIN);
 		userRepository.save(user);
 		
 		account = new Account(null, ACCOUNT_NUMBER, 
-				AccountTypeEnum.CHECKING_ACCOUNT);
+				AccountTypeEnum.SAVINGS_ACCOUNT);
 		accountRepository.save(account);
 	}
 	
@@ -75,7 +76,7 @@ public class UserAccountRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		UserAccount userAccount = new UserAccount(null, user, account);
+		userAccount = new UserAccount(null, user, account);
 		userAccRepository.save(userAccount);
 	}
 	
@@ -85,11 +86,11 @@ public class UserAccountRepositoryTest {
 	 * @author Mariana Azevedo
 	 * @since 08/12/2020
 	 */
-	@AfterAll
-	private void tearDown() {
-		userAccRepository.deleteAll();
-		accountRepository.deleteAll();
-		userRepository.deleteAll();
-	}
+//	@AfterAll
+//	private void tearDown() {
+//		userAccRepository.delete(userAccount);
+//		userRepository.delete(user);
+//		accountRepository.delete(account);
+//	}
 
 }

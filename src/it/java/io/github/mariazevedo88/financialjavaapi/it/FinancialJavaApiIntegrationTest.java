@@ -8,8 +8,10 @@ import java.text.ParseException;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,7 +33,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.mariazevedo88.financialjavaapi.dto.model.account.AccountDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.model.security.JwtUserDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserAccountDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserDTO;
 import io.github.mariazevedo88.financialjavaapi.enumeration.APIUsagePlansEnum;
 import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
@@ -47,6 +48,7 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  */
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class FinancialJavaApiIntegrationTest {
@@ -63,7 +65,7 @@ public class FinancialJavaApiIntegrationTest {
     @Order(1)
     public void testCreateUser() {
     	
-    	UserDTO userDto = new UserDTO(2L, "Admin", "123456", "admin@financial.com", 
+    	UserDTO userDto = new UserDTO(99L, "Admin", "123456", "admin@financial.com", 
     			RoleEnum.ROLE_ADMIN.getValue());
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -90,8 +92,8 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<JwtUserDTO> entity = new HttpEntity<>(userDto, headers);
         
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/auth", 
-        				HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" 
+        		+ port + "/financial/v1/auth", HttpMethod.POST, entity, String.class);
         
         String body = responseEntity.getBody();
         JsonNode json = new ObjectMapper().readTree(body);
@@ -106,7 +108,7 @@ public class FinancialJavaApiIntegrationTest {
     public void testCreateAccount() throws ParseException {
     	
     	//id=1
-        AccountDTO accountDto = new AccountDTO(1L, "123456", AccountTypeEnum.CHECKING_ACCOUNT.name()); 
+        AccountDTO accountDto = new AccountDTO(1L, "00001-2", AccountTypeEnum.CHECKING_ACCOUNT.name()); 
         
         final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -114,37 +116,18 @@ public class FinancialJavaApiIntegrationTest {
         //Create a new HttpEntity
         final HttpEntity<AccountDTO> entity = new HttpEntity<>(accountDto, headers);
         
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/accounts", 
-        				HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" 
+        		+ port + "/financial/v1/accounts", HttpMethod.POST, entity, String.class);
         
         assertEquals(201, responseEntity.getStatusCodeValue());
     }
     
     @Test
     @Order(4)
-    public void testCreateUserAccount() throws ParseException {
-    	
-    	//id=1
-        UserAccountDTO userAccountDto = new UserAccountDTO(null, 1L, 1L); 
-        
-        final HttpHeaders headers = new HttpHeaders();
-        headers.set("X-api-key", "FX001-ZBSY6YSLP");
-        
-        //Create a new HttpEntity
-        final HttpEntity<UserAccountDTO> entity = new HttpEntity<>(userAccountDto, headers);
-        
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" + port + "/financial/v1/users-accounts", 
-        				HttpMethod.POST, entity, String.class);
-        
-        assertEquals(201, responseEntity.getStatusCodeValue());
-    }
-    
-    @Test
-    @Order(5)
     public void testCreateTransactionNSU123456() throws ParseException {
     	
     	//id=1
-        TransactionDTO dtoNsu123456 = new TransactionDTO(1L, "123456", "014785", 
+        TransactionDTO dtoNsu123456 = new TransactionDTO(null, "123456", "014785", 
         		FinancialApiUtil.getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), 
         		new BigDecimal(100d), TransactionTypeEnum.CARD, 1L); 
         
@@ -161,7 +144,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(6)
+    @Order(5)
     public void testCreateTransactionNSU258963() throws ParseException {
     	
     	//id=2
@@ -182,7 +165,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(7)
+    @Order(6)
     public void testFindAllTransactions() throws ParseException {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -202,7 +185,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(8)
+    @Order(7)
     public void testFindTransactionById() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -219,7 +202,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(9)
+    @Order(8)
     public void testFindTransactionByIdThatNotExists() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -237,7 +220,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(10)
+    @Order(9)
     public void testFindTransactionByNsu() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -254,7 +237,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(11)
+    @Order(10)
     public void testCreateStatistics() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -270,7 +253,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(12)
+    @Order(11)
 	public void testRequestExceedingRateLimitCapacity() throws Exception {
 	    
 	    final HttpHeaders headers = new HttpHeaders();

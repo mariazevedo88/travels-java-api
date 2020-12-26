@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
@@ -36,7 +38,9 @@ public class AccountRepositoryTest {
 	@Autowired
 	private AccountRepository repository;
 	
-	static final String ACCOUNT_NUMBER = "12345-60";
+	static final String ACCOUNT_NUMBER = "98653-2";
+	
+	private List<Account> accounts;
 	
 	/**
 	 * Method to setup an Account to use in the tests.
@@ -50,6 +54,9 @@ public class AccountRepositoryTest {
 		Account account = new Account(null, ACCOUNT_NUMBER, 
 				AccountTypeEnum.CHECKING_ACCOUNT);
 		repository.save(account);
+		
+		accounts = new ArrayList<>();
+		accounts.add(account);
 	}
 	
 	/**
@@ -65,6 +72,7 @@ public class AccountRepositoryTest {
 				AccountTypeEnum.SAVINGS_ACCOUNT);
 		
 		Account response = repository.save(account);
+		accounts.add(response);
 		
 		assertNotNull(response);
 	}
@@ -91,7 +99,7 @@ public class AccountRepositoryTest {
 	 */
 	@AfterAll
 	private void tearDown() {
-		repository.deleteAll();
+		repository.deleteAll(accounts);
 	}
 
 }

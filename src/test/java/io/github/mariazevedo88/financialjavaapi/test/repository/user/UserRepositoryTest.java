@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -36,7 +35,9 @@ public class UserRepositoryTest {
 	static final String EMAIL = "email@test.com";
 
 	@Autowired
-	private UserRepository repository;
+	UserRepository repository;
+	
+	User user;
 	
 	/**
 	 * Method to setup an User to use in the tests.
@@ -44,13 +45,13 @@ public class UserRepositoryTest {
 	 * @author Mariana Azevedo
 	 * @since 24/03/2020
 	 */
-	@BeforeAll
-	private void setUp() {
-		
-		User user = new User(null, "Setup User", "123", EMAIL, 
-				RoleEnum.ROLE_ADMIN);
-		repository.save(user);
-	}
+//	@BeforeAll
+//	private void setUp() {
+//		
+//		user = new User(null, "Setup User", "123", EMAIL, 
+//				RoleEnum.ROLE_ADMIN);
+//		repository.save(user);
+//	}
 	
 	/**
 	 * Method that test the repository that save an User in the API.
@@ -61,7 +62,9 @@ public class UserRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		User user = new User(null, "Test", "123456", "test@test.com", RoleEnum.ROLE_USER);
+		//User user = new User(null, "Test", "123456", "test@test.com", RoleEnum.ROLE_USER);
+		User user = new User(null, "Setup User", "123", EMAIL, 
+				RoleEnum.ROLE_ADMIN);
 		User response = repository.save(user);
 		
 		assertNotNull(response);

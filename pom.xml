@@ -173,6 +173,15 @@
 					</execution>
 				</executions>
 			</plugin>
+	        <plugin>
+	        	<groupId>org.apache.maven.plugins</groupId>
+	        	<artifactId>maven-surefire-plugin</artifactId>
+	        	<configuration>
+	          		<includes>
+	            		<include>io.github.mariazevedo88.financialjavaapi.test.FinancialJavaApiTestSuite.java</include>
+	          		</includes>
+	        	</configuration>
+	      	</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>

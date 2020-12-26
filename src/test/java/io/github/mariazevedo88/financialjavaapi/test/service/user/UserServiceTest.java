@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -91,6 +92,17 @@ public class UserServiceTest {
 	 */
 	private User getMockUser() {
 		return new User(1L, "Test User", "123", EMAIL, RoleEnum.ROLE_ADMIN);
+	}
+	
+	/**
+	 * Method to remove all Account test data.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 25/10/2020
+	 */
+	@AfterAll
+	private void tearDown() {
+		repository.deleteAll();
 	}
 
 }

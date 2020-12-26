@@ -112,6 +112,7 @@ public class TransactionRepositoryTest {
 	@AfterAll
 	private void tearDown() {
 		repository.deleteAll();
+		accountRepository.delete(account);
 	}
 
 }

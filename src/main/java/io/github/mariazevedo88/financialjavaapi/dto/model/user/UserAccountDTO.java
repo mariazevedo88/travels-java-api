@@ -34,6 +34,11 @@ public class UserAccountDTO extends RepresentationModel<UserAccountDTO>{
 	@NotNull(message = "Account Id cannot be null")
 	private Long accountId;
 	
+	public UserAccountDTO (Long userId, Long accountId) {
+		this.userId = userId;
+		this.accountId = accountId;
+	}
+	
 	/**
 	 * Method to convert an User Account DTO to an User Account entity.
 	 * 

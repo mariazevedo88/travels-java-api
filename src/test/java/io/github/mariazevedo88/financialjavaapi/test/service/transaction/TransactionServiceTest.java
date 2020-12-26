@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -127,8 +128,19 @@ public class TransactionServiceTest {
 		
 		Transaction transaction = new Transaction(1L, "123456", "010203",
 				DATE, BigDecimal.valueOf(288), TransactionTypeEnum.CARD,
-				new Account(1L, "123456", AccountTypeEnum.CHECKING_ACCOUNT));
+				new Account(1L, "635241", AccountTypeEnum.CHECKING_ACCOUNT));
 		return transaction;
+	}
+	
+	/**
+	 * Method to remove all Account test data.
+	 * 
+	 * @author Mariana Azevedo
+	 * @since 25/10/2020
+	 */
+	@AfterAll
+	private void tearDown() {
+		repository.deleteAll();
 	}
 
 }
