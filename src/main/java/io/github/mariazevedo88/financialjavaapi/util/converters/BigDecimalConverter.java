@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.util;
+package io.github.mariazevedo88.financialjavaapi.util.converters;
 
 import java.math.BigDecimal;
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.APIUsagePlansEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.APIUsagePlansEnum;
 import io.github.mariazevedo88.financialjavaapi.service.ratelimiting.APIUsagePlansService;
 
 /**

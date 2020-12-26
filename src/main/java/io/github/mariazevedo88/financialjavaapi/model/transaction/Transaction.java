@@ -7,16 +7,20 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.model.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,6 +62,10 @@ public class Transaction implements Serializable {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TransactionTypeEnum type;
+	
+	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Account account;
 	
 	public Transaction (TransactionTypeEnum type){
 		this.type = type;

@@ -6,7 +6,7 @@
 
 	<groupId>io.github.mariazevedo88</groupId>
 	<artifactId>financial-java-api</artifactId>
-	<version>3.1.3-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>financial-java-api</name>
@@ -22,10 +22,11 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
-		<modelmapper.version>2.3.8</modelmapper.version>
 		<bucket4j.version>4.10.0</bucket4j.version>
 		<spring.admin.version>2.3.1</spring.admin.version>
+		<modelmapper.version>2.3.8</modelmapper.version>
 		<partialize.version>release~20.05</partialize.version>
 	</properties>
 
@@ -76,6 +77,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -129,6 +134,16 @@
 			<artifactId>partialize</artifactId>
 			<version>${partialize.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -158,6 +173,15 @@
 					</execution>
 				</executions>
 			</plugin>
+	        <plugin>
+	        	<groupId>org.apache.maven.plugins</groupId>
+	        	<artifactId>maven-surefire-plugin</artifactId>
+	        	<configuration>
+	          		<includes>
+	            		<include>io.github.mariazevedo88.financialjavaapi.test.FinancialJavaApiTestSuite.java</include>
+	          		</includes>
+	        	</configuration>
+	      	</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>

@@ -1,5 +1,6 @@
 package io.github.mariazevedo88.financialjavaapi.it;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
@@ -7,8 +8,10 @@ import java.text.ParseException;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,9 +25,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.mariazevedo88.financialjavaapi.dto.model.account.AccountDTO;
+import io.github.mariazevedo88.financialjavaapi.dto.model.security.JwtUserDTO;
 import io.github.mariazevedo88.financialjavaapi.dto.model.transaction.TransactionDTO;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.APIUsagePlansEnum;
-import io.github.mariazevedo88.financialjavaapi.model.enumeration.TransactionTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.dto.model.user.UserDTO;
+import io.github.mariazevedo88.financialjavaapi.enumeration.APIUsagePlansEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.AccountTypeEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.RoleEnum;
+import io.github.mariazevedo88.financialjavaapi.enumeration.TransactionTypeEnum;
 import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
 
 /**
@@ -35,23 +48,88 @@ import io.github.mariazevedo88.financialjavaapi.util.FinancialApiUtil;
  */
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class FinancialJavaApiIntegrationTest {
 	
 	@LocalServerPort
 	private int port;
+	
+	private String token;
 	 
     @Autowired
     private TestRestTemplate restTemplate;
-    
+
     @Test
     @Order(1)
+    public void testCreateUser() {
+    	
+    	UserDTO userDto = new UserDTO(99L, "Admin", "123456", "admin@financial.com", 
+    			RoleEnum.ROLE_ADMIN.getValue());
+    	
+    	final HttpHeaders headers = new HttpHeaders();
+        headers.set("X-api-key", "FX001-ZBSY6YSLP");
+        
+        //Create a new HttpEntity
+        final HttpEntity<UserDTO> entity = new HttpEntity<>(userDto, headers);
+        
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" 
+        		+ port + "/financial/v1/users", HttpMethod.POST, entity, String.class);
+        
+        assertEquals(201, responseEntity.getStatusCodeValue());
+    }
+    
+    @Test
+    @Order(2)
+    public void testAuthentication() throws JsonMappingException, JsonProcessingException {
+    	
+    	JwtUserDTO userDto = new JwtUserDTO("admin@financial.com", "123456");
+    	
+    	final HttpHeaders headers = new HttpHeaders();
+        headers.set("X-api-key", "FX001-ZBSY6YSLP");
+        
+        //Create a new HttpEntity
+        final HttpEntity<JwtUserDTO> entity = new HttpEntity<>(userDto, headers);
+        
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" 
+        		+ port + "/financial/v1/auth", HttpMethod.POST, entity, String.class);
+        
+        String body = responseEntity.getBody();
+        JsonNode json = new ObjectMapper().readTree(body);
+        token = json.get("data").get("token").textValue();
+        
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertNotNull(token);
+    }
+    
+    @Test
+    @Order(3)
+    public void testCreateAccount() throws ParseException {
+    	
+    	//id=1
+        AccountDTO accountDto = new AccountDTO(1L, "00001-2", AccountTypeEnum.CHECKING_ACCOUNT.name()); 
+        
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set("X-api-key", "FX001-ZBSY6YSLP");
+        
+        //Create a new HttpEntity
+        final HttpEntity<AccountDTO> entity = new HttpEntity<>(accountDto, headers);
+        
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:" 
+        		+ port + "/financial/v1/accounts", HttpMethod.POST, entity, String.class);
+        
+        assertEquals(201, responseEntity.getStatusCodeValue());
+    }
+    
+    @Test
+    @Order(4)
     public void testCreateTransactionNSU123456() throws ParseException {
     	
     	//id=1
-        TransactionDTO dtoNsu123456 = new TransactionDTO(null, "123456", "014785", FinancialApiUtil.
-        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), new BigDecimal(100d), TransactionTypeEnum.CARD); 
+        TransactionDTO dtoNsu123456 = new TransactionDTO(null, "123456", "014785", 
+        		FinancialApiUtil.getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), 
+        		new BigDecimal(100d), TransactionTypeEnum.CARD, 1L); 
         
         final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -66,12 +144,13 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(2)
+    @Order(5)
     public void testCreateTransactionNSU258963() throws ParseException {
     	
     	//id=2
-    	TransactionDTO dtoNsu258963 = new TransactionDTO(null, "258963", null, FinancialApiUtil.
-        		getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), new BigDecimal(2546.93), TransactionTypeEnum.MONEY); 
+    	TransactionDTO dtoNsu258963 = new TransactionDTO(null, "258963", null, 
+    			FinancialApiUtil.getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), 
+    			new BigDecimal(2546.93), TransactionTypeEnum.MONEY, 1L); 
         
         final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -86,7 +165,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(3)
+    @Order(6)
     public void testFindAllTransactions() throws ParseException {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -106,7 +185,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(4)
+    @Order(7)
     public void testFindTransactionById() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -123,7 +202,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(5)
+    @Order(8)
     public void testFindTransactionByIdThatNotExists() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -141,7 +220,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(6)
+    @Order(9)
     public void testFindTransactionByNsu() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -158,7 +237,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(7)
+    @Order(10)
     public void testCreateStatistics() {
     	
     	final HttpHeaders headers = new HttpHeaders();
@@ -174,7 +253,7 @@ public class FinancialJavaApiIntegrationTest {
     }
     
     @Test
-    @Order(8)
+    @Order(11)
 	public void testRequestExceedingRateLimitCapacity() throws Exception {
 	    
 	    final HttpHeaders headers = new HttpHeaders();

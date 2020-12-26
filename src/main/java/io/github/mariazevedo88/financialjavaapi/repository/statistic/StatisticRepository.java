@@ -17,7 +17,7 @@ import io.github.mariazevedo88.financialjavaapi.model.statistic.Statistic;
  * @since 28/03/2020
  */
 @Repository
-public interface StatisticRepository extends JpaRepository<Statistic, Long>{
+public interface StatisticRepository extends JpaRepository<Statistic, Long> {
 	
 	/**
 	 * Method that search for a statistic that already exists on the API.

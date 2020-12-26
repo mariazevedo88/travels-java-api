@@ -31,7 +31,9 @@ import io.github.mariazevedo88.financialjavaapi.repository.statistic.StatisticRe
 public class StatisticRepositoryTest {
 	
 	@Autowired
-	private StatisticRepository repository;
+	StatisticRepository repository;
+	
+	Statistic statistic;
 	
 	/**
 	 * Method that test the repository that save a Statistic in the API.
@@ -42,7 +44,7 @@ public class StatisticRepositoryTest {
 	@Test
 	public void testSave() {
 		
-		Statistic statistic = new Statistic(null, new BigDecimal(200d), new BigDecimal(100d),
+		statistic = new Statistic(null, new BigDecimal(200d), new BigDecimal(100d),
 				new BigDecimal(100d), new BigDecimal(100d), 2);
 		
 		Statistic response = repository.save(statistic);
@@ -64,7 +66,7 @@ public class StatisticRepositoryTest {
 	 */
 	@AfterAll
 	private void tearDown() {
-		repository.deleteAll();
+		repository.delete(statistic);
 	}
 
 }
