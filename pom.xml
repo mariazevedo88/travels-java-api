@@ -24,9 +24,9 @@
 		<java.version>11</java.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
-		<bucket4j.version>4.10.0</bucket4j.version>
+    <bucket4j.version>4.10.0</bucket4j.version>
+		<modelmapper.version>2.3.9</modelmapper.version>
 		<spring.admin.version>2.3.1</spring.admin.version>
-		<modelmapper.version>2.3.8</modelmapper.version>
 		<partialize.version>release~20.05</partialize.version>
 	</properties>
 
