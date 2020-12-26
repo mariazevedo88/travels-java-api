@@ -1,4 +1,4 @@
-package io.github.mariazevedo88.financialjavaapi.util;
+package io.github.mariazevedo88.financialjavaapi.util.logging;
 
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;
