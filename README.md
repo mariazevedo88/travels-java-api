@@ -182,7 +182,7 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-3.1.3-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-4.0.0-SNAPSHOT.jar`
 
 ### Execution
 
@@ -220,7 +220,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-3.1.3-SNAPSHOT.jar --spring.profiles.active=dev
+java -jar financial-java-api-4.0.0-SNAPSHOT.jar --spring.profiles.active=dev
 ```
     
 or
@@ -246,7 +246,3 @@ By default, the API will be available at [http://localhost:8080/financial/v1](ht
 ### License
 
 This API is licensed under the MIT License.
-
-### Contributing
-
-[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/0)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/0)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/1)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/1)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/2)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/2)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/3)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/3)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/4)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/4)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/5)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/5)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/6)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/6)[![](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/images/7)](https://sourcerer.io/fame/mariazevedo88/mariazevedo88/financial-java-api/links/7)
