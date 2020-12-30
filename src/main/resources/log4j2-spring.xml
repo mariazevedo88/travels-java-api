@@ -9,8 +9,8 @@
 		</Console>
 
 		<RollingFile name="RollingFile"
-					 fileName="/var/log/apis/financial-java-api/financial-java-api.log"
-					 filePattern="/var/log/apis/financial-java-api/$${date:yyyy-MM}/financial-java-api.log-%d{MM-dd-yyyy}-%i.log.tar.gz">
+					 fileName="/var/log/apis/travels-java-api/travels-java-api.log"
+					 filePattern="/var/log/apis/travels-java-api/$${date:yyyy-MM}/travels-java-api.log-%d{MM-dd-yyyy}-%i.log.tar.gz">
 			<PatternLayout
 					pattern="%d [%level] [%t] [%logger{40}] - %msg%n%throwable" />
 			<Policies>
