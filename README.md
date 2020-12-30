@@ -4,7 +4,7 @@
 
 ## About the API
 
-A financial API for managing transactions. The API main URL `/api-travels/v1`.
+An API for travel management. It is built with Java, Spring Boot, and Spring Framework. A toy-project to serve as a theoretical basis for the Medium series of articles I wrote about Java+Spring. The API main URL `/api-travels/v1`.
 
 ## Features
 
@@ -15,7 +15,7 @@ This API provides HTTP endpoint's and tools for the following:
 * Delete a trip (by id): `DELETE/api-travels/v1/travels/1`
 * Get report of travels in a period of time (sorted and paginated): `GET/api-travels/v1/travels?startDate=2020-01-01&endDate=2020-09-20&page=2&size=5&sort=DESC`
 * Find a unique trip by id: `GET/api-travels/v1/travels/1`
-* Find a unique trip by id, but filtering JSON fields: `GET/api-travels/v1/travels/1?fields=id,nsu,startDate,amount`
+* Find a unique trip by id, but filtering JSON fields: `GET/api-travels/v1/travels/1?fields=id,orderNumber,startDate,amount`
 * Find a trip by the order number (unique id on the system): `GET/api-travels/v1/travels/byOrderNumber/{orderNumber}`
 * Get Statistics about the travels of the API: `GET/api-travels/v1/statistics`
 
@@ -29,7 +29,7 @@ This end-point is called to create a new trip.
 
 ```json
 {
-  "orderCode": "123456",
+  "orderNumber": "123456",
   "amount": "22.88",
   "startDate": "2020-04-05T09:59:51.312Z",
   "endDate": "2020-04-15T16:25:00.500Z",
@@ -72,11 +72,11 @@ This end-point is called to update a trip.
 ```json
 {
    "id": 1,
-   "orderCode": "123456",
+   "orderNumber": "123456",
    "amount": "30.06",
    "startDate": "2020-04-05T09:59:51.312Z",
-  	"endDate": "2020-04-15T16:25:00.500Z",
-  	"type": "RETURN"
+   "endDate": "2020-04-15T16:25:00.500Z",
+   "type": "RETURN"
 }
 ```
 
@@ -90,12 +90,12 @@ Must be submitted the object that will be modified. Must return a trip specified
    		"amount": "30.06",
    		"startDate": "2020-04-05T09:59:51.312Z",
   		"endDate": "2020-04-15T16:25:00.500Z",
-  		"type": "RETURN"
+  		"type": "RETURN",
    		"links": [
-	    	{
-	       	"rel": "self",
-	        	"href": "http://localhost:8080/api-travels/v1/travels/1"
-	    	}
+			{
+			"rel": "self",
+				"href": "http://localhost:8080/api-travels/v1/travels/1"
+			}
    		]
 	}
 }
@@ -129,10 +129,10 @@ This end-point returns the statistics based on the travels created.
   		"min": "30.06",
   		"count": 2,
   		"links": [
-	    	{
-	       	"rel": "self",
-	        	"href": "http://localhost:8080/api-travels/v1/statistics/1"
-	    	}
+			{
+			"rel": "self",
+				"href": "http://localhost:8080/api-travels/v1/statistics/1"
+			}
    		]
    	}
 }
