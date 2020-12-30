@@ -11,11 +11,11 @@ A financial API for managing transactions. The API main URL `/api-travels/v1`.
 This API provides HTTP endpoint's and tools for the following:
 
 * Create a trip: `POST/api-travels/v1/travels`
-* Update a trip: `PUT/api-travels/v1/transactions`
+* Update a trip: `PUT/api-travels/v1/travels`
 * Delete a trip (by id): `DELETE/api-travels/v1/travels/1`
 * Get report of travels in a period of time (sorted and paginated): `GET/api-travels/v1/travels?startDate=2020-01-01&endDate=2020-09-20&page=2&size=5&sort=DESC`
 * Find a unique trip by id: `GET/api-travels/v1/travels/1`
-* Find a unique trip by id, but filtering JSON fields: `GET/api-travels/v1/travels/1?fields=id,nsu,transactionDate,amount`
+* Find a unique trip by id, but filtering JSON fields: `GET/api-travels/v1/travels/1?fields=id,nsu,startDate,amount`
 * Find a trip by the order number (unique id on the system): `GET/api-travels/v1/travels/byOrderNumber/{orderNumber}`
 * Get Statistics about the travels of the API: `GET/api-travels/v1/statistics`
 
@@ -158,7 +158,7 @@ All `BigDecimal` values always contain exactly two decimal places, e.g: `15.385`
 
 This project was developed with:
 
-* **Java 11 (Java Development Kit - JDK: 11.0.7)**
+* **Java 11 (Java Development Kit - JDK: 11.0.9)**
 * **Spring Boot 2.3.7**
 * **Spring Admin Client 2.3.1**
 * **Maven**
@@ -185,7 +185,7 @@ It will clean, compile and generate a `jar` at target directory, e.g. `travels-j
 
 ### Execution
 
-You need to have **PostgreSQL 9.6.17 or above** installed on your machine to run the API on `dev` profile. After installed, on the `pgAdmin` create a database named `financial`. If you don't have `pgAdmin` installed you can run on the `psql` console the follow command:
+You need to have **PostgreSQL 9.6.17 or above** installed on your machine to run the API on `dev` profile. After installed, on the `pgAdmin` create a database named `travels`. If you don't have `pgAdmin` installed you can run on the `psql` console the follow command:
 
 ```sql
 CREATE database travels;
