@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.github.mariazevedo88</groupId>
-	<artifactId>financial-java-api</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<artifactId>travels-java-api</artifactId>
+	<version>5.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>financial-java-api</name>
-	<description>A financial API for managing transactions. It is built with Java, Spring Boot, and Spring Framework.</description>
+	<name>travels-java-api</name>
+	<description>An API for travel management. It is built with Java, Spring Boot, and Spring Framework.</description>
 
 	<developers>
 		<developer>
@@ -24,7 +24,7 @@
 		<java.version>11</java.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<swagger.version>3.0.0</swagger.version>
-    <bucket4j.version>4.10.0</bucket4j.version>
+    	<bucket4j.version>4.10.0</bucket4j.version>
 		<modelmapper.version>2.3.9</modelmapper.version>
 		<spring.admin.version>2.3.1</spring.admin.version>
 		<partialize.version>release~20.05</partialize.version>
@@ -33,7 +33,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.4.RELEASE</version>
+		<version>2.3.7.RELEASE</version>
 		<relativePath/>
 	</parent>
 
@@ -173,15 +173,6 @@
 					</execution>
 				</executions>
 			</plugin>
-	        <plugin>
-	        	<groupId>org.apache.maven.plugins</groupId>
-	        	<artifactId>maven-surefire-plugin</artifactId>
-	        	<configuration>
-	          		<includes>
-	            		<include>io.github.mariazevedo88.financialjavaapi.test.FinancialJavaApiTestSuite.java</include>
-	          		</includes>
-	        	</configuration>
-	      	</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>

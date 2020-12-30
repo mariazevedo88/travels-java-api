@@ -22,5 +22,5 @@ foreign key(account_id) references accounts(id));
 
 insert into users(name, email) values ('swagger user', 'dev@swagger.user');
 
-alter table transaction add column account_id integer;
-alter table transaction add constraint fk_account_id foreign key (account_id) references accounts(id);
+alter table travel add column account_id integer;
+alter table travel add constraint fk_account_id foreign key (account_id) references accounts(id);

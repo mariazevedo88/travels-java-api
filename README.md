@@ -1,57 +1,57 @@
-# financial-java-api
+# travels-java-api
 
-[![Build Status](https://travis-ci.org/mariazevedo88/financial-java-api.svg?branch=master)](https://travis-ci.org/mariazevedo88/financial-java-api) ![GitHub forks](https://img.shields.io/github/forks/mariazevedo88/financial-java-api?style=social) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/mariazevedo88/financial-java-api) ![GitHub language count](https://img.shields.io/github/languages/count/mariazevedo88/financial-java-api) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mariazevedo88/financial-java-api) ![GitHub repo size](https://img.shields.io/github/repo-size/mariazevedo88/financial-java-api) ![GitHub last commit](https://img.shields.io/github/last-commit/mariazevedo88/financial-java-api) ![GitHub](https://img.shields.io/github/license/mariazevedo88/financial-java-api)
+[![Build Status](https://travis-ci.org/mariazevedo88/travels-java-api.svg?branch=master)](https://travis-ci.org/mariazevedo88/travels-java-api) ![GitHub forks](https://img.shields.io/github/forks/mariazevedo88/travels-java-api?style=social) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/mariazevedo88/travels-java-api) ![GitHub language count](https://img.shields.io/github/languages/count/mariazevedo88/travels-java-api) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/mariazevedo88/travels-java-api) ![GitHub repo size](https://img.shields.io/github/repo-size/mariazevedo88/travels-java-api) ![GitHub last commit](https://img.shields.io/github/last-commit/mariazevedo88/travels-java-api) ![GitHub](https://img.shields.io/github/license/mariazevedo88/travels-java-api)
 
 ## About the API
 
-A financial API for managing transactions. The API main URL `/financial/v1`.
+A financial API for managing transactions. The API main URL `/api-travels/v1`.
 
 ## Features
 
 This API provides HTTP endpoint's and tools for the following:
 
-* Create a Transaction: `POST/financial/v1/transactions`
-* Update a Transaction: `PUT/financial/v1/transactions`
-* Delete a Transaction (by id): `DELETE/financial/v1/transactions/1`
-* Get report of transactions in a period of time (sorted and paginated): `GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-09-20&page=2&size=5&sort=DESC`
-* Find a unique transaction by id: `GET/financial/v1/transactions/1`
-* Find a unique transaction by id, but filtering JSON fields: `GET/financial/v1/transactions/1?fields=id,nsu,transactionDate,amount`
-* Find transactions by NSU (Unique sequential number): `GET/financial/v1/transactions/byNsu/{nsuNumber}`
-* Get Statistics about the transactions of the API: `GET/financial/v1/statistics`
+* Create a trip: `POST/api-travels/v1/travels`
+* Update a trip: `PUT/api-travels/v1/transactions`
+* Delete a trip (by id): `DELETE/api-travels/v1/travels/1`
+* Get report of travels in a period of time (sorted and paginated): `GET/api-travels/v1/travels?startDate=2020-01-01&endDate=2020-09-20&page=2&size=5&sort=DESC`
+* Find a unique trip by id: `GET/api-travels/v1/travels/1`
+* Find a unique trip by id, but filtering JSON fields: `GET/api-travels/v1/travels/1?fields=id,nsu,transactionDate,amount`
+* Find a trip by the order number (unique id on the system): `GET/api-travels/v1/travels/byOrderNumber/{orderNumber}`
+* Get Statistics about the travels of the API: `GET/api-travels/v1/statistics`
 
 ### Details
 
-`POST/financial/v1/transaction`
+`POST/api-travels/v1/travels`
 
-This end-point is called to create a new transaction.
+This end-point is called to create a new trip.
 
 **Body:**
 
 ```json
 {
-  "nsu": "123456",
-  "authorizationNumber": "010203",
+  "orderCode": "123456",
   "amount": "22.88",
-  "transactionDate": "2020-04-05T09:59:51.312Z",
-  "type": "CARD",
+  "startDate": "2020-04-05T09:59:51.312Z",
+  "endDate": "2020-04-15T16:25:00.500Z",
+  "type": "RETURN"
 }
 ```
 
 **Where:**
 
-`id` - transaction id. It is automatically generated.
+`id` - travel id. It is automatically generated.
 
-`nsu` - identification number of a sales transaction using cards. May be null if transaction was paid in cash;
+`orderNumber` - identification number of a trip on the system.
 
-`authorizationNumber` - is a one-time code used in the processing of online transactions;
+`amount` – travel amount; a string of arbitrary length that is parsable as a BigDecimal;
 
-`amount` – transaction amount; a string of arbitrary length that is parsable as a BigDecimal;
+`startDate` – travel start date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone.
 
-`transactionDate` – transaction time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local timezone.
+`endDate` – end date of the trip in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone.
 
-`type` - transaction type: CARD (credit-card) or MONEY (paid in cash).
+`type` - travel type: ONE-WAY, RETURN or MULTI-CITY.
 
-`links` - self-linking URL for the transaction. It is automatically generated.
+`links` - self-linking URL for the travel. It is automatically generated.
 
 Returns an empty body with one of the following:
 
@@ -63,61 +63,60 @@ Returns an empty body with one of the following:
 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 
-`PUT/financial/v1/transaction/{id}`
+`PUT/api-travels/v1/travels/{id}`
 
-This end-point is called to update a transaction.
+This end-point is called to update a trip.
 
 **Body:**
 
 ```json
 {
    "id": 1,
-   "nsu": "123456",
-   "authorizationNumber": "010203",
+   "orderCode": "123456",
    "amount": "30.06",
-   "transactionDate": "2020-04-05T09:59:51.312Z",
-   "type": "CARD"
+   "startDate": "2020-04-05T09:59:51.312Z",
+  	"endDate": "2020-04-15T16:25:00.500Z",
+  	"type": "RETURN"
 }
 ```
 
-Must be submitted the object that will be modified. Must return a transaction specified by ID and all fields recorded above, including links and
-the one that was updated.
+Must be submitted the object that will be modified. Must return a trip specified by ID and all fields recorded above, including links and the one that was updated.
 
 ```json
 {
    "data": {   
    		"id": 1,
-   		"nsu": "123456",
-   		"authorizationNumber": "010203",
+   		"orderCode": "123456",
    		"amount": "30.06",
-   		"transactionDate": "2020-04-05T09:59:51.312Z",
-   		"type": "CARD",
+   		"startDate": "2020-04-05T09:59:51.312Z",
+  		"endDate": "2020-04-15T16:25:00.500Z",
+  		"type": "RETURN"
    		"links": [
 	    	{
 	       	"rel": "self",
-	        	"href": "http://localhost:8080/financial/v1/transactions/1"
+	        	"href": "http://localhost:8080/api-travels/v1/travels/1"
 	    	}
    		]
 	}
 }
 ```
 
-`GET/financial/v1/transactions?startDate=2020-01-01&endDate=2020-01-18&page=2&size=5&sort=DESC`
+`GET/api-travels/v1/travels?startDate=2020-01-01&endDate=2020-01-18&page=2&size=5&sort=DESC`
 
-The end-point returns transactions were created within the period specified in the request. E.g., in the above query, we are looking for all transactions carried out between 01-18 January 2020. Also, the result should return in descending order and only page 2
-with five transactions.
+The end-point returns travels were created within the period specified in the request. E.g., in the above query, we are looking for all travels carried out between 01-18 January 2020. Also, the result should return in descending order and only page 2
+with five trips.
 
-`DELETE/financial/v1/transaction/{id}`
+`DELETE/api-travels/v1/travels/{id}`
 
-This end-point causes a transaction for a specific id to be deleted, accepting an empty request body and return a 204 status code.
+This end-point causes a specific id to be deleted, accepting an empty request body and returning a 204 status code.
 
 **Where:**
 
-`id` - transaction id to be deleted.
+`id` - travel id to be deleted.
 
-`GET/financial/v1/statistics`
+`GET/api-travels/v1/statistics`
 
-This end-point returns the statistics based on the transactions created.
+This end-point returns the statistics based on the travels created.
 
 **Returns:**
 
@@ -132,7 +131,7 @@ This end-point returns the statistics based on the transactions created.
   		"links": [
 	    	{
 	       	"rel": "self",
-	        	"href": "http://localhost:8080/financial/v1/statistics/1"
+	        	"href": "http://localhost:8080/api-travels/v1/statistics/1"
 	    	}
    		]
    	}
@@ -141,15 +140,15 @@ This end-point returns the statistics based on the transactions created.
  
 **Where:**
 
-`sum` – a BigDecimal specifying the total sum of transaction value.
+`sum` – a BigDecimal specifying the total sum of the amount of all travels.
 
-`avg` – a BigDecimal specifying the average amount of transaction value.
+`avg` – a BigDecimal specifying the average of the amount of all travels.
 
-`max` – a BigDecimal specifying single highest transaction value.
+`max` – a BigDecimal specifying single highest travel value.
 
-`min` – a BigDecimal specifying single lowest transaction value.
+`min` – a BigDecimal specifying single lowest travel value.
 
-`count` – a long specifying the total number of transactions.
+`count` – a long specifying the total number of travels.
 
 `links` - self-linking URL for the statistic. It is automatically generated.
 
@@ -160,15 +159,15 @@ All `BigDecimal` values always contain exactly two decimal places, e.g: `15.385`
 This project was developed with:
 
 * **Java 11 (Java Development Kit - JDK: 11.0.7)**
-* **Spring Boot 2.3.4**
-* **Spring Admin Client 2.3.0**
+* **Spring Boot 2.3.7**
+* **Spring Admin Client 2.3.1**
 * **Maven**
 * **JUnit 5**
 * **Surfire**
-* **PostgreSQL 12**
+* **PostgreSQL 13**
 * **Flyway 6.4.4**
 * **Swagger 3.0.0**
-* **Model Mapper 2.3.8**
+* **Model Mapper 2.3.9**
 * **Heroku**
 * **EhCache**
 * **Bucket4j 4.10.0**
@@ -182,14 +181,14 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `financial-java-api-4.0.0-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `travels-java-api-5.0.0-SNAPSHOT.jar`
 
 ### Execution
 
 You need to have **PostgreSQL 9.6.17 or above** installed on your machine to run the API on `dev` profile. After installed, on the `pgAdmin` create a database named `financial`. If you don't have `pgAdmin` installed you can run on the `psql` console the follow command:
 
 ```sql
-CREATE database financial;
+CREATE database travels;
 ```
 
 After creating the API database, you need to add your **Postgres** root `username` and `password` in the `application.properties` file on `src/main/resource`. The lines that must be modified are as follows:
@@ -220,7 +219,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar financial-java-api-4.0.0-SNAPSHOT.jar --spring.profiles.active=dev
+java -jar travels-java-api-5.0.0-SNAPSHOT.jar --spring.profiles.active=dev
 ```
     
 or
@@ -229,7 +228,7 @@ or
 mvn spring-boot:run -Dspring.profiles.active=dev
 ```
 
-By default, the API will be available at [http://localhost:8080/financial/v1](http://localhost:8080/financial/v1)
+By default, the API will be available at [http://localhost:8080/api-travels/v1](http://localhost:8080/api-travels/v1)
 
 ### Documentation
 

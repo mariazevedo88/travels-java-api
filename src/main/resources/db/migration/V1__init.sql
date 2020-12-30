@@ -1,17 +1,17 @@
-create table transaction(
+create table travel(
 id serial,
-nsu varchar(20),
-authorization_number varchar(20),
-transaction_date TIMESTAMP,
+order_number varchar(20),
+start_date TIMESTAMP,
+end_date TIMESTAMP,
 amount numeric(10,2),
 type varchar(40),
 primary key (id));
 
 create table statistics(
 id serial,
-transactions_sum numeric(10,2),
-transactions_avg numeric(10,2),
-transactions_max numeric(10,2),
-transactions_min numeric(10,2),
-transactions_count decimal,
+travel_sum numeric(10,2),
+travel_avg numeric(10,2),
+travel_max numeric(10,2),
+travel_min numeric(10,2),
+travel_count decimal,
 primary key (id));
