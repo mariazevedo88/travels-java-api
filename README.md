@@ -59,7 +59,7 @@ Returns an empty body with one of the following:
 * 400 - Bad Request: the request was unacceptable, often due to missing a required parameter or invalid JSON.
 * 404 - Not Found: The requested resource doesn't exist.
 * 409 - Conflict: The request conflicts with another request (perhaps due to using the same idempotent key).
-* 422 – Unprocessable Entity: if any of the fields are not parsable or the transaction date is in the future.
+* 422 – Unprocessable Entity: if any of the fields are not parsable or the start date is greater than the end date.
 * 429 - Too Many Requests: Too many requests hit the API too quickly. We recommend an exponential back-off of your requests.
 * 500, 502, 503, 504 - Server Errors: something went wrong on API end (These are rare).
 
