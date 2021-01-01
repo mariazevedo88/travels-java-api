@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 
@@ -48,18 +47,14 @@ public class Travel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
 	private String orderNumber;
 	
-	@NotNull
 	private LocalDateTime startDate;
 	
 	private LocalDateTime endDate;
 	
-	@NotNull
 	private BigDecimal amount;
 	
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TravelTypeEnum type;
 	

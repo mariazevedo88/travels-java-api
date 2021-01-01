@@ -131,7 +131,7 @@ public class TravelsJavaApiIntegrationTest {
         TravelDTO dtoNsu123456 = new TravelDTO(null, "123456", 
         		TravelsApiUtil.getLocalDateTimeFromString("2020-08-15T18:32:04.150Z"), 
         		TravelsApiUtil.getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"), 
-        		new BigDecimal(100d), TravelTypeEnum.RETURN, 1L); 
+        		new BigDecimal(100d), TravelTypeEnum.RETURN.getValue(), 1L); 
         
         final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");
@@ -152,7 +152,7 @@ public class TravelsJavaApiIntegrationTest {
     	//id=2
     	TravelDTO dtoNsu258963 = new TravelDTO(null, "258963", 
     			TravelsApiUtil.getLocalDateTimeFromString("2020-08-21T18:32:04.150Z"),
-    			null, new BigDecimal(2546.93), TravelTypeEnum.ONE_WAY, 1L); 
+    			null, new BigDecimal(2546.93), TravelTypeEnum.ONE_WAY.getValue(), 1L); 
         
         final HttpHeaders headers = new HttpHeaders();
         headers.set("X-api-key", "FX001-ZBSY6YSLP");

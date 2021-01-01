@@ -25,7 +25,7 @@ import io.github.mariazevedo88.travelsjavaapi.dto.response.Response;
 public class TravelsJavaAPIExceptionHandler<T> {
 	
 	/**
-	 * Method that handles with a TransactionInvalidUpdateException and returns an error with 
+	 * Method that handles with a TravelInvalidUpdateException and returns an error with 
 	 * status code = 403.
 	 * 
 	 * @author Mariana Azevedo
@@ -35,7 +35,7 @@ public class TravelsJavaAPIExceptionHandler<T> {
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { TravelInvalidUpdateException.class })
-    protected ResponseEntity<Response<T>> handleTransactionInvalidUpdateException(TravelInvalidUpdateException exception) {
+    protected ResponseEntity<Response<T>> handleTravelInvalidUpdateException(TravelInvalidUpdateException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());
@@ -44,7 +44,7 @@ public class TravelsJavaAPIExceptionHandler<T> {
     }
 	
 	/**
-	 * Method that handles with a TransactionNotFoundException and returns an error with 
+	 * Method that handles with a TravelNotFoundException and returns an error with 
 	 * status code = 404.
 	 * 
 	 * @author Mariana Azevedo
@@ -54,7 +54,7 @@ public class TravelsJavaAPIExceptionHandler<T> {
 	 * @return ResponseEntity<Response<T>>
 	 */
 	@ExceptionHandler(value = { TravelNotFoundException.class })
-    protected ResponseEntity<Response<T>> handleTransactionNotFoundException(TravelNotFoundException exception) {
+    protected ResponseEntity<Response<T>> handleTravelNotFoundException(TravelNotFoundException exception) {
 		
 		Response<T> response = new Response<>();
 		response.addErrorMsgToResponse(exception.getLocalizedMessage());

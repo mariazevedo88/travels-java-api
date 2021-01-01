@@ -181,7 +181,7 @@ The API also was developed to run with an `jar`. In order to generate this `jar`
 mvn package
 ```
 
-It will clean, compile and generate a `jar` at target directory, e.g. `travels-java-api-5.0.0-SNAPSHOT.jar`
+It will clean, compile and generate a `jar` at target directory, e.g. `travels-java-api-5.0.1-SNAPSHOT.jar`
 
 ### Execution
 
@@ -219,7 +219,7 @@ mvn integration-test
 In order to run the API, run the jar simply as following:
 
 ```bash
-java -jar travels-java-api-5.0.0-SNAPSHOT.jar --spring.profiles.active=dev
+java -jar travels-java-api-5.0.1-SNAPSHOT.jar --spring.profiles.active=dev
 ```
     
 or

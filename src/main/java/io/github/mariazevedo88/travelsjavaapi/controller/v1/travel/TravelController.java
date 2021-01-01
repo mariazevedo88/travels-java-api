@@ -65,7 +65,7 @@ public class TravelController {
 	}
 	
 	/**
-	 * Method that creates a travel in the database.
+	 * Method that creates travels in the database.
 	 * 
 	 * @author Mariana Azevedo
 	 * @since 02/04/2020
@@ -76,10 +76,11 @@ public class TravelController {
 	 * - id - trip id; 
 	 * - orderNumber - identification number of a trip in the system; 
 	 * - amount – travel amount; a string of arbitrary length that is parsable as a BigDecimal; 
-	 * - initialDate – initial date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone;
-	 * - finalDate – final date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone; 
+	 * - startDate – initial date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone;
+	 * - endDate – final date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone; 
 	 * - type - trip type: RETURN (with a date to begin and end), ONE_WAY (only with initial date), 
 	 * MULTI_CITY (with multiple destinations);
+	 * - account_id - account id of the user in the API.
 	 * 
 	 * @param result - Bind result
 	 * 
@@ -146,6 +147,7 @@ public class TravelController {
 	 * - finalDate – final date time in the ISO 8601 format YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone; 
 	 * - type - trip type: RETURN (with a date to begin and end), ONE_WAY (only with initial date), 
 	 * MULTI_CITY (with multiple destinations);
+	 * - account_id - account id of the user in the API.
 	 * 
 	 * @param result - Bind result
 	 * 
@@ -228,12 +230,12 @@ public class TravelController {
 	 */
 	@GetMapping
 	@ApiOperation(value = "Route to find all travels of the API in a period of time")
-	public ResponseEntity<Response<Page<TravelDTO>>> findAllBetweenDates(@RequestHeader(value=TravelsApiUtil.HEADER_TRAVELS_API_VERSION, defaultValue="${api.version}") 
+	public ResponseEntity<Response<List<TravelDTO>>> findAllBetweenDates(@RequestHeader(value=TravelsApiUtil.HEADER_TRAVELS_API_VERSION, defaultValue="${api.version}") 
 		String apiVersion, @RequestHeader(value=TravelsApiUtil.HEADER_API_KEY, defaultValue="${api.key}") String apiKey, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") 
-	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, @PageableDefault(page = 1, size = 10, sort = {"id"}) Pageable pageable) 
-	    		throws TravelNotFoundException {
+	    LocalDate startDate, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, 
+	    @PageableDefault(page = 1, size = 10, sort = {"id"}) Pageable pageable) throws TravelNotFoundException {
 		
-		Response<Page<TravelDTO>> response = new Response<>();
+		Response<List<TravelDTO>> response = new Response<>();
 		
 		LocalDateTime startDateTime = TravelsApiUtil.convertLocalDateToLocalDateTime(startDate);
 		LocalDateTime endDateTime = TravelsApiUtil.convertLocalDateToLocalDateTime(endDate);
@@ -245,7 +247,10 @@ public class TravelController {
 					+ " and endDate=" + endDate);
 		}
 		
-		Page<TravelDTO> itemsDTO = travels.map(t -> t.convertEntityToDTO());
+		//Page<TravelDTO> itemsDTO = travels.map(t -> t.convertEntityToDTO());
+		List<TravelDTO> itemsDTO = new ArrayList<>();
+		travels.stream().forEach(t -> itemsDTO.add(t.convertEntityToDTO()));
+		
 		itemsDTO.stream().forEach(dto -> {
 			try {
 				createSelfLinkInCollections(apiVersion, apiKey, dto);

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.zero_x_baadf00d.partialize.annotation.Partialize;
 
-import io.github.mariazevedo88.travelsjavaapi.enumeration.TravelTypeEnum;
 import io.github.mariazevedo88.travelsjavaapi.model.travel.Travel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Class that implements Transaction data transfer object (DTO)
+ * Class that implements Travel data transfer object (DTO)
  * 
  * @author Mariana Azevedo
  * @since 01/04/2020
@@ -38,7 +38,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Partialize(allowedFields = {"id", "orderNumber", "startDate", "endDate", "amount", "account", "type"},
-		defaultFields = {"orderNumber", "startDate", "endDate", "amount"})
+		defaultFields = {"orderNumber", "startDate", "amount"})
 public class TravelDTO extends RepresentationModel<TravelDTO> {
 	
 	private Long id;
@@ -62,7 +62,9 @@ public class TravelDTO extends RepresentationModel<TravelDTO> {
 	private BigDecimal amount;
 	
 	@NotNull(message="Type cannot be null")
-	private TravelTypeEnum type;
+	@Pattern(regexp="^(ONE-WAY|RETURN|MULTI-CITY)$", 
+		message="For the type only the values ONE-WAY, RETURN or MULTI-CITY are accepted.")
+	private String type;
 	
 	@NotNull(message="Account Id cannot be null")
 	private Long accountId;

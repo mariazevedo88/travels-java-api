@@ -96,7 +96,8 @@ public class TravelControllerTest {
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, ORDER_NUMBER, 
 			TravelsApiUtil.getLocalDateTimeFromString(START_DATE.concat("Z")), 
-			TravelsApiUtil.getLocalDateTimeFromString(END_DATE.concat("Z")), VALUE, TYPE, ACCOUNT_ID))
+			TravelsApiUtil.getLocalDateTimeFromString(END_DATE.concat("Z")), VALUE, 
+			TYPE.getValue(), ACCOUNT_ID))
 			.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 			.headers(headers))
 		.andDo(MockMvcResultHandlers.print())
@@ -125,7 +126,8 @@ public class TravelControllerTest {
 		
 		mockMvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, null, 
 				TravelsApiUtil.getLocalDateTimeFromString(START_DATE.concat("Z")), TravelsApiUtil.
-				 getLocalDateTimeFromString(END_DATE.concat("Z")), VALUE, TYPE, ACCOUNT_ID))
+				 getLocalDateTimeFromString(END_DATE.concat("Z")), VALUE, TYPE.getValue(), 
+				 ACCOUNT_ID))
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.headers(headers))
 		.andExpect(status().isBadRequest())
@@ -167,7 +169,7 @@ public class TravelControllerTest {
 	 * @throws JsonProcessingException
 	 */
 	private String getJsonPayload(Long id, String orderNumber, LocalDateTime startDate, LocalDateTime endDate,
-			BigDecimal amount, TravelTypeEnum type, Long accountId) throws JsonProcessingException {
+			BigDecimal amount, String type, Long accountId) throws JsonProcessingException {
 		
 		TravelDTO dto = new TravelDTO(id, orderNumber, startDate, endDate, 
 				amount, type, accountId);
